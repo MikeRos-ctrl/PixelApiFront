@@ -1,0 +1,113 @@
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 2rem;
+    align-items: center;
+}
+
+.navRight {
+    display: flex;
+    gap: 1.7rem;
+}
+
+.showMenu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.headerMain {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 6rem;
+    align-items: center;
+}
+
+.headerMainResponsive {
+    display: flex;
+    padding-top: 6rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+}
+
+.mainText {
+    display: flex;
+    gap: 2.5rem;
+    flex-direction: column;
+}
+
+.information {
+    display: flex;
+    gap: 0.8rem;
+    flex-direction: column;
+}
+
+.informationButtons {
+    display: flex;
+    gap: 1rem;
+}
+
+.informationButtonsResponsive {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
