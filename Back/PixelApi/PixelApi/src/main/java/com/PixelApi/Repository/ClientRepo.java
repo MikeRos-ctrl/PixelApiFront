@@ -5,9 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import com.PixelApi.Entity.Userprofile;
 
-public interface ClientRepo extends JpaRepository<Userprofile, Long>{
+public interface ClientRepo extends JpaRepository<Userprofile, Long> {
 
 	@Query("SELECT id FROM Userprofile WHERE username=:username")
 	Long findIdByUsername(@Param("username") String username);
-
+	
+	Long countByEmail(String email);
 }

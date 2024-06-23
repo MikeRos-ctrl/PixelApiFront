@@ -16,12 +16,12 @@ public class CorsConfig {
 
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-		config.setAllowedOrigins(Arrays.asList("*"));
-		//config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
 		config.setAllowedHeaders(Arrays.asList("*"));
-
+		config.setAllowedOrigins(Arrays.asList("*"));
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);
 		return source;
 	}
 }
+
+ 

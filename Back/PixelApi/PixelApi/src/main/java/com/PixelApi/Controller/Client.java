@@ -50,35 +50,7 @@ public class Client {
 	@Autowired
 	ClientService myClientService;
 		
-	@PostMapping("/createAccount")
-	public ResponseEntity<?> createClient(@Valid @RequestBody Userprofile myClient, BindingResult result) {
 
-		Map<String, Object> response = new HashMap<>();
-		HttpStatus statusResponse = HttpStatus.OK;
-
-		if (result.hasErrors()) {
-			List<String> errors = new ArrayList<String>();
-
-			for (FieldError err : result.getFieldErrors()) {
-				errors.add("Campo '" + err.getField() + "' " + err.getDefaultMessage());
-			}
-
-			response.put("errors", errors);
-			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-		}
-
-		try {
-			response.put("value", myClientService.save(myClient));
-			response.put("mensaje", "Usuario creado exitosamente");
-			statusResponse = HttpStatus.OK;
-
-		} catch (Exception e) {
-			response.put("mensaje", "Error interno");
-			response.put("error", e.getMessage());
-			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		return new ResponseEntity<>(response, statusResponse);
-	}
 	
 	@PutMapping("/updateAccount")
 	public ResponseEntity<?> updateClient(@Valid @RequestBody Userprofile myClient, BindingResult result) {

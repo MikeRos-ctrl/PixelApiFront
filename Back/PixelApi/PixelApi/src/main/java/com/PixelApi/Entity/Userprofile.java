@@ -35,6 +35,23 @@ public class Userprofile {
 
 	////////////////////////////////////////////////////////////////
 
+	public Userprofile() {
+
+	}
+
+	public Userprofile(Long id, @NotEmpty(message = "usuario no puede estar vacio") String username,
+			@NotEmpty(message = "contraseña no puede estar vacia") String userkeyauth,
+			@NotEmpty(message = "correo no puede estar vacio") @Email(message = "correo con formato no valido") String email,
+			Boolean locked, Boolean disabled, Integer roles) {
+		this.id = id;
+		this.username = username;
+		this.userkeyauth = userkeyauth;
+		this.email = email;
+		this.locked = locked;
+		this.disabled = disabled;
+		this.roles = roles;
+	}
+
 	public Long getId() {
 		return id;
 	}

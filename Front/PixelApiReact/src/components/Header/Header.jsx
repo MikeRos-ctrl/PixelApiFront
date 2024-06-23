@@ -10,12 +10,10 @@ class Header extends Component {
         this.state = {
             isResponsive: (window.innerWidth <= 850) ? true : false,
             showMenu: false,
-            myImage: null
         }
     }
 
     componentDidMount() {
-
         window.addEventListener('resize', () => {
             this.setState({
                 isResponsive: (window.innerWidth <= 850) ? true : false,
@@ -28,15 +26,10 @@ class Header extends Component {
         window.removeEventListener('resize', this.handleResize);
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.image !== this.props.image) {
-            this.setState({ myImage: this.props.image });
-        }
-    }
-
     render() {
 
-        const { isResponsive, showMenu, myImage } = this.state;
+        const { isResponsive, showMenu } = this.state;
+        const { children, changeModalstatus_ } = this.props;
 
         return (
 
@@ -44,7 +37,7 @@ class Header extends Component {
 
                 <nav>
                     <div className="navLeft">
-                        <h3 className="titleNotMain">Pixel Api</h3>
+                        <h3 className="titleNotMain">The Pixel Api</h3>
                     </div>
 
 
@@ -53,7 +46,7 @@ class Header extends Component {
                             <h5 className="regularText">PRICING</h5>
                             <h5 className="regularText">DOCUMENTATION</h5>
                             <h5 className="regularText">ABOUT</h5>
-                            <h5 className="regularText">MY ACCOUNT</h5>
+                            <h5 onClick={() => changeModalstatus_()} className="regularText">MY ACCOUNT</h5>
                         </div>
                     )}
 
@@ -86,9 +79,9 @@ class Header extends Component {
                             <span className="darkColor"> is here</span>
                         </h1>
 
-                        <h5 className="titleNotMain ">
+                        <h4 className="titleNotMain">
                             And remember, one pixel at a time.
-                        </h5>
+                        </h4>
 
                         <div className="information">
 
@@ -109,15 +102,7 @@ class Header extends Component {
                         </div>
                     </div>
 
-                    {myImage ? (
-                        <div className="img-container-big">
-                            <p className="titleNotMain white-color">{myImage["Description"]}</p>
-                            <img src={myImage["Image"]} className="image" alt="" />
-                            <p className="regularText">Explore our art gallery ❤️</p>
-                        </div>
-                    ) : (
-                        <div className="img-container-big-loading"></div>
-                    )}
+                    {children}
 
                 </main>
             </header>

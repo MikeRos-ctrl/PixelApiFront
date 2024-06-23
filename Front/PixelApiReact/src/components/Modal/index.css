@@ -1,0 +1,89 @@
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(87, 40, 71, 0.329);
+}
+
+.modalContent {
+    width: 80rem;
+    display: flex;
+    position: relative;
+}
+
+.modalContentLeft {
+    width: 60%;
+    background-color: blue;
+    background-color: var(--soul);
+    padding: 4rem;
+    border-top-left-radius: 2rem;
+    border-bottom-left-radius: 2rem;
+}
+
+.modalContentInformationHeader{
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.modalContentInformationBody{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    gap: 1.3rem;
+}
+
+.modalContentRight {
+    width: 40%;
+}
+
+.imageModal {
+    width: 100%;
+    height: 100%;
+    border-top-right-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+}
+
+
+.modalbtn {
+    border: none;
+    padding: 0.7rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    width: 100%;
+    font-size: 2rem;
+    background-color: #262829;
+    background-color: var(--strongPink);
+}
+
+.modalbtn2 {
+    border: none;
+    padding: 0.7rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    width: 100%;
+    font-size: 2rem;
+    outline: 2px solid var(--strongPink);
+    color: rgb(0, 0, 0);
+    background-color: var(--soul);
+
+}
+
+.close-icon {
+    position: absolute;
+    top: -10px;
+    right: -5px;
+    cursor: pointer;
+}
+
+.equis{
+    color: red;
+    font-size: 3rem;
+}

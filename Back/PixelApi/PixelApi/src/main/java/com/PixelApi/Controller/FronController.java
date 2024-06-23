@@ -7,13 +7,21 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.PixelApi.Entity.Image;
+import com.PixelApi.Entity.Userprofile;
+import com.PixelApi.Service.ClientService;
 import com.PixelApi.Service.ImageService;
+
+import jakarta.validation.Valid;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -40,27 +48,44 @@ import javax.sql.rowset.serial.SerialException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
-@RequestMapping("/images")
-public class Images {
+@RequestMapping("/frontController")
+public class FronController {
 
 	@Autowired
 	ImageService service;
 
-	@GetMapping("/random")
-	public ResponseEntity<?> getImage() {
+	@Autowired
+	ClientService myClientService;
+
+	/*
+	 * @GetMapping("/random") public ResponseEntity<?> getImage() {
+	 * 
+	 * Map<String, Object> response = new HashMap<>(); HttpStatus statusResponse =
+	 * HttpStatus.OK;
+	 * 
+	 * try { Path imagePath = Paths.get("src/main/resources/IMG/cute-girl.jpeg");
+	 * byte[] imageBytes = Files.readAllBytes(imagePath); HttpHeaders headers = new
+	 * HttpHeaders(); headers.setContentType(MediaType.IMAGE_JPEG);
+	 * headers.setContentLength(imageBytes.length); return new
+	 * ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+	 * 
+	 * } catch (IOException e) { response.put("mensaje", "Error interno");
+	 * response.put("error", e.getMessage()); statusResponse =
+	 * HttpStatus.INTERNAL_SERVER_ERROR; } return new ResponseEntity<>(response,
+	 * statusResponse); }
+	 */
+
+	@PostMapping("/validateAccount/{email}")
+	public ResponseEntity<?> validateAccount(@PathVariable String email) {
 
 		Map<String, Object> response = new HashMap<>();
 		HttpStatus statusResponse = HttpStatus.OK;
 
 		try {
-			Path imagePath = Paths.get("src/main/resources/IMG/cute-girl.jpeg");
-			byte[] imageBytes = Files.readAllBytes(imagePath);
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.IMAGE_JPEG);
-			headers.setContentLength(imageBytes.length);
-			return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+			response.put("response", myClientService.validateAccount(email));
+			statusResponse = HttpStatus.OK;
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			response.put("mensaje", "Error interno");
 			response.put("error", e.getMessage());
 			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -68,7 +93,33 @@ public class Images {
 		return new ResponseEntity<>(response, statusResponse);
 	}
 
-	@GetMapping("/fillFrontWthRandomImages")
+	/*
+	 * @PostMapping("/validateAccounxdt") public ResponseEntity<?>
+	 * validateAccountxd(@Valid @RequestBody Userprofile myClient, BindingResult
+	 * result) {
+	 * 
+	 * Map<String, Object> response = new HashMap<>(); HttpStatus statusResponse =
+	 * HttpStatus.OK;
+	 * 
+	 * if (result.hasErrors()) { List<String> errors = new ArrayList<String>();
+	 * 
+	 * for (FieldError err : result.getFieldErrors()) { errors.add("Campo '" +
+	 * err.getField() + "' " + err.getDefaultMessage()); }
+	 * 
+	 * response.put("errors", errors); return new ResponseEntity<>(response,
+	 * HttpStatus.BAD_REQUEST); }
+	 * 
+	 * try { response.put("value", myClientService.save(myClient));
+	 * response.put("mensaje", "Usuario creado exitosamente"); statusResponse =
+	 * HttpStatus.OK;
+	 * 
+	 * } catch (Exception e) { response.put("mensaje", "Error interno");
+	 * response.put("error", e.getMessage()); statusResponse =
+	 * HttpStatus.INTERNAL_SERVER_ERROR; } return new ResponseEntity<>(response,
+	 * statusResponse); }
+	 */
+
+	@GetMapping("/fillFront")
 	public ResponseEntity<?> fillFrontWthRandomImages() throws SerialException, SQLException {
 
 		HttpStatus statusResponse = HttpStatus.OK;
@@ -126,7 +177,7 @@ public class Images {
 
 			Set<Integer> uniqueNumbers = new HashSet<>();
 			Random random = new Random();
-			
+
 			while (uniqueNumbers.size() < 4) {
 				int randomNumber = random.nextInt(routes.size());
 				uniqueNumbers.add(randomNumber);

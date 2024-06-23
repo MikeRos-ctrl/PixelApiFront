@@ -1,11 +1,11 @@
-const API = 'http://localhost:8080/pixel/images';
+const API = 'http://localhost:8080/pixel/frontController';
 
 const UsePixelApi = () => {
 
-    async function ApiCall() {
+    async function FillFront() {
 
         try {
-            const response = await fetch(API + "/fillFrontWthRandomImages", {
+            const response = await fetch(API + "/fillFront", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ const UsePixelApi = () => {
     }
 
     return {
-        ApiCall,
+        FillFront,
         listByCategory
     }
 }

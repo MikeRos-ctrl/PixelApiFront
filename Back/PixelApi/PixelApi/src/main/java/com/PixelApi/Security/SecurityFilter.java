@@ -42,9 +42,9 @@ public class SecurityFilter {
 	    .cors(Customizer.withDefaults())
 	    .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 	    .authorizeHttpRequests(authorize -> authorize
-	    		.requestMatchers(HttpMethod.POST, "/client/createAccount").permitAll()		
-	    		.requestMatchers(HttpMethod.GET, "/images/fillFrontWthRandomImages").permitAll()		
-	    		.requestMatchers(HttpMethod.GET, "/images/listByCategory/{category}").permitAll()		
+	    		.requestMatchers(HttpMethod.POST, "/frontController/validateAccount/{email}").permitAll()		
+	    		.requestMatchers(HttpMethod.GET, "/frontController/fillFront").permitAll()		
+	    		.requestMatchers(HttpMethod.GET, "/frontController/listByCategory/{category}").permitAll()		
 	    		.anyRequest()
 	            .authenticated())
 	    .httpBasic(withDefaults())

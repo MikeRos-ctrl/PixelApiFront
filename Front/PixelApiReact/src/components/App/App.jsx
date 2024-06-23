@@ -1,8 +1,17 @@
 import React, { useEffect, useRef, Component } from 'react';
 import { Header } from '../Header/Header';
+import { HeaderImage } from '../HeaderImage/HeaderImage';
+import { HeaderImageLoading } from '../HeaderImageLoading/HeaderImageLoading';
 import { Gallery } from '../Gallery/Gallery';
+import { GalleryImagesLoading } from '../GalleryImagesLoading/GalleryImagesLoading';
 import { UsePixelApi } from '../../util/UsePixelApi';
-const { ApiCall, listByCategory } = UsePixelApi()
+import { Pricing } from '../Pricing/Pricing';
+import { GalleryImages } from '../GalleryImages/GalleryImages';
+import { Implementation } from '../Implementation/Implementation';
+import { Modal } from '../Modal/Modal';
+import './index.css';
+
+const { FillFront, listByCategory } = UsePixelApi()
 
 class App extends Component {
 
@@ -14,13 +23,13 @@ class App extends Component {
       image2: null,
       image3: null,
       image4: null,
-      image5: null
+      image5: null,
+      openModal: false
     }
   }
 
   componentDidMount() {
-
-    ApiCall().then(result => {
+    FillFront().then(result => {
       this.setState({
         image1: result[0],
         image2: result[1],
@@ -33,21 +42,88 @@ class App extends Component {
     });
   }
 
+  changeModalstatus_ = () => {
+
+    if (this.state.openModal == true) {
+      document.body.classList.remove('no-scroll');
+    } else {
+      document.body.classList.add('no-scroll');
+    }
+
+    this.setState({
+      openModal: !this.state.openModal
+    });
+  }
+
+  listByCategory_ = (category) => {
+
+    if (category == "all") {
+      FillFront().then(result => {
+        this.setState({
+          image2: result[1],
+          image3: result[2],
+          image4: result[3],
+          image5: result[4]
+        });
+      }).catch(error => {
+        console.error("I've got a mistake: ", error);
+      });
+    }
+
+    else {
+      listByCategory(category).then(result => {
+        this.setState({
+          image2: result[0],
+          image3: result[1],
+          image4: result[2],
+          image5: result[3]
+        });
+
+      }).catch(error => {
+        console.error("I've got a mistake: ", error);
+      });
+    }
+  }
+
   render() {
-    const { image1, image2, image3, image4, image5 } = this.state
+    const { image1, image2, image3, image4, image5, openModal } = this.state
 
     return (
       <React.Fragment>
 
-        <Header image={image1} />
+        <Header changeModalstatus_={this.changeModalstatus_}>
 
-        <Gallery
-          image1={image2}
-          image2={image3}
-          image3={image4}
-          image4={image5}
-          listByCategory={listByCategory}
-        />
+          {image1 ? (
+            <HeaderImage image={image1} />
+          ) : (
+            <HeaderImageLoading />
+          )}
+
+        </Header>
+
+        <Gallery listByCategory_={this.listByCategory_}>
+
+          {image2 && image3 && image4 && image5 ? (
+
+            <GalleryImages
+              image1={image2}
+              image2={image3}
+              image3={image4}
+              image4={image5}
+            />
+          ) : (
+            <GalleryImagesLoading />
+          )}
+
+        </Gallery>
+
+        <Implementation />
+
+        <Pricing changeModalstatus_={this.changeModalstatus_} />
+
+        {openModal && (
+          <Modal changeModalstatus_={this.changeModalstatus_} />
+        )}
 
       </React.Fragment>
     )
