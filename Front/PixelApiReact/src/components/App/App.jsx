@@ -11,7 +11,13 @@ import { Implementation } from '../Implementation/Implementation';
 import { Modal } from '../Modal/Modal';
 import './index.css';
 
-const { FillFront, listByCategory } = UsePixelApi()
+const {
+  FillFront,
+  listByCategory,
+  ValidateAccount,
+  CreateAccount,
+  ConfirmAccount
+} = UsePixelApi()
 
 class App extends Component {
 
@@ -122,7 +128,12 @@ class App extends Component {
         <Pricing changeModalstatus_={this.changeModalstatus_} />
 
         {openModal && (
-          <Modal changeModalstatus_={this.changeModalstatus_} />
+          <Modal
+            ValidateAccount={ValidateAccount}
+            changeModalstatus_={this.changeModalstatus_}
+            CreateAccount={CreateAccount}
+            ConfirmAccount={ConfirmAccount}
+          />
         )}
 
       </React.Fragment>

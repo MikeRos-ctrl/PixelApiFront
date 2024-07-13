@@ -1,14 +1,94 @@
 nav {
     display: flex;
-    justify-content: space-between;
-    padding-top: 2rem;
+    padding-top: 1rem;
     align-items: center;
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 1250px) {
+    nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .navRight {
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .headerMain {
+        display: flex;
+        padding-top: 6rem;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 3rem;
+    }
+
+    .informationButtons {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
 }
 
 .navRight {
     display: flex;
-    gap: 1.7rem;
+    align-items: center;
+    gap: 3rem;
 }
+
+.navRightCouple {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+
+.informationButtons {
+    display: flex;
+    gap: 1rem;
+}
+
+.headerMain {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 6rem;
+    align-items: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.qwer {
+
+    width: 280px;
+    /* width: 150px;
+    height: 150px; */
+}
+
+.qwer2 {
+    width: 35px;
+    /* width: 150px;
+    height: 150px; */
+}
+
 
 .showMenu {
     display: flex;
@@ -19,21 +99,6 @@ nav {
     margin-top: 2rem;
 }
 
-.headerMain {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 6rem;
-    align-items: center;
-}
-
-.headerMainResponsive {
-    display: flex;
-    padding-top: 6rem;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 3rem;
-}
 
 .mainText {
     display: flex;
@@ -46,68 +111,3 @@ nav {
     gap: 0.8rem;
     flex-direction: column;
 }
-
-.informationButtons {
-    display: flex;
-    gap: 1rem;
-}
-
-.informationButtonsResponsive {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

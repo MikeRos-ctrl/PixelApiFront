@@ -1,6 +1,10 @@
 import './index.css';
 import React, { useState, useEffect, Component } from 'react';
-import { IoReorderThree } from "react-icons/io5";
+import Logo from '../../assets/icon4.png';
+import Money from '../../assets/Icon-6.png'
+import User from '../../assets/Icon-16.png'
+import Doc from '../../assets/Icon-3.png'
+import About from '../../assets/Icon-21.png'
 
 class Header extends Component {
 
@@ -8,22 +12,15 @@ class Header extends Component {
         super(props);
 
         this.state = {
-            isResponsive: (window.innerWidth <= 850) ? true : false,
-            showMenu: false,
+
         }
     }
 
     componentDidMount() {
-        window.addEventListener('resize', () => {
-            this.setState({
-                isResponsive: (window.innerWidth <= 850) ? true : false,
-                showMenu: false
-            });
-        });
+
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', this.handleResize);
     }
 
     render() {
@@ -37,40 +34,35 @@ class Header extends Component {
 
                 <nav>
                     <div className="navLeft">
-                        <h3 className="titleNotMain">The Pixel Api</h3>
+                        <img src={Logo} className="qwer" alt="" />
                     </div>
 
+                    <div className="navRight">
 
-                    {!isResponsive && (
-                        <div className="navRight">
+                        <div className="navRightCouple clickable">
+                            <img src={Money} className="qwer2" alt="" />
                             <h5 className="regularText">PRICING</h5>
-                            <h5 className="regularText">DOCUMENTATION</h5>
-                            <h5 className="regularText">ABOUT</h5>
-                            <h5 onClick={() => changeModalstatus_()} className="regularText">MY ACCOUNT</h5>
                         </div>
-                    )}
 
-                    {isResponsive && (
-                        <div className="navRight" onClick={() => {
-                            this.setState({
-                                showMenu: !showMenu
-                            });
-                        }}>
-                            <h5 className="regularText clickable">|||</h5>
+                        <div className="navRightCouple clickable">
+                            <img src={Doc} className="qwer2" alt="" />
+                            <h5 className="regularText">DOCUMENTATION</h5>
                         </div>
-                    )}
+
+                        <div className="navRightCouple clickable">
+                            <img src={About} className="qwer2" alt="" />
+                            <h5 className="regularText">ABOUT</h5>
+                        </div>
+
+                        <div className="navRightCouple clickable" onClick={() => changeModalstatus_()}>
+                            <img src={User} className="qwer2" alt="" />
+                            <h5 className="regularText">ACCOUNT</h5>
+                        </div>
+                    </div>
                 </nav>
 
-                {showMenu && (
-                    <div className="showMenu">
-                        <h5 className="titleNotMain">PRICING</h5>
-                        <h5 className="titleNotMain">DOCUMENTATION</h5>
-                        <h5 className="titleNotMain">ABOUT</h5>
-                        <h5 className="titleNotMain">MY ACCOUNT</h5>
-                    </div>
-                )}
 
-                <main className={`${isResponsive ? ("headerMainResponsive") : ("headerMain")}`}>
+                <main className="headerMain">
 
                     <div className="mainText">
 
@@ -95,7 +87,7 @@ class Header extends Component {
 
                             <br />
 
-                            <div className={`${isResponsive ? ("informationButtonsResponsive") : ("informationButtons")}`}>
+                            <div className="informationButtons">
                                 <input className="button-1 titleNotMain" type="button" value="GET YOUR API KEY" />
                                 <input className="button-2 titleNotMain" type="button" value="READ OUR DOC" />
                             </div>
@@ -105,6 +97,7 @@ class Header extends Component {
                     {children}
 
                 </main>
+
             </header>
         );
     }
