@@ -1,7 +1,48 @@
-select * from  image;
+create table `role`(
+	id int not null primary key auto_increment,
+	`name` varchar(255)
+);
 
+select * from role;
+drop table `roles`;
+
+insert into `role` (`name`) values ('ADMIN');
+insert into `role` (`name`) values ('CUSTOMER');
+-- -------------------------------------------------------------------------------------------------------------------------------------------
+
+create table `client` (
+	id int not null primary key  auto_increment,
+    accountKey varchar(255) not null comment 'this is the password',
+	email varchar(255) not null unique,
+    `role` int not null,
+	foreign key(`role`) references `role` (id)
+);
+
+select id from `client` where email = 'princeMike@outlook.es';
+select * from `client`;
+truncate `client`;
+drop table `client`;
+
+-- -------------------------------------------------------------------------------------------------------------------------------------------
+create table clientaccount(
+	token varchar (255) not null,
+    `clientId` int not null not null,
+    `confirmed` bit default 0,
+	foreign key(`clientId`) references `client`(id),
+	primary key (`clientId`, token)
+);
+
+select * from clientaccount;
+truncate  clientaccount;
+drop table clientaccount;
+
+insert into confirmaccount (token, `client`, `used`) values ('dedwdwsdc', 1, 0);
+select count(*) from confirmaccount where `client` = 1;
+select confirmed from confirmaccount where `client` = 1;
+-- ------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- animal  building landscape character
+select * from  image;
 
 truncate table `image`;
 insert into `image` values('castle-1.jpeg','Romanian castle','landscape');

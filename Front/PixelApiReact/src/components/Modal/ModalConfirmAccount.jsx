@@ -2,7 +2,7 @@ import React from "react";
 import validator from 'validator';
 import { useRef } from 'react';
 
-function ModalConfirmAccount() {
+function ModalConfirmAccount({ userLogin, ConfirmAccount }) {
 
     const inputRef = useRef(null);
     const [error, setError] = React.useState(false)
@@ -13,8 +13,14 @@ function ModalConfirmAccount() {
             setTimeout(() => {
                 setError(false);
             }, 3000);
-        }else{
-            console.log("asian")
+        } else {
+
+            ConfirmAccount(userLogin.id, inputRef.current.value).then(result => {
+                console.log(result)
+                //setModalIndex(2)
+            }).catch(error => {
+                console.error("I've got a mistake: ", error);
+            })
         }
     }
 

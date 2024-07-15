@@ -9,6 +9,10 @@ import { Pricing } from '../Pricing/Pricing';
 import { GalleryImages } from '../GalleryImages/GalleryImages';
 import { Implementation } from '../Implementation/Implementation';
 import { Modal } from '../Modal/Modal';
+import { ModalLogin } from '../Modal/ModalLogin';
+import { ModalCreateAccount } from '../Modal/ModalCreateAccount';
+import { ModalConfirmAccount } from '../Modal/ModalConfirmAccount';
+
 import './index.css';
 
 const {
@@ -30,7 +34,9 @@ class App extends Component {
       image3: null,
       image4: null,
       image5: null,
-      openModal: false
+      openModal: false,
+      modalIndex: 0,
+      userLogin: ""
     }
   }
 
@@ -48,7 +54,7 @@ class App extends Component {
     });
   }
 
-  changeModalstatus_ = () => {
+  changeModalstatus = () => {
 
     if (this.state.openModal == true) {
       document.body.classList.remove('no-scroll');
@@ -58,6 +64,12 @@ class App extends Component {
 
     this.setState({
       openModal: !this.state.openModal
+    });
+  }
+
+  setUserLogin = (myUser) => {
+    this.setState({
+      userLogin: myUser
     });
   }
 
@@ -91,13 +103,26 @@ class App extends Component {
     }
   }
 
+  setModalIndex = (index) => {
+    this.setState({
+      modalIndex: index
+    });
+  }
+
+
   render() {
-    const { image1, image2, image3, image4, image5, openModal } = this.state
+    const { image1, image2, image3, image4, image5, openModal, modalIndex, userLogin } = this.state
+
+    const ModalComponents = {
+      0: <ModalLogin setUserLogin={this.setUserLogin} ValidateAccount={ValidateAccount} setModalIndex={this.setModalIndex} />,
+      1: <ModalCreateAccount userLogin={userLogin} setUserLogin={this.setUserLogin} CreateAccount={CreateAccount} setModalIndex={this.setModalIndex} />,
+      2: <ModalConfirmAccount userLogin={userLogin} ConfirmAccount={ConfirmAccount} />
+    };
 
     return (
       <React.Fragment>
 
-        <Header changeModalstatus_={this.changeModalstatus_}>
+        <Header changeModalstatus={this.changeModalstatus}>
 
           {image1 ? (
             <HeaderImage image={image1} />
@@ -125,15 +150,13 @@ class App extends Component {
 
         <Implementation />
 
-        <Pricing changeModalstatus_={this.changeModalstatus_} />
+        <Pricing changeModalstatus_={this.changeModalstatus} />
 
         {openModal && (
-          <Modal
-            ValidateAccount={ValidateAccount}
-            changeModalstatus_={this.changeModalstatus_}
-            CreateAccount={CreateAccount}
-            ConfirmAccount={ConfirmAccount}
-          />
+
+          <Modal setModalIndex={this.setModalIndex} changeModalstatus={this.changeModalstatus}>
+            {ModalComponents[modalIndex]}
+          </Modal>
         )}
 
       </React.Fragment>

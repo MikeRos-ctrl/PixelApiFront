@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.PixelApi.Entity.Image;
-import com.PixelApi.Entity.Userprofile;
+import com.PixelApi.Entity.Client;
 import com.PixelApi.Service.ClientService;
 import com.PixelApi.Service.ImageService;
 
@@ -75,14 +75,14 @@ public class FronController {
 	 * statusResponse); }
 	 */
 
-	@PostMapping("/validateAccount/{email}")
+	@GetMapping("/validateAccount/{email}")
 	public ResponseEntity<?> validateAccount(@PathVariable String email) {
 
 		Map<String, Object> response = new HashMap<>();
 		HttpStatus statusResponse = HttpStatus.OK;
 
 		try {
-			response.put("response", myClientService.validateAccount(email));
+			response.put("response", myClientService.ValidateAccount(email));
 			statusResponse = HttpStatus.OK;
 
 		} catch (Exception e) {
@@ -93,34 +93,58 @@ public class FronController {
 		return new ResponseEntity<>(response, statusResponse);
 	}
 
-	/*
-	 * @PostMapping("/validateAccounxdt") public ResponseEntity<?>
-	 * validateAccountxd(@Valid @RequestBody Userprofile myClient, BindingResult
-	 * result) {
-	 * 
-	 * Map<String, Object> response = new HashMap<>(); HttpStatus statusResponse =
-	 * HttpStatus.OK;
-	 * 
-	 * if (result.hasErrors()) { List<String> errors = new ArrayList<String>();
-	 * 
-	 * for (FieldError err : result.getFieldErrors()) { errors.add("Campo '" +
-	 * err.getField() + "' " + err.getDefaultMessage()); }
-	 * 
-	 * response.put("errors", errors); return new ResponseEntity<>(response,
-	 * HttpStatus.BAD_REQUEST); }
-	 * 
-	 * try { response.put("value", myClientService.save(myClient));
-	 * response.put("mensaje", "Usuario creado exitosamente"); statusResponse =
-	 * HttpStatus.OK;
-	 * 
-	 * } catch (Exception e) { response.put("mensaje", "Error interno");
-	 * response.put("error", e.getMessage()); statusResponse =
-	 * HttpStatus.INTERNAL_SERVER_ERROR; } return new ResponseEntity<>(response,
-	 * statusResponse); }
-	 */
+	@PostMapping("/createAccount")
+	public ResponseEntity<?> createAccount(@Valid @RequestBody Client myClient, BindingResult result) {
+
+		Map<String, Object> response = new HashMap<>();
+		HttpStatus statusResponse = HttpStatus.OK;
+
+		if (result.hasErrors()) {
+			List<String> errors = new ArrayList<String>();
+
+			for (FieldError err : result.getFieldErrors()) {
+				errors.add("Campo '" + err.getField() + "' " + err.getDefaultMessage());
+			}
+
+			response.put("errors", errors);
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+
+		try {
+
+			response.put("value", myClientService.Save(myClient));
+			response.put("mensaje", "Usuario creado exitosamente");
+			statusResponse = HttpStatus.OK;
+
+		} catch (Exception e) {
+			response.put("mensaje", "Error interno");
+			response.put("error", e.getMessage());
+			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<>(response, statusResponse);
+	}
+
+	@PostMapping("/confirmAccount/{id}/{token}")
+	public ResponseEntity<?> confirmAccount(@PathVariable Long id, @PathVariable String token) {
+
+		Map<String, Object> response = new HashMap<>();
+		HttpStatus statusResponse = HttpStatus.OK;
+
+		try {
+						
+			response.put("response", myClientService.ConfirmAccount(id, token));
+			statusResponse = HttpStatus.OK;
+
+		} catch (Exception e) {
+			response.put("mensaje", "Error interno");
+			response.put("error", e.getMessage());
+			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<>(response, statusResponse);
+	}
 
 	@GetMapping("/fillFront")
-	public ResponseEntity<?> fillFrontWthRandomImages() throws SerialException, SQLException {
+	public ResponseEntity<?> fillFront() throws SerialException, SQLException {
 
 		HttpStatus statusResponse = HttpStatus.OK;
 		List<Map<String, Object>> myList = new ArrayList<>();

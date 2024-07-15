@@ -2,7 +2,7 @@ import React from "react";
 import validator from 'validator';
 import { useRef } from 'react';
 
-function ModalLogin({ ValidateAccount_ }) {
+function ModalLogin({ ValidateAccount, setModalIndex, setUserLogin }) {
 
     const inputRef = useRef(null);
     const [emailError, setEmailError] = React.useState(false)
@@ -10,7 +10,24 @@ function ModalLogin({ ValidateAccount_ }) {
     const validateEmail = (email) => {
 
         if (validator.isEmail(email)) {
-            ValidateAccount_(email)
+
+            ValidateAccount(email).then(result => {
+
+                console.log(result)
+
+                if (result.response.code == "A") {
+                    setModalIndex(1)
+
+                    let myUser = {
+                        id: "",
+                        email: email,
+                    }
+
+                    setUserLogin(myUser)
+                }
+            }).catch(error => {
+                console.error("I've got a mistake: ", error);
+            });
         }
         else {
             setEmailError(true)

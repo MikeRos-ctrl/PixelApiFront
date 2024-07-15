@@ -1,7 +1,7 @@
 import React from "react";
 import { FaEye } from "react-icons/fa";
 
-function ModalCreateAccount({ GetBackModal, CreateAccount_, email }) {
+function ModalCreateAccount({ userLogin, setUserLogin, setModalIndex, CreateAccount }) {
 
     const [inputValue1, setInputValue1] = React.useState('')
     const [inputValue2, setInputValue2] = React.useState('')
@@ -37,12 +37,22 @@ function ModalCreateAccount({ GetBackModal, CreateAccount_, email }) {
 
             let myClient = {
                 role: 2,
-                email: email,
-                userkeyauth: inputValue1,
-                disabled: true,
-                locked: true
+                email: userLogin.email,
+                accountKey: inputValue1,
             }
-            CreateAccount_(myClient)
+
+            CreateAccount(myClient).then(result => {
+
+                let myUser = {
+                    id: result.value.id,
+                    email: result.value.email
+                }
+
+                setUserLogin(myUser)
+                setModalIndex(2)
+            }).catch(error => {
+                console.error("I've got a mistake: ", error);
+            })
         }
     }
 
@@ -66,7 +76,7 @@ function ModalCreateAccount({ GetBackModal, CreateAccount_, email }) {
         <>
             <div className="modalContentInformationHeader">
                 <h4 className="titleNotMain dark-color">
-                    <span className="clickable" onClick={() => GetBackModal()}>⬅️</span>
+                    <span className="clickable" onClick={() => setModalIndex(0)}>⬅️</span>
                     Create your account
                 </h4>
 

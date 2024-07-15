@@ -26,7 +26,7 @@ class Header extends Component {
     render() {
 
         const { isResponsive, showMenu } = this.state;
-        const { children, changeModalstatus_ } = this.props;
+        const { children, changeModalstatus } = this.props;
 
         return (
 
@@ -54,7 +54,7 @@ class Header extends Component {
                             <h5 className="regularText">ABOUT</h5>
                         </div>
 
-                        <div className="navRightCouple clickable" onClick={() => changeModalstatus_()}>
+                        <div className="navRightCouple clickable" onClick={() => changeModalstatus()}>
                             <img src={User} className="qwer2" alt="" />
                             <h5 className="regularText">ACCOUNT</h5>
                         </div>

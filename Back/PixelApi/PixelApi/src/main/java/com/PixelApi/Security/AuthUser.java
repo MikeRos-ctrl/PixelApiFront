@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.PixelApi.Entity.Userprofile;
+import com.PixelApi.Entity.Client;
 import com.PixelApi.Service.ClientService;
 import org.springframework.security.core.userdetails.User;
 
@@ -26,14 +26,14 @@ public class AuthUser implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 	
-		Userprofile myUser = service.findUserbyUsername(username);
+		Client myUser = service.FindUserbyUsername(username);
 		
 		return User.builder()
-				.username(myUser.getUsername())
-				.password(myUser.getUserkeyauth())
-				.roles(myUser.getRoles().toString())
-				.accountLocked(myUser.getLocked())
-				.disabled(myUser.getDisabled())
+				//.username(myUser.getUsername())
+				.password(myUser.getAccountKey())
+				.roles(myUser.getRole().toString())
+				.accountLocked(false)
+				.disabled(false)
 				.build();
 	}
 	

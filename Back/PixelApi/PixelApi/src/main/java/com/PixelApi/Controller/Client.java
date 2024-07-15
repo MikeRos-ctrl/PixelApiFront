@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.PixelApi.Entity.Userprofile;
 import com.PixelApi.Paypal.PaypalService;
 import com.PixelApi.Security.Jwt;
 //import com.PixelApi.Security.JwtUtil;
@@ -50,7 +49,7 @@ public class Client {
 	@Autowired
 	ClientService myClientService;
 		
-
+/*
 	
 	@PutMapping("/updateAccount")
 	public ResponseEntity<?> updateClient(@Valid @RequestBody Userprofile myClient, BindingResult result) {
@@ -81,7 +80,7 @@ public class Client {
 		}
 
 		return new ResponseEntity<Map<String, Object>>(response, statusResponse);
-	}
+	}*/
 	
 	@PostMapping("/payMembership")
 	public ResponseEntity<?> payMembership(@RequestParam("username") String username){

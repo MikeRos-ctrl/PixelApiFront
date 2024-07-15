@@ -12,44 +12,33 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
 @Entity
-@Table(name = "userprofile")
-public class Userprofile {
+@Table(name = "client")
+public class Client {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotEmpty(message = "usuario no puede estar vacio")
-	private String username;
-
 	@NotEmpty(message = "contraseña no puede estar vacia")
-	private String userkeyauth;
+	private String accountKey;
 
 	@NotEmpty(message = "correo no puede estar vacio")
 	@Email(message = "correo con formato no valido")
 	private String email;
 
-	private Boolean locked;
-	private Boolean disabled;
-	private Integer roles;
+	private Integer role;
 
 	////////////////////////////////////////////////////////////////
 
-	public Userprofile() {
+	public Client() {
 
 	}
 
-	public Userprofile(Long id, @NotEmpty(message = "usuario no puede estar vacio") String username,
-			@NotEmpty(message = "contraseña no puede estar vacia") String userkeyauth,
-			@NotEmpty(message = "correo no puede estar vacio") @Email(message = "correo con formato no valido") String email,
-			Boolean locked, Boolean disabled, Integer roles) {
+	public Client(Long id, String accountKey, String email, Integer role) {
 		this.id = id;
-		this.username = username;
-		this.userkeyauth = userkeyauth;
+		this.accountKey = accountKey;
 		this.email = email;
-		this.locked = locked;
-		this.disabled = disabled;
-		this.roles = roles;
+		this.role = role;
 	}
 
 	public Long getId() {
@@ -60,20 +49,12 @@ public class Userprofile {
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getAccountKey() {
+		return accountKey;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getUserkeyauth() {
-		return userkeyauth;
-	}
-
-	public void setUserkeyauth(String userkeyauth) {
-		this.userkeyauth = userkeyauth;
+	public void setAccountKey(String accountKey) {
+		this.accountKey = accountKey;
 	}
 
 	public String getEmail() {
@@ -83,28 +64,12 @@ public class Userprofile {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public Boolean getLocked() {
-		return locked;
+	
+	public Integer getRole() {
+		return role;
 	}
 
-	public void setLocked(Boolean locked) {
-		this.locked = locked;
-	}
-
-	public Boolean getDisabled() {
-		return disabled;
-	}
-
-	public void setDisabled(Boolean disabled) {
-		this.disabled = disabled;
-	}
-
-	public Integer getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Integer roles) {
-		this.roles = roles;
+	public void setRole(Integer role) {
+		this.role = role;
 	}
 }
