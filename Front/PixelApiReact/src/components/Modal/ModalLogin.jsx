@@ -1,9 +1,11 @@
 import React from "react";
 import validator from 'validator';
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function ModalLogin({ ValidateAccount, setModalIndex, setUserLogin }) {
 
+    const navigate = useNavigate();
     const inputRef = useRef(null);
     const [emailError, setEmailError] = React.useState(false)
 
@@ -24,6 +26,9 @@ function ModalLogin({ ValidateAccount, setModalIndex, setUserLogin }) {
                     }
 
                     setUserLogin(myUser)
+                }
+                else if (result.response.code == "B") {
+                    navigate('/profile');
                 }
             }).catch(error => {
                 console.error("I've got a mistake: ", error);

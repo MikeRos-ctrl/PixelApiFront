@@ -1,3 +1,30 @@
 .no-scroll {
     overflow: hidden;
 }
+
+@media (max-width: 850px) {
+
+    body {
+        background-color: #181A1B;
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+
+@media only screen and (min-width: 850px) and (max-width: 1500px) {
+
+    body {
+        background-color: #181A1B;
+        width: 80%;
+        margin: 0 auto;
+    }
+}
+
+@media (min-width: 1500px) {
+
+    body {
+        background-color: #181A1B;
+        width: 70%;
+        margin: 0 auto;
+    }
+}

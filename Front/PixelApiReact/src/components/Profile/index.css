@@ -1,0 +1,43 @@
+body {
+    width: 100%;
+}
+
+.profileContainer {
+    display: flex;
+}
+
+.profileLeft {
+    width: 15%;
+    border-right: 1px solid var(--soul);
+    height: 100vh;
+}
+
+.profilePic {
+    height: 4rem;
+}
+
+.profilePicInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    height: 9rem;
+}
+
+.profileLeftMenu {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.cucas {
+    background-color: brown;
+}
+
+.sexo {
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    padding-left: 2rem;
+    border-bottom: 1px solid var(--soul);
+}

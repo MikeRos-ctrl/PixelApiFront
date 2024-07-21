@@ -12,7 +12,6 @@ import { Modal } from '../Modal/Modal';
 import { ModalLogin } from '../Modal/ModalLogin';
 import { ModalCreateAccount } from '../Modal/ModalCreateAccount';
 import { ModalConfirmAccount } from '../Modal/ModalConfirmAccount';
-
 import './index.css';
 
 const {
@@ -109,55 +108,58 @@ class App extends Component {
     });
   }
 
-
   render() {
     const { image1, image2, image3, image4, image5, openModal, modalIndex, userLogin } = this.state
 
     const ModalComponents = {
       0: <ModalLogin setUserLogin={this.setUserLogin} ValidateAccount={ValidateAccount} setModalIndex={this.setModalIndex} />,
       1: <ModalCreateAccount userLogin={userLogin} setUserLogin={this.setUserLogin} CreateAccount={CreateAccount} setModalIndex={this.setModalIndex} />,
-      2: <ModalConfirmAccount userLogin={userLogin} ConfirmAccount={ConfirmAccount} />
+      2: <ModalConfirmAccount userLogin={userLogin} ConfirmAccount={ConfirmAccount} xd={this.xd} />
     };
 
     return (
       <React.Fragment>
 
-        <Header changeModalstatus={this.changeModalstatus}>
+        <div className="myWidth">
 
-          {image1 ? (
-            <HeaderImage image={image1} />
-          ) : (
-            <HeaderImageLoading />
+          <Header changeModalstatus={this.changeModalstatus}>
+
+            {image1 ? (
+              <HeaderImage image={image1} />
+            ) : (
+              <HeaderImageLoading />
+            )}
+
+          </Header>
+
+          <Gallery listByCategory_={this.listByCategory_}>
+
+            {image2 && image3 && image4 && image5 ? (
+
+              <GalleryImages
+                image1={image2}
+                image2={image3}
+                image3={image4}
+                image4={image5}
+              />
+            ) : (
+              <GalleryImagesLoading />
+            )}
+
+          </Gallery>
+
+          <Implementation />
+
+          <Pricing changeModalstatus_={this.changeModalstatus} />
+
+          {openModal && (
+
+            <Modal setModalIndex={this.setModalIndex} changeModalstatus={this.changeModalstatus}>
+              {ModalComponents[modalIndex]}
+            </Modal>
           )}
 
-        </Header>
-
-        <Gallery listByCategory_={this.listByCategory_}>
-
-          {image2 && image3 && image4 && image5 ? (
-
-            <GalleryImages
-              image1={image2}
-              image2={image3}
-              image3={image4}
-              image4={image5}
-            />
-          ) : (
-            <GalleryImagesLoading />
-          )}
-
-        </Gallery>
-
-        <Implementation />
-
-        <Pricing changeModalstatus_={this.changeModalstatus} />
-
-        {openModal && (
-
-          <Modal setModalIndex={this.setModalIndex} changeModalstatus={this.changeModalstatus}>
-            {ModalComponents[modalIndex]}
-          </Modal>
-        )}
+        </div>
 
       </React.Fragment>
     )

@@ -1,9 +1,10 @@
 import React from "react";
-import validator from 'validator';
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function ModalConfirmAccount({ userLogin, ConfirmAccount }) {
+function ModalConfirmAccount({ userLogin, ConfirmAccount, xd }) {
 
+    const navigate = useNavigate();
     const inputRef = useRef(null);
     const [error, setError] = React.useState(false)
 
@@ -17,7 +18,11 @@ function ModalConfirmAccount({ userLogin, ConfirmAccount }) {
 
             ConfirmAccount(userLogin.id, inputRef.current.value).then(result => {
                 console.log(result)
-                //setModalIndex(2)
+
+                if (result.response = 'AA') {
+                    navigate('/profile');
+                }
+
             }).catch(error => {
                 console.error("I've got a mistake: ", error);
             })

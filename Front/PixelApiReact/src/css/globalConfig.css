@@ -24,7 +24,7 @@ html {
 
 @media (max-width: 850px) {
 
-    body {
+    .myWidth {
         background-color: #181A1B;
         width: 90%;
         margin: 0 auto;
@@ -33,7 +33,7 @@ html {
 
 @media only screen and (min-width: 850px) and (max-width: 1500px) {
 
-    body {
+    .myWidth {
         background-color: #181A1B;
         width: 80%;
         margin: 0 auto;
@@ -42,7 +42,7 @@ html {
 
 @media (min-width: 1500px) {
 
-    body {
+    .myWidth {
         background-color: #181A1B;
         width: 70%;
         margin: 0 auto;
