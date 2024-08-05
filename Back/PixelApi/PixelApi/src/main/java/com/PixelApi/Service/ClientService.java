@@ -54,6 +54,7 @@ public class ClientService {
 				response.put("message", "Existing record given that email");
 				response.put("code", "B");
 				response.put("codeExplanation", "Existing functional account");
+				response.put("id", myClient.getId().toString());
 			} else {
 				response.put("message", "Existing record given that email, but not activated");
 				response.put("code", "C");

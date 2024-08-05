@@ -131,7 +131,7 @@ public class FronController {
 		HttpStatus statusResponse = HttpStatus.OK;
 
 		try {
-						
+
 			response.put("response", myClientService.ConfirmAccount(id, token));
 			statusResponse = HttpStatus.OK;
 

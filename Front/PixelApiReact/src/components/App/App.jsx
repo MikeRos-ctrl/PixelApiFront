@@ -35,11 +35,14 @@ class App extends Component {
       image5: null,
       openModal: false,
       modalIndex: 0,
-      userLogin: ""
+      userLogin: "",
     }
   }
 
   componentDidMount() {
+
+    document.body.classList.remove('no-scroll');
+
     FillFront().then(result => {
       this.setState({
         image1: result[0],
@@ -110,11 +113,12 @@ class App extends Component {
 
   render() {
     const { image1, image2, image3, image4, image5, openModal, modalIndex, userLogin } = this.state
+    const { myUser, setMyUser } = this.props;
 
     const ModalComponents = {
-      0: <ModalLogin setUserLogin={this.setUserLogin} ValidateAccount={ValidateAccount} setModalIndex={this.setModalIndex} />,
+      0: <ModalLogin setUserLogin={this.setUserLogin} ValidateAccount={ValidateAccount} setModalIndex={this.setModalIndex} setMyUser={setMyUser} />,
       1: <ModalCreateAccount userLogin={userLogin} setUserLogin={this.setUserLogin} CreateAccount={CreateAccount} setModalIndex={this.setModalIndex} />,
-      2: <ModalConfirmAccount userLogin={userLogin} ConfirmAccount={ConfirmAccount} xd={this.xd} />
+      2: <ModalConfirmAccount userLogin={userLogin} ConfirmAccount={ConfirmAccount} setMyUser={setMyUser} />
     };
 
     return (
@@ -122,7 +126,7 @@ class App extends Component {
 
         <div className="myWidth">
 
-          <Header changeModalstatus={this.changeModalstatus}>
+          <Header changeModalstatus={this.changeModalstatus} myUser={myUser}>
 
             {image1 ? (
               <HeaderImage image={image1} />
@@ -150,7 +154,7 @@ class App extends Component {
 
           <Implementation />
 
-          <Pricing changeModalstatus_={this.changeModalstatus} />
+          <Pricing changeModalstatus_={this.changeModalstatus} myUser={myUser} />
 
           {openModal && (
 

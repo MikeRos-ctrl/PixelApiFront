@@ -2,7 +2,7 @@ import React from "react";
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function ModalConfirmAccount({ userLogin, ConfirmAccount, xd }) {
+function ModalConfirmAccount({ userLogin, ConfirmAccount, setMyUser }) {
 
     const navigate = useNavigate();
     const inputRef = useRef(null);
@@ -20,6 +20,7 @@ function ModalConfirmAccount({ userLogin, ConfirmAccount, xd }) {
                 console.log(result)
 
                 if (result.response = 'AA') {
+                    setMyUser(userLogin.id);
                     navigate('/profile');
                 }
 

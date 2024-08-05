@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from 'react';
+import React, {  Component } from 'react';
 
 class GalleryImages extends Component {
 

@@ -5,102 +5,97 @@ import Money from '../../assets/Icon-6.png'
 import User from '../../assets/Icon-16.png'
 import Doc from '../../assets/Icon-3.png'
 import About from '../../assets/Icon-21.png'
+import { Link } from 'react-scroll';
+import { useNavigate } from 'react-router-dom';
 
-class Header extends Component {
+function Header({ children, changeModalstatus, myUser }) {
 
-    constructor(props) {
-        super(props);
+    const navigate = useNavigate();
 
-        this.state = {
+    const validateUser = () => {
 
+        if (myUser == null) {
+            changeModalstatus()
+        } else {
+            navigate('/profile')
         }
     }
 
-    componentDidMount() {
+    return (
 
-    }
+        <header>
 
-    componentWillUnmount() {
-    }
+            <nav>
+                <div className="navLeft">
+                    <img src={Logo} className="qwer" alt="" />
+                </div>
 
-    render() {
+                <div className="navRight">
 
-        const { isResponsive, showMenu } = this.state;
-        const { children, changeModalstatus } = this.props;
-
-        return (
-
-            <header>
-
-                <nav>
-                    <div className="navLeft">
-                        <img src={Logo} className="qwer" alt="" />
-                    </div>
-
-                    <div className="navRight">
-
+                    <Link to="pricingSection" smooth={true} duration={500}>
                         <div className="navRightCouple clickable">
                             <img src={Money} className="qwer2" alt="" />
                             <h5 className="regularText">PRICING</h5>
                         </div>
+                    </Link>
 
-                        <div className="navRightCouple clickable">
-                            <img src={Doc} className="qwer2" alt="" />
-                            <h5 className="regularText">DOCUMENTATION</h5>
-                        </div>
-
-                        <div className="navRightCouple clickable">
-                            <img src={About} className="qwer2" alt="" />
-                            <h5 className="regularText">ABOUT</h5>
-                        </div>
-
-                        <div className="navRightCouple clickable" onClick={() => changeModalstatus()}>
-                            <img src={User} className="qwer2" alt="" />
-                            <h5 className="regularText">ACCOUNT</h5>
-                        </div>
-                    </div>
-                </nav>
-
-
-                <main className="headerMain">
-
-                    <div className="mainText">
-
-                        <h1 className="titleMain">
-                            <span className="strongPinkColor">Pixel as a service</span>
-                            <span className="darkColor"> is here</span>
-                        </h1>
-
-                        <h4 className="titleNotMain">
-                            And remember, one pixel at a time.
-                        </h4>
-
-                        <div className="information">
-
-                            <h5 className="titleNotMain grey-color">
-                                Api to retreive awesome heart made Pixel Art.
-                            </h5>
-
-                            <h5 className="titleNotMain grey-color">
-                                100+ Unique images.
-                            </h5>
-
-                            <br />
-
-                            <div className="informationButtons">
-                                <input className="button-1 titleNotMain" type="button" value="GET YOUR API KEY" />
-                                <input className="button-2 titleNotMain" type="button" value="READ OUR DOC" />
-                            </div>
-                        </div>
+                    <div className="navRightCouple clickable" onClick={() => {
+                        navigate('/documentation')
+                    }}>
+                        <img src={Doc} className="qwer2" alt="" />
+                        <h5 className="regularText">DOCUMENTATION</h5>
                     </div>
 
-                    {children}
+                    <div className="navRightCouple clickable">
+                        <img src={About} className="qwer2" alt="" />
+                        <h5 className="regularText">ABOUT</h5>
+                    </div>
 
-                </main>
+                    <div className="navRightCouple clickable" onClick={() => validateUser()}>
+                        <img src={User} className="qwer2" alt="" />
+                        <h5 className="regularText">ACCOUNT</h5>
+                    </div>
+                </div>
+            </nav>
 
-            </header>
-        );
-    }
+            <main className="headerMain">
+
+                <div className="mainText">
+
+                    <h1 className="titleMain">
+                        <span className="strongPinkColor">Pixel as a service</span>
+                        <span className="darkColor"> is here</span>
+                    </h1>
+
+                    <h4 className="titleNotMain">
+                        And remember, one pixel at a time.
+                    </h4>
+
+                    <div className="information">
+
+                        <h5 className="titleNotMain grey-color">
+                            Api to retreive awesome heart made Pixel Art.
+                        </h5>
+
+                        <h5 className="titleNotMain grey-color">
+                            100+ Unique images.
+                        </h5>
+
+                        <br />
+
+                        <div className="informationButtons">
+                            <input className="button-1 titleNotMain" type="button" value="GET YOUR API KEY" />
+                            <input className="button-2 titleNotMain" type="button" value="READ OUR DOC" />
+                        </div>
+                    </div>
+                </div>
+
+                {children}
+
+            </main>
+
+        </header>
+    );
 }
 
 export { Header }

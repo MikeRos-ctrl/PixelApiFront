@@ -5,6 +5,10 @@ class Gallery extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            buttonId: 1
+        }
     }
 
     componentDidMount() {
@@ -14,8 +18,15 @@ class Gallery extends Component {
     componentWillUnmount() {
     }
 
+    updateButton = (newId) => {
+        this.setState({
+            buttonId: newId
+        })
+    }
+
     render() {
         const { children, listByCategory_ } = this.props;
+        const { buttonId } = this.state;
 
         return (
 
@@ -29,11 +40,10 @@ class Gallery extends Component {
                     </h2>
 
                     <div className="categories">
-                        <input onClick={() => listByCategory_("all")} className="button-3 titleNotMain" type="button" value="ALL" />
-                        <input onClick={() => listByCategory_("character")} className="button-4 titleNotMain" type="button" value="CHARACTER" />
-                        <input onClick={() => listByCategory_("animal")} className="button-4 titleNotMain" type="button" value="ANIMAL" />
-                        <input onClick={() => listByCategory_("landscape")} className="button-4 titleNotMain" type="button" value="LANDSCAPE" />
-                        {/* <h5>reload icon</h5> */}
+                        <input onClick={() => { listByCategory_("all"); this.updateButton(1) }} className={`titleNotMain ${buttonId == 1 ? ("button-3") : ("button-4")}`} type="button" value="ALL" />
+                        <input onClick={() => { listByCategory_("character"); this.updateButton(2) }} className={`titleNotMain ${buttonId == 2 ? ("button-3") : ("button-4")}`} type="button" value="CHARACTER" />
+                        <input onClick={() => { listByCategory_("animal"); this.updateButton(3) }} className={`titleNotMain ${buttonId == 3 ? ("button-3") : ("button-4")}`} type="button" value="ANIMAL" />
+                        <input onClick={() => { listByCategory_("landscape"); this.updateButton(4) }} className={`titleNotMain ${buttonId == 4 ? ("button-3") : ("button-4")}`} type="button" value="LANDSCAPE" />
                     </div>
                 </div>
 

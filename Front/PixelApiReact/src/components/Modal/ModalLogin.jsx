@@ -3,7 +3,7 @@ import validator from 'validator';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function ModalLogin({ ValidateAccount, setModalIndex, setUserLogin }) {
+function ModalLogin({ ValidateAccount, setModalIndex, setUserLogin, setMyUser }) {
 
     const navigate = useNavigate();
     const inputRef = useRef(null);
@@ -28,6 +28,7 @@ function ModalLogin({ ValidateAccount, setModalIndex, setUserLogin }) {
                     setUserLogin(myUser)
                 }
                 else if (result.response.code == "B") {
+                    setMyUser(result.response.id)
                     navigate('/profile');
                 }
             }).catch(error => {
