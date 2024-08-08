@@ -3,7 +3,7 @@ import { Element } from 'react-scroll';
 import { useNavigate } from 'react-router-dom';
 import React, { Component } from 'react';
 
-function Pricing({ changeModalstatus_, myUser }) {
+function Pricing({ changeModalstatus_, myUser, setMyUser }) {
 
     const navigate = useNavigate();
     const [buttonId, setButtonId] = React.useState(1)
@@ -12,9 +12,13 @@ function Pricing({ changeModalstatus_, myUser }) {
         setButtonId(newId)
     }
 
-    const validateUser = () => {
+    const setUserAccount = (accountType_) => {
 
-        if (myUser == null) {
+        if (myUser.ready == false) {
+
+            myUser.accountType = accountType_
+            setMyUser(myUser)
+
             changeModalstatus_()
         } else {
             navigate('/profile')
@@ -50,12 +54,12 @@ function Pricing({ changeModalstatus_, myUser }) {
                         <h5 className='titleNotMain'>✅ Access to documentation</h5>
                         <h5 className='titleNotMain'>❌ Images information</h5>
                         <h5 className='titleNotMain'>❌ Code snipets</h5>
-                        {/* <h5 className='titleNotMain'>❌ Limited Tailored pixel art</h5> */}
                         <h5 className='titleNotMain'>❌ Commercial licence</h5>
                     </div>
 
                     <div className='pricingbtnCenter'>
-                        <input onClick={() => validateUser()} className="titleNotMain pricingbtn2" type="button" value="Get free access" />
+                        <input onClick={() => setUserAccount("21DayTrial")} className="titleNotMain pricingbtn2"
+                            type="button" value="Get free access" />
                     </div>
                 </div>
 
@@ -73,12 +77,12 @@ function Pricing({ changeModalstatus_, myUser }) {
                         <h5 className='titleNotMain'>✅ Access to documentation</h5>
                         <h5 className='titleNotMain'>✅ Images information</h5>
                         <h5 className='titleNotMain'>✅ Code snipets</h5>
-                        {/* <h5 className='titleNotMain'>❌ Limited Tailored pixel art</h5> */}
                         <h5 className='titleNotMain'>❌ Commercial licence</h5>
                     </div>
 
                     <div className='pricingbtnCenter'>
-                        <input onClick={() => changeModalstatus_()} className="titleNotMain pricingbtn2" type="button" value="Get premium access" />
+                        <input onClick={() => setUserAccount("premium")} className="titleNotMain pricingbtn2"
+                            type="button" value="Get premium access" />
                     </div>
                 </div>
 
@@ -96,12 +100,12 @@ function Pricing({ changeModalstatus_, myUser }) {
                         <h5 className='titleNotMain'>✅ Access to documentation</h5>
                         <h5 className='titleNotMain'>✅ Images information</h5>
                         <h5 className='titleNotMain'>✅ Code snipets</h5>
-                        {/* <h5 className='titleNotMain'>✅ Limited Tailored pixel art</h5> */}
                         <h5 className='titleNotMain'>✅ Commercial licence</h5>
                     </div>
 
                     <div className='pricingbtnCenter'>
-                        <input onClick={() => changeModalstatus_()} className="titleNotMain pricingbtn2" type="button" value="Get premium+ access" />
+                        <input onClick={() => setUserAccount("premium+")} className="titleNotMain pricingbtn2"
+                            type="button" value="Get premium+ access" />
                     </div>
                 </div>
             </div>

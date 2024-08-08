@@ -3,11 +3,7 @@ import ReactDOM from 'react-dom'
 import './index.css';
 import xd from './cat-2.jpeg'
 
-function Modal({ setModalIndex, changeModalstatus, children }) {
-
-    const GetBackModal = () => {
-        setIndex(1)
-    }
+function Modal({ changeModalstatus, children }) {
 
     return ReactDOM.createPortal(
 

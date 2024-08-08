@@ -12,9 +12,9 @@ function Header({ children, changeModalstatus, myUser }) {
 
     const navigate = useNavigate();
 
-    const validateUser = () => {
+    const validateUrl = () => {
 
-        if (myUser == null) {
+        if (myUser.ready == false) {
             changeModalstatus()
         } else {
             navigate('/profile')
@@ -51,7 +51,7 @@ function Header({ children, changeModalstatus, myUser }) {
                         <h5 className="regularText">ABOUT</h5>
                     </div>
 
-                    <div className="navRightCouple clickable" onClick={() => validateUser()}>
+                    <div className="navRightCouple clickable" onClick={() => validateUrl()}>
                         <img src={User} className="qwer2" alt="" />
                         <h5 className="regularText">ACCOUNT</h5>
                     </div>

@@ -2,7 +2,7 @@ import React from "react";
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function ModalConfirmAccount({ userLogin, ConfirmAccount, setMyUser }) {
+function ModalConfirmAccount({ ConfirmAccount, setMyUser, myUser, setModalIndex }) {
 
     const navigate = useNavigate();
     const inputRef = useRef(null);
@@ -16,12 +16,18 @@ function ModalConfirmAccount({ userLogin, ConfirmAccount, setMyUser }) {
             }, 3000);
         } else {
 
-            ConfirmAccount(userLogin.id, inputRef.current.value).then(result => {
-                console.log(result)
+            ConfirmAccount(myUser.id, inputRef.current.value).then(result => {
 
-                if (result.response = 'AA') {
-                    setMyUser(userLogin.id);
-                    navigate('/profile');
+                if (result.response.code == 'AA') {
+
+                    if (myUser.accountType == "21DayTrial") {
+
+                        myUser.ready = true
+                        setMyUser(myUser);
+                        navigate('/profile');
+                    } else {
+                        console.log("PAYPAL XD")
+                    }
                 }
 
             }).catch(error => {
@@ -33,7 +39,12 @@ function ModalConfirmAccount({ userLogin, ConfirmAccount, setMyUser }) {
     return (
         <>
             <div className="modalContentInformationHeader">
-                <h4 className="titleNotMain dark-color">Confirm your account</h4>
+
+                <h4 className="titleNotMain dark-color">
+                    <span className="clickable" onClick={() => setModalIndex(1)}>⬅️</span>
+                    Confirm your account
+                </h4>
+
                 <h5 className="regularText dark-color">Insert the confirmation code that was sent to your email</h5>
             </div>
 

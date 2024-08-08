@@ -35,7 +35,6 @@ class App extends Component {
       image5: null,
       openModal: false,
       modalIndex: 0,
-      userLogin: "",
     }
   }
 
@@ -56,6 +55,13 @@ class App extends Component {
     });
   }
 
+  componentDidUpdate() {
+    const { myUser, setMyUser } = this.props;
+
+    console.log(myUser)
+
+  }
+
   changeModalstatus = () => {
 
     if (this.state.openModal == true) {
@@ -66,12 +72,6 @@ class App extends Component {
 
     this.setState({
       openModal: !this.state.openModal
-    });
-  }
-
-  setUserLogin = (myUser) => {
-    this.setState({
-      userLogin: myUser
     });
   }
 
@@ -106,6 +106,18 @@ class App extends Component {
   }
 
   setModalIndex = (index) => {
+
+    const { setMyUser } = this.props;
+
+    if (index == 0) {
+      setMyUser({
+        id: null,
+        accountType: null,
+        email: null,
+        ready: false
+      })
+    }
+
     this.setState({
       modalIndex: index
     });
@@ -116,9 +128,9 @@ class App extends Component {
     const { myUser, setMyUser } = this.props;
 
     const ModalComponents = {
-      0: <ModalLogin setUserLogin={this.setUserLogin} ValidateAccount={ValidateAccount} setModalIndex={this.setModalIndex} setMyUser={setMyUser} />,
-      1: <ModalCreateAccount userLogin={userLogin} setUserLogin={this.setUserLogin} CreateAccount={CreateAccount} setModalIndex={this.setModalIndex} />,
-      2: <ModalConfirmAccount userLogin={userLogin} ConfirmAccount={ConfirmAccount} setMyUser={setMyUser} />
+      0: <ModalLogin ValidateAccount={ValidateAccount} myUser={myUser} setModalIndex={this.setModalIndex} setMyUser={setMyUser} />,
+      1: <ModalCreateAccount myUser={myUser} setMyUser={setMyUser} CreateAccount={CreateAccount} setModalIndex={this.setModalIndex} />,
+      2: <ModalConfirmAccount ConfirmAccount={ConfirmAccount} setMyUser={setMyUser} myUser={myUser} setModalIndex={this.setModalIndex} />
     };
 
     return (
@@ -154,7 +166,7 @@ class App extends Component {
 
           <Implementation />
 
-          <Pricing changeModalstatus_={this.changeModalstatus} myUser={myUser} />
+          <Pricing changeModalstatus_={this.changeModalstatus} myUser={myUser} setMyUser={setMyUser} />
 
           {openModal && (
 

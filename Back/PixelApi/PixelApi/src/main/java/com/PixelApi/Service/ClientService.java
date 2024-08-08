@@ -58,7 +58,7 @@ public class ClientService {
 			} else {
 				response.put("message", "Existing record given that email, but not activated");
 				response.put("code", "C");
-				response.put("codeExplanation", "Account hasn't been activated");			
+				response.put("codeExplanation", "Account hasn't been activated");
 				log.info("Account hasn't been activated");
 			}
 		}
@@ -68,31 +68,45 @@ public class ClientService {
 	@Transactional
 	public Client Save(Client myClient) {
 
+		Client myResponse = null;
+		Boolean sendMail = false;
+
 		log.info("Inside save method");
 
 		try {
-			String encryptedPwd = new BCryptPasswordEncoder().encode(myClient.getAccountKey());
-			myClient.setAccountKey(encryptedPwd);
-			Client myResponse = clientRepo.save(myClient);
-			log.info("Client saved");
-
+			String email = myClient.getEmail();
 			String confirmationCode = UUID.randomUUID().toString();
-			ClientAccount confirmAccount = new ClientAccount(confirmationCode, myResponse.getId(), false);
-			confirmAccountRepo.save(confirmAccount);
-			log.info("Client account saved");
 
-			new Thread(() -> {
-				if (myResponse != null) {
-					log.info("Sendind email to: " + myClient.getEmail());
-					sendMailClass.sendMail(myClient.getEmail(), confirmationCode);
+			if (clientRepo.countByEmail(email) == 0) {
+				String encryptedPwd = new BCryptPasswordEncoder().encode(myClient.getAccountKey());
+				myClient.setAccountKey(encryptedPwd);
+				myResponse = clientRepo.save(myClient);
+				sendMail = true;
+				log.info("Client saved");
+			} else {
+				// Update only pwd
+				Client existingClient = clientRepo.findByEmail(email);
+				existingClient.setAccountKey(new BCryptPasswordEncoder().encode(myClient.getAccountKey()));
+				myResponse = clientRepo.save(existingClient);
+				log.info("Client just changed pwd xd in the modal flow");
+			}
+
+			if (myResponse != null && sendMail == true) {
+				ClientAccount confirmAccount = new ClientAccount(confirmationCode, myResponse.getId(), false);
+				confirmAccountRepo.save(confirmAccount);
+				log.info("Client account saved");
+
+				new Thread(() -> {
+					log.info("Sending email to: " + email);
+					sendMailClass.sendMail(email, confirmationCode);
 					log.info("Email has been sent");
-				}
-			}).start();
+				}).start();
+			}
 
 			return myResponse;
 
 		} catch (Exception e) {
-			log.error("Internal error in in save method: " + e);
+			log.error("Internal error in save method: " + e);
 			return null;
 		}
 	}
@@ -104,15 +118,14 @@ public class ClientService {
 		Map<String, String> response = new HashMap<>();
 
 		try {
-			ClientAccount account = confirmAccountRepo.findById(new ClientAccountId(clientId, token))
-					.orElse(null);
+			ClientAccount account = confirmAccountRepo.findById(new ClientAccountId(clientId, token)).orElse(null);
 
 			if (account == null) {
 				log.info("Invalid Token");
 				response.put("code", "BB");
 				response.put("message", "Invalid token");
 			} else {
-	
+
 				log.info("Let's confirm account");
 				account.setConfirmed(true);
 				confirmAccountRepo.save(account);

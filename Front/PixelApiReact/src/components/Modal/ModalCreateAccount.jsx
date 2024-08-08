@@ -1,7 +1,7 @@
 import React from "react";
 import { FaEye } from "react-icons/fa";
 
-function ModalCreateAccount({ userLogin, setUserLogin, setModalIndex, CreateAccount }) {
+function ModalCreateAccount({ myUser, setMyUser, setModalIndex, CreateAccount }) {
 
     const [inputValue1, setInputValue1] = React.useState('')
     const [inputValue2, setInputValue2] = React.useState('')
@@ -37,19 +37,23 @@ function ModalCreateAccount({ userLogin, setUserLogin, setModalIndex, CreateAcco
 
             let myClient = {
                 role: 2,
-                email: userLogin.email,
+                email: myUser.email,
                 accountKey: inputValue1,
             }
 
+            //everything is new
+            //client was created -> just update the pwd
+
             CreateAccount(myClient).then(result => {
 
-                let myUser = {
-                    id: result.value.id,
-                    email: result.value.email
+                if (myUser.accountType == null) {
+                    myUser.accountType = "21DayTrial";
                 }
+                myUser.id = result.value.id
 
-                setUserLogin(myUser)
+                setMyUser(myUser)
                 setModalIndex(2)
+
             }).catch(error => {
                 console.error("I've got a mistake: ", error);
             })
