@@ -35,25 +35,15 @@ function ModalCreateAccount({ myUser, setMyUser, setModalIndex, CreateAccount })
         }
         else {
 
-            let myClient = {
-                role: 2,
+            CreateAccount({
+                role: 2, //EQUALS TO COSTUMER
                 email: myUser.email,
                 accountKey: inputValue1,
-            }
-
-            //everything is new
-            //client was created -> just update the pwd
-
-            CreateAccount(myClient).then(result => {
-
-                if (myUser.accountType == null) {
-                    myUser.accountType = "21DayTrial";
-                }
+            }).then(result => {
+                
                 myUser.id = result.value.id
-
                 setMyUser(myUser)
                 setModalIndex(2)
-
             }).catch(error => {
                 console.error("I've got a mistake: ", error);
             })

@@ -8,17 +8,9 @@ function Pricing({ changeModalstatus_, myUser, setMyUser }) {
     const navigate = useNavigate();
     const [buttonId, setButtonId] = React.useState(1)
 
-    const updateButton = (newId) => {
-        setButtonId(newId)
-    }
-
-    const setUserAccount = (accountType_) => {
+    const validateAccount = () => {
 
         if (myUser.ready == false) {
-
-            myUser.accountType = accountType_
-            setMyUser(myUser)
-
             changeModalstatus_()
         } else {
             navigate('/profile')
@@ -40,7 +32,7 @@ function Pricing({ changeModalstatus_, myUser, setMyUser }) {
 
             <div className='pricingOptions'>
 
-                <div className='pricingCard'>
+                {/* <div className='pricingCard'>
                     <div className='pricingCardTitle titleNotMain'>
                         <h3>21 day trial</h3>
                     </div>
@@ -61,17 +53,17 @@ function Pricing({ changeModalstatus_, myUser, setMyUser }) {
                         <input onClick={() => setUserAccount("21DayTrial")} className="titleNotMain pricingbtn2"
                             type="button" value="Get free access" />
                     </div>
-                </div>
+                </div> */}
 
                 <div className='pricingCard'>
                     <div className='pricingCardTitle titleNotMain'>
                         <h3>Premium</h3>
                     </div>
 
-                    <h4 className='titleNotMain'>8.00$</h4>
+                    <h4 className='titleNotMain'>7.00$</h4>
 
                     <div className='pricingCardCharacteristics'>
-                        <h5 className='titleNotMain'>✅ 10,000 request per month</h5>
+                        <h5 className='titleNotMain'>✅ Unlimited request per month</h5>
                         <h5 className='titleNotMain'>✅ Unlimited images</h5>
                         <h5 className='titleNotMain'>✅ Unlimited categories</h5>
                         <h5 className='titleNotMain'>✅ Access to documentation</h5>
@@ -81,7 +73,7 @@ function Pricing({ changeModalstatus_, myUser, setMyUser }) {
                     </div>
 
                     <div className='pricingbtnCenter'>
-                        <input onClick={() => setUserAccount("premium")} className="titleNotMain pricingbtn2"
+                        <input onClick={() => validateAccount()} className="titleNotMain pricingbtn2"
                             type="button" value="Get premium access" />
                     </div>
                 </div>
@@ -91,7 +83,7 @@ function Pricing({ changeModalstatus_, myUser, setMyUser }) {
                         <h3>Premium+</h3>
                     </div>
 
-                    <h4 className='titleNotMain'>10.00$</h4>
+                    <h4 className='titleNotMain'>9.00$</h4>
 
                     <div className='pricingCardCharacteristics'>
                         <h5 className='titleNotMain'>✅ Unlimited request per month</h5>
@@ -104,7 +96,7 @@ function Pricing({ changeModalstatus_, myUser, setMyUser }) {
                     </div>
 
                     <div className='pricingbtnCenter'>
-                        <input onClick={() => setUserAccount("premium+")} className="titleNotMain pricingbtn2"
+                        <input onClick={() => validateAccount()} className="titleNotMain pricingbtn2"
                             type="button" value="Get premium+ access" />
                     </div>
                 </div>

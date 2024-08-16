@@ -12,6 +12,7 @@ import { Modal } from '../Modal/Modal';
 import { ModalLogin } from '../Modal/ModalLogin';
 import { ModalCreateAccount } from '../Modal/ModalCreateAccount';
 import { ModalConfirmAccount } from '../Modal/ModalConfirmAccount';
+import { ModalWelcomeAccount } from '../Modal/ModalWelcomeAccount';
 import './index.css';
 
 const {
@@ -56,10 +57,6 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    const { myUser, setMyUser } = this.props;
-
-    console.log(myUser)
-
   }
 
   changeModalstatus = () => {
@@ -130,7 +127,8 @@ class App extends Component {
     const ModalComponents = {
       0: <ModalLogin ValidateAccount={ValidateAccount} myUser={myUser} setModalIndex={this.setModalIndex} setMyUser={setMyUser} />,
       1: <ModalCreateAccount myUser={myUser} setMyUser={setMyUser} CreateAccount={CreateAccount} setModalIndex={this.setModalIndex} />,
-      2: <ModalConfirmAccount ConfirmAccount={ConfirmAccount} setMyUser={setMyUser} myUser={myUser} setModalIndex={this.setModalIndex} />
+      2: <ModalConfirmAccount ConfirmAccount={ConfirmAccount} setMyUser={setMyUser} myUser={myUser} setModalIndex={this.setModalIndex} />,
+      3: <ModalWelcomeAccount />
     };
 
     return (

@@ -43,6 +43,7 @@ public class SecurityFilter {
 	    .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 	    .authorizeHttpRequests(authorize -> authorize
 	    		.requestMatchers(HttpMethod.POST, "/frontController/createAccount").permitAll()		
+	    		.requestMatchers(HttpMethod.POST, "/frontController/paypalOrder").permitAll()		
 	    		.requestMatchers(HttpMethod.POST, "/frontController/confirmAccount/{id}/{token}").permitAll()		
 	    		.requestMatchers(HttpMethod.GET, "/frontController/validateAccount/{email}").permitAll()		
 	    		.requestMatchers(HttpMethod.GET, "/frontController/fillFront").permitAll()		

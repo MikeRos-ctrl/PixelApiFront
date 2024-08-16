@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.PixelApi.Entity.Image;
+import com.PixelApi.Entity.PaypalOrder;
 import com.PixelApi.Entity.Client;
 import com.PixelApi.Service.ClientService;
 import com.PixelApi.Service.ImageService;
@@ -75,6 +76,23 @@ public class FronController {
 	 * statusResponse); }
 	 */
 
+	@PostMapping("/paypalOrder")
+	public ResponseEntity<?> paypalOrder(@RequestBody PaypalOrder myOrder) {
+
+		Map<String, Object> response = new HashMap<>();
+		HttpStatus statusResponse = HttpStatus.OK;
+
+		try {
+			System.out.println(myOrder.toString());
+
+		} catch (Exception e) {
+			response.put("mensaje", "Error interno");
+			response.put("error", e.getMessage());
+			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<>(response, statusResponse);
+	}
+	
 	@GetMapping("/validateAccount/{email}")
 	public ResponseEntity<?> validateAccount(@PathVariable String email) {
 

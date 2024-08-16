@@ -7,10 +7,12 @@ function ModalConfirmAccount({ ConfirmAccount, setMyUser, myUser, setModalIndex 
     const navigate = useNavigate();
     const inputRef = useRef(null);
     const [error, setError] = React.useState(false)
+    const [errorText, setErrorText] = React.useState(false)
 
     const validateFields = () => {
         if (inputRef.current.value == "") {
             setError(true)
+            setErrorText("Field is empty")
             setTimeout(() => {
                 setError(false);
             }, 3000);
@@ -20,14 +22,19 @@ function ModalConfirmAccount({ ConfirmAccount, setMyUser, myUser, setModalIndex 
 
                 if (result.response.code == 'AA') {
 
-                    if (myUser.accountType == "21DayTrial") {
+                    myUser.ready = true
+                    setMyUser(myUser);
+                    setModalIndex(3)
 
-                        myUser.ready = true
-                        setMyUser(myUser);
-                        navigate('/profile');
-                    } else {
-                        console.log("PAYPAL XD")
-                    }
+                    console.log(result)
+                    console.log(myUser)
+
+                } else {
+                    setError(true)
+                    setErrorText("Wrong token")
+                    setTimeout(() => {
+                        setError(false);
+                    }, 3000);
                 }
 
             }).catch(error => {
@@ -52,7 +59,7 @@ function ModalConfirmAccount({ ConfirmAccount, setMyUser, myUser, setModalIndex 
                 <input ref={inputRef} className="regularText modalbtn2" placeholder="0000000" />
                 <input onClick={() => validateFields()} className="regularText modalbtn" type="button" value="Continue" />
                 {error && (
-                    <input className="regularText modalbtnerror" type="button" value="Field is empty" />
+                    <input className="regularText modalbtnerror" type="button" value={errorText} />
                 )}
             </div>
         </>

@@ -15,24 +15,33 @@ function ModalLogin({ ValidateAccount, myUser, setModalIndex, setMyUser }) {
 
             ValidateAccount(email).then(result => {
 
+                //FIRST TIME               
                 if (result.response.code == "A") {
-
                     myUser.email = email
-
                     setMyUser(myUser)
                     setModalIndex(1)
                 }
+                //NORMAL USER LOGIN
                 else if (result.response.code == "B") {
 
-                    let myUser = {
-                        id: result.response.id,
-                        email: email,
-                        accountType: "",
-                    }
+                    // let myUser = {
+                    //     id: result.response.id,
+                    //     email: email,
+                    //     accountType: "",
+                    // }
+                    // setMyUser(myUser)
+                    // navigate('/profile');
+                }
+                //ACCOUNT HASN'T BEEN ACTIVATED
+                else if (result.response.code == "C") {
+                    
+                    myUser.email = email
+                    myUser.id = result.response.additionalField
 
                     setMyUser(myUser)
-                    navigate('/profile');
+                    setModalIndex(2)
                 }
+
             }).catch(error => {
                 console.error("I've got a mistake: ", error);
             });

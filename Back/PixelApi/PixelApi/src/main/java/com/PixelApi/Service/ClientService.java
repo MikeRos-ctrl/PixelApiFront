@@ -59,6 +59,7 @@ public class ClientService {
 				response.put("message", "Existing record given that email, but not activated");
 				response.put("code", "C");
 				response.put("codeExplanation", "Account hasn't been activated");
+				response.put("additionalField", myClient.getId().toString());
 				log.info("Account hasn't been activated");
 			}
 		}
