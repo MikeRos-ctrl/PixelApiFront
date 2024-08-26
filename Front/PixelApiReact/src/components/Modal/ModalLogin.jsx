@@ -3,7 +3,7 @@ import validator from 'validator';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function ModalLogin({ ValidateAccount, myUser, setModalIndex, setMyUser }) {
+function ModalLogin({ ValidateAccount, setModalIndex, setMyUser }) {
 
     const navigate = useNavigate();
     const inputRef = useRef(null);
@@ -15,12 +15,17 @@ function ModalLogin({ ValidateAccount, myUser, setModalIndex, setMyUser }) {
 
             ValidateAccount(email).then(result => {
 
-                //FIRST TIME               
                 if (result.response.code == "A") {
-                    myUser.email = email
-                    setMyUser(myUser)
+
+                    setMyUser({
+                        id: null,
+                        accountType: null,
+                        email: email,
+                        ready: false
+                    })
                     setModalIndex(1)
                 }
+
                 //NORMAL USER LOGIN
                 else if (result.response.code == "B") {
 
@@ -31,10 +36,13 @@ function ModalLogin({ ValidateAccount, myUser, setModalIndex, setMyUser }) {
                     // }
                     // setMyUser(myUser)
                     // navigate('/profile');
+
+
+                    //persistir data
                 }
                 //ACCOUNT HASN'T BEEN ACTIVATED
                 else if (result.response.code == "C") {
-                    
+
                     myUser.email = email
                     myUser.id = result.response.additionalField
 

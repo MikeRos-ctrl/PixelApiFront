@@ -1,6 +1,7 @@
 import React from "react";
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LocalDb } from '../../util/LocalDb';
 
 function ModalConfirmAccount({ ConfirmAccount, setMyUser, myUser, setModalIndex }) {
 
@@ -24,11 +25,8 @@ function ModalConfirmAccount({ ConfirmAccount, setMyUser, myUser, setModalIndex 
 
                     myUser.ready = true
                     setMyUser(myUser);
+                    LocalDb.Insert(myUser)
                     setModalIndex(3)
-
-                    console.log(result)
-                    console.log(myUser)
-
                 } else {
                     setError(true)
                     setErrorText("Wrong token")

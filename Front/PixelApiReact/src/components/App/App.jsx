@@ -121,11 +121,11 @@ class App extends Component {
   }
 
   render() {
-    const { image1, image2, image3, image4, image5, openModal, modalIndex, userLogin } = this.state
+    const { image1, image2, image3, image4, image5, openModal, modalIndex } = this.state
     const { myUser, setMyUser } = this.props;
 
     const ModalComponents = {
-      0: <ModalLogin ValidateAccount={ValidateAccount} myUser={myUser} setModalIndex={this.setModalIndex} setMyUser={setMyUser} />,
+      0: <ModalLogin ValidateAccount={ValidateAccount} setModalIndex={this.setModalIndex} setMyUser={setMyUser} />,
       1: <ModalCreateAccount myUser={myUser} setMyUser={setMyUser} CreateAccount={CreateAccount} setModalIndex={this.setModalIndex} />,
       2: <ModalConfirmAccount ConfirmAccount={ConfirmAccount} setMyUser={setMyUser} myUser={myUser} setModalIndex={this.setModalIndex} />,
       3: <ModalWelcomeAccount />

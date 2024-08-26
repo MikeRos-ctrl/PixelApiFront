@@ -10,6 +10,10 @@ function ModalCreateAccount({ myUser, setMyUser, setModalIndex, CreateAccount })
     const [inputStyle, setInputStyle] = React.useState("password")
     const [inputStyle2, setInputStyle2] = React.useState("password")
 
+    /*
+    * role = 2 Equals to COSTUMER
+    */
+
     const ValidateFields = () => {
 
         if (inputValue1.length < 8) {
@@ -34,13 +38,11 @@ function ModalCreateAccount({ myUser, setMyUser, setModalIndex, CreateAccount })
             }, 3000);
         }
         else {
-
             CreateAccount({
-                role: 2, //EQUALS TO COSTUMER
+                role: 2,
                 email: myUser.email,
                 accountKey: inputValue1,
             }).then(result => {
-                
                 myUser.id = result.value.id
                 setMyUser(myUser)
                 setModalIndex(2)
