@@ -7,15 +7,9 @@ class GalleryImagesLoading extends Component {
     }
 
     componentDidMount() {
-        window.addEventListener('resize', () => {
-            this.setState({
-                isResponsive: (window.innerWidth <= 1000) ? true : false
-            });
-        });
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', this.handleResize);
     }
 
     render() {

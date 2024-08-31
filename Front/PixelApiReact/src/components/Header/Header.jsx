@@ -14,8 +14,6 @@ function Header({ children, changeModalstatus, myUser }) {
 
     const validateAccount = () => {
 
-        console.log(myUser)
-
         if (myUser.ready == false) {
             changeModalstatus()
         } else {

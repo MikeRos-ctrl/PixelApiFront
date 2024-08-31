@@ -18,18 +18,23 @@ class AppRouter extends Component {
                 email: null,
                 ready: false,
                 stored: false
-            }
+            },
+            loading: false
         }
     }
 
     componentDidMount() {
-        
+
         LocalDb.FindUser().then(response => {
 
-            if (response[0].ready == true) {
+            if (response != "" && response[0].ready == true) {
                 console.log("User has been loaded from DB")
                 this.setMyUser(response[0])
             }
+
+            this.setState({
+                loading: true
+            });
 
         }).catch(error => {
             console.error("Error retrieving user data:", error);
@@ -47,18 +52,22 @@ class AppRouter extends Component {
     }
 
     render() {
-        const { myUser } = this.state
+        const { myUser, loading } = this.state
 
-        return (
-            <HashRouter>
-                <Routes>
-                    <Route path='/' element={<App myUser={myUser} setMyUser={this.setMyUser} />} />
-                    <Route path='/profile' element={myUser.ready != null ? <Profile /> : <App />} />
-                    <Route path='/documentation' element={<Documentation />} />
-                    <Route path='*' element={<p>Not Found</p>} />
-                </Routes>
-            </HashRouter >
-        )
+        if (loading) {
+
+            return (
+                <HashRouter>
+                    <Routes>
+                        <Route path='/' element={<App myUser={myUser} setMyUser={this.setMyUser} />} />
+                        <Route path='/profile' element={myUser.ready != null ? <Profile myUser={myUser} /> : <App />} />
+                        <Route path='/documentation' element={<Documentation />} />
+                        <Route path='*' element={<p>Not Found</p>} />
+                    </Routes>
+                </HashRouter >
+            )
+        } 
+        
     }
 }
 

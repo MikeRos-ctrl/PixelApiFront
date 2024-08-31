@@ -2,6 +2,7 @@ import React from "react";
 import validator from 'validator';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LocalDb } from '../../util/LocalDb';
 
 function ModalLogin({ ValidateAccount, setModalIndex, setMyUser }) {
 
@@ -29,24 +30,35 @@ function ModalLogin({ ValidateAccount, setModalIndex, setMyUser }) {
                 //NORMAL USER LOGIN
                 else if (result.response.code == "B") {
 
-                    // let myUser = {
-                    //     id: result.response.id,
-                    //     email: email,
-                    //     accountType: "",
-                    // }
-                    // setMyUser(myUser)
-                    // navigate('/profile');
+                    console.log(result)
 
+                    setMyUser({
+                        id: result.response.id,
+                        accountType: null,
+                        email: email,
+                        ready: true
+                    })
 
-                    //persistir data
+                    LocalDb.Insert({
+                        id: result.response.id,
+                        accountType: null,
+                        email: email,
+                        ready: true
+                    })
+
+                    navigate('/profile');
                 }
                 //ACCOUNT HASN'T BEEN ACTIVATED
                 else if (result.response.code == "C") {
 
-                    myUser.email = email
-                    myUser.id = result.response.additionalField
 
-                    setMyUser(myUser)
+                    setMyUser({
+                        id: result.response.additionalField,
+                        accountType: null,
+                        email: email,
+                        ready: false
+                    })
+
                     setModalIndex(2)
                 }
 

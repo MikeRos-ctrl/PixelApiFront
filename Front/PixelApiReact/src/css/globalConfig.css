@@ -4,6 +4,7 @@
     --grey: #919699;
     --orange: #FF8C00;
     --dark: #000000;
+    --dark-light: #262829;
     --mint: #98FF98;
     --soul: #E6E6FA;
     --title: 'Balsamiq Sans', cursive;
@@ -257,4 +258,8 @@ li {
 
 .clickable {
     cursor: pointer;
+}
+
+.dark-light {
+    color: var(--dark-light)
 }
