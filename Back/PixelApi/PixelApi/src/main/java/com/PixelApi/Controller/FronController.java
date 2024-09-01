@@ -12,6 +12,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -129,7 +130,6 @@ public class FronController {
 		}
 
 		try {
-
 			response.put("value", myClientService.Save(myClient));
 			response.put("mensaje", "Usuario creado exitosamente");
 			statusResponse = HttpStatus.OK;
@@ -149,8 +149,25 @@ public class FronController {
 		HttpStatus statusResponse = HttpStatus.OK;
 
 		try {
-
 			response.put("response", myClientService.ConfirmAccount(id, token));
+			statusResponse = HttpStatus.OK;
+
+		} catch (Exception e) {
+			response.put("mensaje", "Error interno");
+			response.put("error", e.getMessage());
+			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<>(response, statusResponse);
+	}
+	
+	@PutMapping("/updateAccount")
+	public ResponseEntity<?> updateAccount(@RequestBody Client myClient) {
+
+		Map<String, Object> response = new HashMap<>();
+		HttpStatus statusResponse = HttpStatus.OK;
+
+		try {
+			response.put("response", myClientService.update(myClient));
 			statusResponse = HttpStatus.OK;
 
 		} catch (Exception e) {

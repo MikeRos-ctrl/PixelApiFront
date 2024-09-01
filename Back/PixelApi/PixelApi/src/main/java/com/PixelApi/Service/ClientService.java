@@ -34,6 +34,17 @@ public class ClientService {
 	@Autowired
 	ClientRepo clientRepo;
 
+	public Client update(Client myClient) {
+		
+		log.info("Inside update method");
+		Map<String, String> response = new HashMap<>();
+
+		Client updateClient = clientRepo.findById(myClient.getId()).get(); 
+		updateClient.setEmail(myClient.getEmail());	
+		myClient.setAccountKey(new BCryptPasswordEncoder().encode(myClient.getAccountKey()));
+		return clientRepo.save(updateClient);
+	}
+
 	public Map<String, String> ValidateAccount(String email) {
 
 		log.info("Inside validateAccount method");
@@ -143,15 +154,6 @@ public class ClientService {
 
 		return response;
 	}
-
-	/*
-	 * public Client update(Client myClient) { Client updateClient =
-	 * clientRepo.findById(myClient.getId()).get(); //
-	 * updateClient.setUsername(myClient.getUsername()); myClient.setUserkeyauth(new
-	 * BCryptPasswordEncoder().encode(myClient.getUserkeyauth()));
-	 * updateClient.setEmail(myClient.getEmail()); return
-	 * clientRepo.save(updateClient); }
-	 */
 
 	/*
 	 * public void delete(Integer id) { Userprofile updateClient =

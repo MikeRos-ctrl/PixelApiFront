@@ -33,25 +33,21 @@ public class SecurityFilter {
 	public SecurityFilter(JwtFilter jwtFilter) {
 		this.jwtFilter = jwtFilter;
 	}
-	
-	
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-	    http
-	    .csrf(csrf -> csrf.disable())
-	    .cors(Customizer.withDefaults())
-	    .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-	    .authorizeHttpRequests(authorize -> authorize
-	    		.requestMatchers(HttpMethod.POST, "/frontController/createAccount").permitAll()		
-	    		.requestMatchers(HttpMethod.POST, "/frontController/paypalOrder").permitAll()		
-	    		.requestMatchers(HttpMethod.POST, "/frontController/confirmAccount/{id}/{token}").permitAll()		
-	    		.requestMatchers(HttpMethod.GET, "/frontController/validateAccount/{email}").permitAll()		
-	    		.requestMatchers(HttpMethod.GET, "/frontController/fillFront").permitAll()		
-	    		.requestMatchers(HttpMethod.GET, "/frontController/listByCategory/{category}").permitAll()		
-	    		.anyRequest()
-	            .authenticated())
-	    .httpBasic(withDefaults())
-		.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-	    return http.build();
-	}	
+		http.csrf(csrf -> csrf.disable()).cors(Customizer.withDefaults())
+				.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers(HttpMethod.POST, "/frontController/createAccount").permitAll()
+						.requestMatchers(HttpMethod.POST, "/frontController/paypalOrder").permitAll()
+						.requestMatchers(HttpMethod.POST, "/frontController/confirmAccount/{id}/{token}").permitAll()
+						.requestMatchers(HttpMethod.GET, "/frontController/validateAccount/{email}").permitAll()
+						.requestMatchers(HttpMethod.GET, "/frontController/fillFront").permitAll()
+						.requestMatchers(HttpMethod.GET, "/frontController/listByCategory/{category}").permitAll()
+						.requestMatchers(HttpMethod.PUT, "/frontController/updateAccount").permitAll().anyRequest()
+						.authenticated())
+				.httpBasic(withDefaults()).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+		return http.build();
+	}
 }

@@ -2,8 +2,13 @@ import React from "react";
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LocalDb } from '../../util/LocalDb';
+import { UsePixelApi } from "../../util/UsePixelApi";
+const { ConfirmAccount } = UsePixelApi()
 
-function ModalConfirmAccount({ ConfirmAccount, setMyUser, myUser, setModalIndex }) {
+/* Modal Flow
+ * ModalLogin -> ModalCreateAccount -> ModalConfirmAccount -> ModalWelcomeAccount
+ */
+function ModalConfirmAccount({ setMyUser, myUser, setModalIndex }) {
 
     const navigate = useNavigate();
     const inputRef = useRef(null);
@@ -18,15 +23,21 @@ function ModalConfirmAccount({ ConfirmAccount, setMyUser, myUser, setModalIndex 
                 setError(false);
             }, 3000);
         } else {
-
             ConfirmAccount(myUser.id, inputRef.current.value).then(result => {
+
+                /*
+                 * JavaScript objects are passed by reference, not by value.
+                */
 
                 if (result.response.code == 'AA') {
 
-                    myUser.ready = true
+                    myUser.ready = true;
                     setMyUser(myUser);
-                    LocalDb.Insert(myUser)
-                    setModalIndex(3)
+
+                    let data = { ...myUser };
+                    LocalDb.Insert(data).then(() => {
+                        setModalIndex(3)
+                    })
                 } else {
                     setError(true)
                     setErrorText("Wrong token")

@@ -17,10 +17,7 @@ import './index.css';
 
 const {
   FillFront,
-  listByCategory,
-  ValidateAccount,
-  CreateAccount,
-  ConfirmAccount
+  listByCategory
 } = UsePixelApi()
 
 class App extends Component {
@@ -59,6 +56,9 @@ class App extends Component {
   componentDidUpdate() {
   }
 
+  /*
+   *ONLY TO OPEN AND CLOSE THE MAIN MODAL 
+   */
   changeModalstatus = () => {
 
     if (this.state.openModal == true) {
@@ -69,6 +69,28 @@ class App extends Component {
 
     this.setState({
       openModal: !this.state.openModal
+    });
+  }
+
+  /*
+  *TO CHANGE MODAL CONTENT: 
+  *ModalLogin -> ModalCreateAccount -> ModalConfirmAccount -> ModalWelcomeAccount
+  */
+  setModalIndex = (index) => {
+
+    const { setMyUser } = this.props;
+
+    if (index == 0) {
+      setMyUser({
+        id: null,
+        accountType: null,
+        email: null,
+        ready: false
+      })
+    }
+
+    this.setState({
+      modalIndex: index
     });
   }
 
@@ -102,32 +124,14 @@ class App extends Component {
     }
   }
 
-  setModalIndex = (index) => {
-
-    const { setMyUser } = this.props;
-
-    if (index == 0) {
-      setMyUser({
-        id: null,
-        accountType: null,
-        email: null,
-        ready: false
-      })
-    }
-
-    this.setState({
-      modalIndex: index
-    });
-  }
-
   render() {
     const { image1, image2, image3, image4, image5, openModal, modalIndex } = this.state
     const { myUser, setMyUser } = this.props;
 
     const ModalComponents = {
-      0: <ModalLogin ValidateAccount={ValidateAccount} setModalIndex={this.setModalIndex} setMyUser={setMyUser} />,
-      1: <ModalCreateAccount myUser={myUser} setMyUser={setMyUser} CreateAccount={CreateAccount} setModalIndex={this.setModalIndex} />,
-      2: <ModalConfirmAccount ConfirmAccount={ConfirmAccount} setMyUser={setMyUser} myUser={myUser} setModalIndex={this.setModalIndex} />,
+      0: <ModalLogin setModalIndex={this.setModalIndex} setMyUser={setMyUser} />,
+      1: <ModalCreateAccount myUser={myUser} setMyUser={setMyUser} setModalIndex={this.setModalIndex} />,
+      2: <ModalConfirmAccount setMyUser={setMyUser} myUser={myUser} setModalIndex={this.setModalIndex} />,
       3: <ModalWelcomeAccount />
     };
 

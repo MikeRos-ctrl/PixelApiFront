@@ -9,13 +9,25 @@ drop table `roles`;
 insert into `role` (`name`) values ('ADMIN');
 insert into `role` (`name`) values ('CUSTOMER');
 -- -------------------------------------------------------------------------------------------------------------------------------------------
+create table `accountType`(
+	id int not null primary key auto_increment,
+	`name` varchar(255)
+);
+select * from `accountType`;
+drop table `accountType`;
+
+insert into `accountType` (`name`) values ('PREMIUM');
+insert into `accountType` (`name`) values ('PREMIUM+');
+-- -------------------------------------------------------------------------------------------------------------------------------------------
 
 create table `client` (
 	id int not null primary key  auto_increment,
     accountKey varchar(255) not null comment 'this is the password',
 	email varchar(255) not null unique,
     `role` int not null,
-	foreign key(`role`) references `role` (id)
+    `accountType` int,
+	foreign key(`role`) references `role` (id),
+	foreign key(`accountType`) references `accountType` (id)
 );
 
 select id from `client` where email = 'princeMike@outlook.es';

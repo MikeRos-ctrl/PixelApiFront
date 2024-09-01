@@ -4,7 +4,6 @@ import { Profile } from '../Profile/Profile';
 import { Documentation } from '../Documentation/Documentation';
 import React, { useEffect, useRef, Component } from 'react';
 import { LocalDb } from '../../util/LocalDb';
-import { v4 as uuidv4 } from 'uuid';
 
 class AppRouter extends Component {
 
@@ -16,8 +15,8 @@ class AppRouter extends Component {
                 id: null,
                 accountType: null,
                 email: null,
+                accountKey: null,
                 ready: false,
-                stored: false
             },
             loading: false
         }
@@ -46,6 +45,7 @@ class AppRouter extends Component {
     }
 
     setMyUser = (myUser_) => {
+
         this.setState({
             myUser: myUser_
         });
@@ -66,8 +66,7 @@ class AppRouter extends Component {
                     </Routes>
                 </HashRouter >
             )
-        } 
-        
+        }
     }
 }
 

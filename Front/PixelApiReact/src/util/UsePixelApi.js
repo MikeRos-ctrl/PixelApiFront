@@ -18,6 +18,22 @@ const UsePixelApi = () => {
         }
     }
 
+    async function UpdateAccount(myClient) {
+
+        try {
+            const response = await fetch(API + "/updateAccount", {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(myClient)
+            })
+            return response.json();
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
+    }
+
     async function ValidateAccount(email) {
 
         try {
@@ -83,7 +99,8 @@ const UsePixelApi = () => {
         listByCategory,
         ValidateAccount,
         CreateAccount,
-        ConfirmAccount
+        ConfirmAccount,
+        UpdateAccount
     }
 }
 

@@ -1,3 +1,5 @@
+import CryptoJS from 'crypto-js';
+
 export class LocalDb {
 
     static Schema = "UserDb"
@@ -5,12 +7,16 @@ export class LocalDb {
     static DbId = "id"
     static DbUserTable = "myUser"
     static AutoIncrement = true
+    static EncryptionKey = "TwiceDiosasLalaOranjheller"
 
     static async Insert(user) {
 
         let instance = await this.OpenDb();
         var transaction = instance.transaction(LocalDb.DbUserTable, 'readwrite');
         var dbRequest = transaction.objectStore(LocalDb.DbUserTable)
+
+        user.email = CryptoJS.AES.encrypt(user.email, LocalDb.EncryptionKey).toString()
+        user.accountKey = CryptoJS.AES.encrypt(user.accountKey, LocalDb.EncryptionKey).toString()
         let response = dbRequest.add(user)
 
         response.onsuccess = function (event) {
@@ -20,6 +26,36 @@ export class LocalDb {
         response.onerror = function (event) {
             console.error('Database error:', event.target.result);
         };
+    }
+
+    /*
+    * Method getAll() return everything, but as I will save only 1 user data will work
+    */
+    static async FindUser() {
+
+        let instance = await this.OpenDb();
+
+        return new Promise(function (resolve, reject) {
+
+            var transaction = instance.transaction(LocalDb.DbUserTable, 'readonly');
+            var dbRequest = transaction.objectStore(LocalDb.DbUserTable)
+            let response = dbRequest.getAll()
+
+            response.onsuccess = function (event) {
+
+                let storedUser = event.target.result
+
+                if (storedUser != "") {
+                    storedUser[0].email = CryptoJS.AES.decrypt(storedUser[0].email, LocalDb.EncryptionKey).toString(CryptoJS.enc.Utf8)
+                    storedUser[0].accountKey = CryptoJS.AES.decrypt(storedUser[0].accountKey, LocalDb.EncryptionKey).toString(CryptoJS.enc.Utf8)
+                }
+                resolve(storedUser);
+            };
+
+            response.onerror = function (event) {
+                reject('Database error: ' + event.target.errorCode);
+            };
+        })
     }
 
     static async Find(id) {
@@ -36,30 +72,6 @@ export class LocalDb {
         response.onerror = function (event) {
             console.error('Database error:', event.target.result);
         };
-    }
-
-    /*
-    * Method getAll() return everything, but as I will save only 1 user data
-    * will work
-    */
-    static async FindUser() {
-
-        let instance = await this.OpenDb();
-
-        return new Promise(function (resolve, reject) {
-
-            var transaction = instance.transaction(LocalDb.DbUserTable, 'readonly');
-            var dbRequest = transaction.objectStore(LocalDb.DbUserTable)
-            let response = dbRequest.getAll()
-
-            response.onsuccess = function (event) {
-                resolve(event.target.result); // Resolve the promise with the retrieved data
-            };
-
-            response.onerror = function (event) {
-                reject('Database error: ' + event.target.errorCode); // Reject the promise with an error
-            };
-        })
     }
 
     static async Delete(id) {

@@ -28,17 +28,28 @@ public class Client {
 
 	private Integer role;
 
+	private Integer accountType;
+
 	////////////////////////////////////////////////////////////////
 
 	public Client() {
 
 	}
 
-	public Client(Long id, String accountKey, String email, Integer role) {
+	public Client(Long id, String accountKey, String email, Integer role, Integer accountType) {
 		this.id = id;
 		this.accountKey = accountKey;
 		this.email = email;
 		this.role = role;
+		this.accountType = accountType;
+	}
+
+	public Integer getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(Integer accountType) {
+		this.accountType = accountType;
 	}
 
 	public Long getId() {
@@ -64,7 +75,7 @@ public class Client {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public Integer getRole() {
 		return role;
 	}

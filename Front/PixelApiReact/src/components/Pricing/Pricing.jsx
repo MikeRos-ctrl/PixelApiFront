@@ -100,6 +100,7 @@ function Pricing({ changeModalstatus_, myUser, setMyUser }) {
                             type="button" value="Get premium+ access" />
                     </div>
                 </div>
+
             </div>
         </div>
     );

@@ -1,7 +1,12 @@
 import React from "react";
 import { FaEye } from "react-icons/fa";
+import { UsePixelApi } from "../../util/UsePixelApi";
+const { CreateAccount } = UsePixelApi()
 
-function ModalCreateAccount({ myUser, setMyUser, setModalIndex, CreateAccount }) {
+/* Modal Flow
+ * ModalLogin -> ModalCreateAccount -> ModalConfirmAccount -> ModalWelcomeAccount
+ */
+function ModalCreateAccount({ myUser, setMyUser, setModalIndex }) {
 
     const [inputValue1, setInputValue1] = React.useState('')
     const [inputValue2, setInputValue2] = React.useState('')
@@ -32,7 +37,7 @@ function ModalCreateAccount({ myUser, setMyUser, setModalIndex, CreateAccount })
         }
         else if (inputValue1 != inputValue2) {
             setError(true)
-            setErrorText("Fields are not the same")
+            setErrorText("Password must match")
             setTimeout(() => {
                 setError(false);
             }, 3000);
@@ -44,6 +49,7 @@ function ModalCreateAccount({ myUser, setMyUser, setModalIndex, CreateAccount })
                 accountKey: inputValue1,
             }).then(result => {
                 myUser.id = result.value.id
+                myUser.accountKey = inputValue1
                 setMyUser(myUser)
                 setModalIndex(2)
             }).catch(error => {

@@ -3,8 +3,13 @@ import validator from 'validator';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LocalDb } from '../../util/LocalDb';
+import { UsePixelApi } from "../../util/UsePixelApi";
+const { ValidateAccount } = UsePixelApi()
 
-function ModalLogin({ ValidateAccount, setModalIndex, setMyUser }) {
+/* Modal Flow
+ * ModalLogin -> ModalCreateAccount -> ModalConfirmAccount -> ModalWelcomeAccount
+ */
+function ModalLogin({ setModalIndex, setMyUser }) {
 
     const navigate = useNavigate();
     const inputRef = useRef(null);
@@ -22,6 +27,7 @@ function ModalLogin({ ValidateAccount, setModalIndex, setMyUser }) {
                         id: null,
                         accountType: null,
                         email: email,
+                        accountKey: null,
                         ready: false
                     })
                     setModalIndex(1)

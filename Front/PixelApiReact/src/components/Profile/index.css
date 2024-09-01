@@ -42,6 +42,10 @@ body {
     border-bottom: 1px solid var(--grey);
 }
 
+.menuOptions:first-child {
+    border-top: 1px solid var(--grey);
+}
+
 .profileRightMenu {
     display: flex;
     justify-content: center;
@@ -55,6 +59,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100%;
+    gap: 5rem;
     /* flex-direction: column; */
 }
 
