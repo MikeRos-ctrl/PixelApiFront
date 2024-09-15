@@ -8,14 +8,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.PixelApi.Entity.ClientAccount;
 import com.PixelApi.Entity.ClientAccountId;
+import com.PixelApi.Entity.TokenAccount;
 import com.PixelApi.Entity.Client;
-import com.PixelApi.Repository.ClientAccountRepo;
 import com.PixelApi.Repository.ClientRepo;
+import com.PixelApi.Repository.TokenAccounttRepo;
 import com.PixelApi.Util.SendMail;
 
 import jakarta.transaction.Transactional;
@@ -29,20 +30,31 @@ public class ClientService {
 	SendMail sendMailClass;
 
 	@Autowired
-	ClientAccountRepo confirmAccountRepo;
+	TokenAccounttRepo tokenRepo;
 
 	@Autowired
 	ClientRepo clientRepo;
 
-	public Client update(Client myClient) {
-		
-		log.info("Inside update method");
-		Map<String, String> response = new HashMap<>();
+	public Map<String, Object> update(Client myClient) {
 
-		Client updateClient = clientRepo.findById(myClient.getId()).get(); 
-		updateClient.setEmail(myClient.getEmail());	
-		myClient.setAccountKey(new BCryptPasswordEncoder().encode(myClient.getAccountKey()));
-		return clientRepo.save(updateClient);
+		Map<String, Object> response = new HashMap<>();
+		log.info("Inside update method");
+
+		Client updateClient = clientRepo.findById(myClient.getId()).get();
+		updateClient.setEmail(myClient.getEmail());
+		updateClient.setAccountKey(new BCryptPasswordEncoder().encode(myClient.getAccountKey()));
+		response.put("Updated client", clientRepo.save(updateClient));
+
+		return response;
+	}
+
+	public Client Login(String email, String accountKey) {
+
+		log.info("Inside Login method");
+
+		Client myClient = clientRepo.findByEmail(email);
+		Boolean answer = new BCryptPasswordEncoder().matches(accountKey, myClient.getAccountKey());
+		return (answer) ? myClient : null;
 	}
 
 	public Map<String, String> ValidateAccount(String email) {
@@ -58,11 +70,10 @@ public class ClientService {
 		} else {
 
 			Client myClient = clientRepo.findByEmail(email);
-			ClientAccount myAccount = confirmAccountRepo.findByClientId(myClient.getId());
 
-			if (myAccount.getConfirmed() == true) {
-				log.info("Normal user, account was set up");
-				response.put("message", "Existing record given that email");
+			if (tokenRepo.tokenValidation(myClient.getId(), "ACCOUNT-CONFIRMATION", true) == 1) {
+				log.info("Existing user trying to login, let's validate now the password ");
+				response.put("message", "Existing email, let's validate password");
 				response.put("code", "B");
 				response.put("codeExplanation", "Existing functional account");
 				response.put("id", myClient.getId().toString());
@@ -78,6 +89,44 @@ public class ClientService {
 	}
 
 	@Transactional
+	public Map<String, String> ForgotPwd(String email, Long id) {
+
+		Map<String, String> response = new HashMap<>();
+		log.info("Inside ForgotPwd method");
+
+		try {
+			/*
+			 * Numero de emails sin confirmar se han enviado
+			 */
+			if (tokenRepo.tokenValidation(id, "FORGET-PWD", false) == 0) {
+
+				String confirmationCode = UUID.randomUUID().toString();
+				TokenAccount register = new TokenAccount(confirmationCode, id, false, "FORGET-PWD");
+				tokenRepo.save(register);
+				log.info("Client token saved");
+				response.put("value", "true");
+				response.put("message", "Email has been sent :)");
+
+				new Thread(() -> {
+					log.info("Sending email to: " + email);
+					sendMailClass.sendMail(email, confirmationCode, 'B');
+					log.info("Email has been sent");
+
+				}).start();
+			} else {
+				response.put("value", "false");
+				response.put("message", "Email has already been sent :P");
+			}
+
+			return response;
+
+		} catch (Exception e) {
+			log.error("Internal error in save method: " + e);
+			return null;
+		}
+	}
+
+	@Transactional
 	public Client Save(Client myClient) {
 
 		Client myResponse = null;
@@ -89,6 +138,10 @@ public class ClientService {
 			String email = myClient.getEmail();
 			String confirmationCode = UUID.randomUUID().toString();
 
+			/*
+			 * SEND CONFIRMATION EMAIL
+			 */
+
 			if (clientRepo.countByEmail(email) == 0) {
 				String encryptedPwd = new BCryptPasswordEncoder().encode(myClient.getAccountKey());
 				myClient.setAccountKey(encryptedPwd);
@@ -96,7 +149,10 @@ public class ClientService {
 				sendMail = true;
 				log.info("Client saved");
 			} else {
-				// Update only pwd
+
+				/*
+				 * DON'T SENT CONFIRMATION EMAIL
+				 */
 				Client existingClient = clientRepo.findByEmail(email);
 				existingClient.setAccountKey(new BCryptPasswordEncoder().encode(myClient.getAccountKey()));
 				myResponse = clientRepo.save(existingClient);
@@ -104,13 +160,14 @@ public class ClientService {
 			}
 
 			if (myResponse != null && sendMail == true) {
-				ClientAccount confirmAccount = new ClientAccount(confirmationCode, myResponse.getId(), false);
-				confirmAccountRepo.save(confirmAccount);
-				log.info("Client account saved");
+				TokenAccount confirmAccount = new TokenAccount(confirmationCode, myResponse.getId(), false,
+						"ACCOUNT-CONFIRMATION");
+				tokenRepo.save(confirmAccount);
+				log.info("Client token saved");
 
 				new Thread(() -> {
 					log.info("Sending email to: " + email);
-					sendMailClass.sendMail(email, confirmationCode);
+					sendMailClass.sendMail(email, confirmationCode, 'A');
 					log.info("Email has been sent");
 				}).start();
 			}
@@ -130,20 +187,20 @@ public class ClientService {
 		Map<String, String> response = new HashMap<>();
 
 		try {
-			ClientAccount account = confirmAccountRepo.findById(new ClientAccountId(clientId, token)).orElse(null);
+			TokenAccount myToken = tokenRepo.findById(new ClientAccountId(clientId, token)).orElse(null);
 
-			if (account == null) {
+			if (myToken == null) {
 				log.info("Invalid Token");
 				response.put("code", "BB");
 				response.put("message", "Invalid token");
 			} else {
 
-				log.info("Let's confirm account");
-				account.setConfirmed(true);
-				confirmAccountRepo.save(account);
-				log.info("Account has beed confirmed");
+				myToken.setConfirmed(true);
+				tokenRepo.save(myToken);
+				log.info("Token has beed confirmed");
+				log.info("Token reason: " + myToken.getReason());
 				response.put("code", "AA");
-				response.put("message", "Account has beed confirmed");
+				response.put("message", "Token confirmed");
 			}
 
 		} catch (Exception e) {

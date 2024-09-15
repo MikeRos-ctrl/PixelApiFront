@@ -36,22 +36,27 @@ truncate `client`;
 drop table `client`;
 
 -- -------------------------------------------------------------------------------------------------------------------------------------------
-create table clientaccount(
+create table tokenaccount(
 	token varchar (255) not null,
     `clientId` int not null not null,
     `confirmed` bit default 0,
+    `reason` varchar (255) not null comment 'account fonfirmation or forgot pwd',
 	foreign key(`clientId`) references `client`(id),
 	primary key (`clientId`, token)
 );
 
-select * from clientaccount;
-truncate  clientaccount;
-drop table clientaccount;
+select * from tokenaccount;
+truncate  tokenaccount;
+drop table tokenaccount;
 
-insert into confirmaccount (token, `client`, `used`) values ('dedwdwsdc', 1, 0);
-select count(*) from confirmaccount where `client` = 1;
-select confirmed from confirmaccount where `client` = 1;
+select count(*) as total from tokenaccount where `clientId` = 1 and reason = 'ACCOUNT-CONFIRMATION';
+select count(*) as total from tokenaccount where `clientId` = 1 and reason = 'FORGOT-PWD' and confirmed = 0;
 -- ------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
 
 -- animal  building landscape character
 select * from  image;

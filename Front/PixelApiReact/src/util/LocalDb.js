@@ -15,8 +15,10 @@ export class LocalDb {
         var transaction = instance.transaction(LocalDb.DbUserTable, 'readwrite');
         var dbRequest = transaction.objectStore(LocalDb.DbUserTable)
 
-        user.email = CryptoJS.AES.encrypt(user.email, LocalDb.EncryptionKey).toString()
-        user.accountKey = CryptoJS.AES.encrypt(user.accountKey, LocalDb.EncryptionKey).toString()
+
+        // user.id = CryptoJS.AES.encrypt(user.id.toString(), LocalDb.EncryptionKey).toString()
+        //user.email = CryptoJS.AES.encrypt(user.email, LocalDb.EncryptionKey).toString()
+        //user.accountKey = CryptoJS.AES.encrypt(user.accountKey, LocalDb.EncryptionKey).toString()
         let response = dbRequest.add(user)
 
         response.onsuccess = function (event) {
@@ -46,8 +48,9 @@ export class LocalDb {
                 let storedUser = event.target.result
 
                 if (storedUser != "") {
-                    storedUser[0].email = CryptoJS.AES.decrypt(storedUser[0].email, LocalDb.EncryptionKey).toString(CryptoJS.enc.Utf8)
-                    storedUser[0].accountKey = CryptoJS.AES.decrypt(storedUser[0].accountKey, LocalDb.EncryptionKey).toString(CryptoJS.enc.Utf8)
+                    //storedUser[0].id = Number(CryptoJS.AES.decrypt(storedUser[0].id, LocalDb.EncryptionKey).toString(CryptoJS.enc.Utf8))
+                    //storedUser[0].email = CryptoJS.AES.decrypt(storedUser[0].email, LocalDb.EncryptionKey).toString(CryptoJS.enc.Utf8)
+                    //storedUser[0].accountKey = CryptoJS.AES.decrypt(storedUser[0].accountKey, LocalDb.EncryptionKey).toString(CryptoJS.enc.Utf8)
                 }
                 resolve(storedUser);
             };
@@ -74,12 +77,12 @@ export class LocalDb {
         };
     }
 
-    static async Delete(id) {
+    static async Delete() {
 
         let instance = await this.OpenDb();
         var transaction = instance.transaction(LocalDb.DbUserTable, 'readwrite');
         var dbRequest = transaction.objectStore(LocalDb.DbUserTable)
-        let response = dbRequest.delete(id)
+        let response = dbRequest.clear()
 
         response.onsuccess = function (event) {
             console.log("Object has been deleted!");

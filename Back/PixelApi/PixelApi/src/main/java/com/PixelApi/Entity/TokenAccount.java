@@ -8,24 +8,27 @@ import java.sql.Timestamp;
 
 
 @Entity
-@Table(name = "clientaccount")
+@Table(name = "tokenaccount")
 @IdClass(ClientAccountId.class)
-public class ClientAccount {
+public class TokenAccount {
 
     @Id
     private String token;
     @Id
     private Long clientId;
     private Boolean confirmed;
+    private String reason;
+    
+    public TokenAccount(String token, Long clientId, Boolean confirmed, String reason) {
+		this.token = token;
+		this.clientId = clientId;
+		this.confirmed = confirmed;
+		this.reason = reason;
+	}
 
-    public ClientAccount() {
-    }
+	public TokenAccount() {
 
-    public ClientAccount(String token, Long clientId, Boolean confirmed) {
-        this.token = token;
-        this.clientId = clientId;
-        this.confirmed = confirmed;
-    }
+	}
 
     public String getToken() {
         return token;
@@ -51,4 +54,14 @@ public class ClientAccount {
     public void setConfirmed(Boolean confirmed) {
         this.confirmed = confirmed;
     }
+
+
+	public String getReason() {
+		return reason;
+	}
+
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
 }

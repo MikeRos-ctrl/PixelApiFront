@@ -3,9 +3,12 @@ import validator from 'validator';
 import { FaEye } from "react-icons/fa";
 import { UsePixelApi } from "../../util/UsePixelApi";
 const { UpdateAccount } = UsePixelApi()
+import { LocalDb } from '../../util/LocalDb';
+import { useNavigate } from 'react-router-dom';
 
-function ProfileModifyInformation({ myUser }) {
+function ProfileModifyInformation({ myUser, setMyUser }) {
 
+    const navigate = useNavigate();
     const [newEmail, setNewEmail] = React.useState(myUser.email)
     const [newPassword, setNewPassword] = React.useState(myUser.accountKey)
     const [newPassword2, setNewPassword2] = React.useState(myUser.accountKey)
@@ -37,14 +40,49 @@ function ProfileModifyInformation({ myUser }) {
                 setError(false);
             }, 3000);
         }
+        else if (newPassword < 8) {
+            setError(true)
+            setErrorText("Password is lower that 8 characters")
+            setTimeout(() => {
+                setError(false);
+            }, 3000);
+        }
         else {
+
+            let flag = myUser.email == newEmail ? true : false
             myUser.email = newEmail;
             myUser.accountKey = newPassword;
-            UpdateAccount(myUser).then(result => {
 
-                //revisar que pedo con mis credenciales encriptadas
+            UpdateAccount(myUser, false).then(result => {
 
-                console.log(result)
+                LocalDb.Delete()
+                setError(true)
+
+                if (flag) {
+
+                    setMyUser(myUser)
+
+                    let data = { myUser }
+                    LocalDb.Insert(data)
+                    setErrorText("Information was updated!")
+                    setTimeout(() => {
+                        setError(false);
+                    }, 3000);
+                } else {
+                    setErrorText("You will be logged out!")
+
+                    setTimeout(() => {
+                        setError(false);
+                        setMyUser({
+                            id: null,
+                            accountType: null,
+                            email: null,
+                            accountKey: null,
+                            ready: false,
+                        })
+                        navigate('/')
+                    }, 5000);
+                }
             })
         }
     }
@@ -91,7 +129,7 @@ function ProfileModifyInformation({ myUser }) {
                 </div>
 
                 {error && (
-                    <input className="regularText modalbtnerror mt-1_5" type="button" value={errorText} />
+                    <input className={`regularText mt-1_5 ${errorText == "Information was updated!" || errorText == "You will be logged out!" ? 'modalbtnsuccess' : ' modalbtnerror'}`} type="button" value={errorText} />
                 )}
 
             </div>

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.PixelApi.Entity.Image;
@@ -93,7 +94,7 @@ public class FronController {
 		}
 		return new ResponseEntity<>(response, statusResponse);
 	}
-	
+
 	@GetMapping("/validateAccount/{email}")
 	public ResponseEntity<?> validateAccount(@PathVariable String email) {
 
@@ -159,7 +160,52 @@ public class FronController {
 		}
 		return new ResponseEntity<>(response, statusResponse);
 	}
+
 	
+	@GetMapping("/forgotPwd/{email}/{id}")
+	public ResponseEntity<?> forgotPwd(@PathVariable String email, @PathVariable Long id) {
+
+		Map<String, String> response = new HashMap<>();
+		HttpStatus statusResponse = HttpStatus.OK;
+
+		try {
+			response = myClientService.ForgotPwd(email, id);
+			statusResponse = HttpStatus.OK;
+
+		} catch (Exception e) {
+			response.put("mensaje", "Error interno");
+			response.put("error", e.getMessage());
+			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<>(response, statusResponse);
+	}
+
+	@GetMapping("/login/{email}/{accountKey}")
+	public ResponseEntity<?> login(@PathVariable String email, @PathVariable String accountKey) {
+
+		Map<String, Object> response = new HashMap<>();
+		HttpStatus statusResponse = HttpStatus.OK;
+
+		try {
+
+			Client myClient = myClientService.Login(email, accountKey);
+
+			if (myClient != null) {
+				response.put("response", myClient);
+				statusResponse = HttpStatus.OK;
+			} else {
+				response.put("response", "Not found");
+				statusResponse = HttpStatus.NOT_FOUND;
+			}
+
+		} catch (Exception e) {
+			response.put("mensaje", "Error interno");
+			response.put("error", e.getMessage());
+			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<>(response, statusResponse);
+	}
+
 	@PutMapping("/updateAccount")
 	public ResponseEntity<?> updateAccount(@RequestBody Client myClient) {
 

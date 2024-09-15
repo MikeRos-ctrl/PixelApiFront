@@ -1,17 +1,11 @@
 import React from "react";
 import validator from 'validator';
 import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { LocalDb } from '../../util/LocalDb';
 import { UsePixelApi } from "../../util/UsePixelApi";
 const { ValidateAccount } = UsePixelApi()
 
-/* Modal Flow
- * ModalLogin -> ModalCreateAccount -> ModalConfirmAccount -> ModalWelcomeAccount
- */
 function ModalLogin({ setModalIndex, setMyUser }) {
 
-    const navigate = useNavigate();
     const inputRef = useRef(null);
     const [emailError, setEmailError] = React.useState(false)
 
@@ -33,30 +27,25 @@ function ModalLogin({ setModalIndex, setMyUser }) {
                     setModalIndex(1)
                 }
 
-                //NORMAL USER LOGIN
+                /*
+                 * NORMAL USER LOGIN
+                 */
                 else if (result.response.code == "B") {
-
-                    console.log(result)
 
                     setMyUser({
                         id: result.response.id,
                         accountType: null,
                         email: email,
-                        ready: true
+                        accountKey: null,
+                        ready: null
                     })
-
-                    LocalDb.Insert({
-                        id: result.response.id,
-                        accountType: null,
-                        email: email,
-                        ready: true
-                    })
-
-                    navigate('/profile');
+                    setModalIndex(4)
                 }
-                //ACCOUNT HASN'T BEEN ACTIVATED
-                else if (result.response.code == "C") {
 
+                /*
+                * ACCOUNT HASN'T BEEN ACTIVATED
+                */
+                else if (result.response.code == "C") {
 
                     setMyUser({
                         id: result.response.additionalField,

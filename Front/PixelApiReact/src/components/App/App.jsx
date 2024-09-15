@@ -10,9 +10,10 @@ import { GalleryImages } from '../GalleryImages/GalleryImages';
 import { Implementation } from '../Implementation/Implementation';
 import { Modal } from '../Modal/Modal';
 import { ModalLogin } from '../Modal/ModalLogin';
-import { ModalCreateAccount } from '../Modal/ModalCreateAccount';
+import { ModalCreate_UpdateAccount } from '../Modal/ModalCreate_UpdateAccount';
 import { ModalConfirmAccount } from '../Modal/ModalConfirmAccount';
 import { ModalWelcomeAccount } from '../Modal/ModalWelcomeAccount';
+import { ModalWelcomeBack } from '../Modal/ModalWelcomeBack';
 import './index.css';
 
 const {
@@ -33,6 +34,7 @@ class App extends Component {
       image5: null,
       openModal: false,
       modalIndex: 0,
+      modalFlow: 'A'
     }
   }
 
@@ -94,6 +96,12 @@ class App extends Component {
     });
   }
 
+  setModalFlow = (value) => {
+    this.setState({
+      modalFlow: value
+    });
+  }
+
   listByCategory_ = (category) => {
 
     if (category == "all") {
@@ -125,14 +133,15 @@ class App extends Component {
   }
 
   render() {
-    const { image1, image2, image3, image4, image5, openModal, modalIndex } = this.state
+    const { image1, image2, image3, image4, image5, openModal, modalIndex, modalFlow } = this.state
     const { myUser, setMyUser } = this.props;
 
     const ModalComponents = {
       0: <ModalLogin setModalIndex={this.setModalIndex} setMyUser={setMyUser} />,
-      1: <ModalCreateAccount myUser={myUser} setMyUser={setMyUser} setModalIndex={this.setModalIndex} />,
-      2: <ModalConfirmAccount setMyUser={setMyUser} myUser={myUser} setModalIndex={this.setModalIndex} />,
-      3: <ModalWelcomeAccount />
+      1: <ModalCreate_UpdateAccount modalFlow={modalFlow} myUser={myUser} setMyUser={setMyUser} setModalIndex={this.setModalIndex} />,
+      2: <ModalConfirmAccount modalFlow={modalFlow} setMyUser={setMyUser} myUser={myUser} setModalIndex={this.setModalIndex} />,
+      3: <ModalWelcomeAccount />,
+      4: <ModalWelcomeBack setModalFlow={this.setModalFlow} setModalIndex={this.setModalIndex} setMyUser={setMyUser} myUser={myUser} />,
     };
 
     return (

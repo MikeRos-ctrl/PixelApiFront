@@ -1,16 +1,14 @@
 import React from "react";
 import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { LocalDb } from '../../util/LocalDb';
 import { UsePixelApi } from "../../util/UsePixelApi";
-const { ConfirmAccount } = UsePixelApi()
+const { ConfirmAccount, UpdateAccount } = UsePixelApi()
 
 /* Modal Flow
  * ModalLogin -> ModalCreateAccount -> ModalConfirmAccount -> ModalWelcomeAccount
  */
-function ModalConfirmAccount({ setMyUser, myUser, setModalIndex }) {
+function ModalConfirmAccount({ modalFlow, setMyUser, myUser, setModalIndex }) {
 
-    const navigate = useNavigate();
     const inputRef = useRef(null);
     const [error, setError] = React.useState(false)
     const [errorText, setErrorText] = React.useState(false)
@@ -23,21 +21,38 @@ function ModalConfirmAccount({ setMyUser, myUser, setModalIndex }) {
                 setError(false);
             }, 3000);
         } else {
+
+            /*
+             * JavaScript objects are passed by reference, not by value.
+            */
+
             ConfirmAccount(myUser.id, inputRef.current.value).then(result => {
 
-                /*
-                 * JavaScript objects are passed by reference, not by value.
-                */
+                if (modalFlow == 'B' && result.response.code == 'AA') {
+                    UpdateAccount(myUser).then(result => {
+                        
+                        myUser.ready = true;
+                        setMyUser(myUser)
 
-                if (result.response.code == 'AA') {
+                        let data = { ...myUser };
+
+                        LocalDb.Insert(data).then(() => {
+                            setModalIndex(3)
+                        })
+                    }).catch(error => {
+                        console.error("I've got a mistake: ", error);
+                    })
+                }
+                else if (result.response.code == 'AA') {
 
                     myUser.ready = true;
                     setMyUser(myUser);
-
                     let data = { ...myUser };
+
                     LocalDb.Insert(data).then(() => {
                         setModalIndex(3)
                     })
+
                 } else {
                     setError(true)
                     setErrorText("Wrong token")

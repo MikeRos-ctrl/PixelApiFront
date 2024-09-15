@@ -29,11 +29,10 @@ class AppRouter extends Component {
             if (response != "" && response[0].ready == true) {
                 console.log("User has been loaded from DB")
                 this.setMyUser(response[0])
+                console.log(response)
             }
 
-            this.setState({
-                loading: true
-            });
+            this.setState({ loading: true });
 
         }).catch(error => {
             console.error("Error retrieving user data:", error);
@@ -60,7 +59,7 @@ class AppRouter extends Component {
                 <HashRouter>
                     <Routes>
                         <Route path='/' element={<App myUser={myUser} setMyUser={this.setMyUser} />} />
-                        <Route path='/profile' element={myUser.ready != null ? <Profile myUser={myUser} /> : <App />} />
+                        <Route path='/profile' element={myUser.ready != null ? <Profile myUser={myUser} setMyUser={this.setMyUser} /> : <App />} />
                         <Route path='/documentation' element={<Documentation />} />
                         <Route path='*' element={<p>Not Found</p>} />
                     </Routes>

@@ -16,7 +16,7 @@ public class MailConfig {
 		mailSender.setHost("smtp.hostinger.com");
 		mailSender.setPort(587);
 		mailSender.setUsername("pixelteam@thepixelapi.com");
-		mailSender.setPassword("MikeAndDahyun<3");
+		mailSender.setPassword("MikeAndChaeyoung<3");
 
 		Properties props = mailSender.getJavaMailProperties();
 		props.put("mail.transport.protocol", "smtp");

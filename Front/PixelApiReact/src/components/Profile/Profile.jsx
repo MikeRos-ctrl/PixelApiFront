@@ -5,6 +5,7 @@ import Logoxd from '../../assets/icon4.png';
 import { useNavigate } from 'react-router-dom';
 import { ProfileModifyInformation } from './ProfileModifyInformation';
 import { ProfileUpdatePlan } from './ProfileUpdatePlan';
+import { LocalDb } from '../../util/LocalDb';
 
 class Profile extends Component {
 
@@ -31,19 +32,37 @@ class Profile extends Component {
     }
 
     updateButton = (newId) => {
-        this.setState({
-            buttonId: newId,
-            index: newId
-        })
+
+        const { navigate, setMyUser } = this.props;
+
+        if (newId != 4) {
+            this.setState({
+                buttonId: newId,
+                index: newId
+            })
+        }
+        else {
+
+            LocalDb.Delete()
+
+            setMyUser({
+                id: null,
+                accountType: null,
+                email: null,
+                accountKey: null,
+                ready: false,
+            })
+            navigate('/')
+        }
     }
 
     render() {
 
         const { myWindowLength, buttonId, index } = this.state;
-        const { myUser, navigate } = this.props;
+        const { myUser, navigate, setMyUser } = this.props;
 
         const ProfileComponents = {
-            1: <ProfileModifyInformation myUser={myUser} />,
+            1: <ProfileModifyInformation myUser={myUser} setMyUser={setMyUser} />,
             2: <ProfileUpdatePlan />,
         }
 
@@ -65,6 +84,7 @@ class Profile extends Component {
                             <h5 onClick={() => { this.updateButton(1) }} className={`clickable regularText menuOptions ${buttonId == 1 ? ("selected") : ("")}`}>Modify information</h5>
                             <h5 onClick={() => { this.updateButton(2) }} className={`clickable regularText menuOptions ${buttonId == 2 ? ("selected") : ("")}`}>Update plan</h5>
                             <h5 onClick={() => { this.updateButton(3) }} className={`clickable regularText menuOptions ${buttonId == 3 ? ("selected") : ("")}`}>Delete account</h5>
+                            <h5 onClick={() => { this.updateButton(4) }} className={`clickable regularText menuOptions ${buttonId == 4 ? ("selected") : ("")}`}>Log out</h5>
                         </div>
                     </div>
 
@@ -75,12 +95,9 @@ class Profile extends Component {
                         </div>
 
                         <div className='profileRightContent'>
-
                             {ProfileComponents[index]}
-
                         </div>
                     </div>
-
                 </div>
             )
         } else {
@@ -97,3 +114,6 @@ function ProfileWithNavigate(props) {
 }
 
 export { ProfileWithNavigate as Profile };
+
+
+//login -> traaigo la info de la db

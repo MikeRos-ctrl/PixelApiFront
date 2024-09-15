@@ -89,7 +89,7 @@ label {
 
 p,
 input {
-    font-size: 1.8rem;
+    font-size: 1.7rem;
     margin: 0 0;
     color: var(--white);
 }
@@ -266,4 +266,32 @@ li {
 
 .mt-1_5 {
     margin-top: 1.5rem;
+}
+
+.modalbtnerror {
+    border: none;
+    padding: 0.7rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    width: 100%;
+    font-size: 2rem;
+    color: red;
+    background-color: #ff000034;
+}
+
+.modalbtnsuccess {
+    border: none;
+    padding: 0.7rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    width: 100%;
+    font-size: 2rem;
+    color: green;
+    background-color: #00ff0034;
+}
+
+.italics {
+    padding-top: 0.4rem;
+    color: var(--grey) !important;
+    cursor: pointer;
 }
