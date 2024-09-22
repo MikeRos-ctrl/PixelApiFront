@@ -18,10 +18,26 @@ const UsePixelApi = () => {
         }
     }
 
-    async function UpdateAccount(myClient, flag) {
+    async function PaypalOrder(myOrder) {
 
         try {
-            const response = await fetch(API + "/updateAccount?flag=" + flag, {
+            const response = await fetch(API + "/paypalOrder", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(myOrder)
+            })
+            return response.json();
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
+    }
+
+    async function UpdateAccount(myClient) {
+
+        try {
+            const response = await fetch(API + "/updateAccount", {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -132,7 +148,8 @@ const UsePixelApi = () => {
         ConfirmAccount,
         UpdateAccount,
         Login,
-        ForgotPwd
+        ForgotPwd,
+        PaypalOrder
     }
 }
 

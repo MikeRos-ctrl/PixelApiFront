@@ -13,9 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.PixelApi.Entity.ClientAccountId;
+import com.PixelApi.Entity.PaypalOrder;
 import com.PixelApi.Entity.TokenAccount;
 import com.PixelApi.Entity.Client;
 import com.PixelApi.Repository.ClientRepo;
+import com.PixelApi.Repository.PaypalRepo;
 import com.PixelApi.Repository.TokenAccounttRepo;
 import com.PixelApi.Util.SendMail;
 
@@ -34,6 +36,9 @@ public class ClientService {
 
 	@Autowired
 	ClientRepo clientRepo;
+
+	@Autowired
+	PaypalRepo paypalRepo;
 
 	public Map<String, Object> update(Client myClient) {
 
@@ -177,6 +182,22 @@ public class ClientService {
 		} catch (Exception e) {
 			log.error("Internal error in save method: " + e);
 			return null;
+		}
+	}
+
+	@Transactional
+	public String Save(PaypalOrder myOrder) {
+
+		log.info("Inside Save paypal order method");
+
+		try {
+			paypalRepo.save(myOrder);
+			log.info("Order saved");
+			return "Order saved";
+
+		} catch (Exception e) {
+			log.error("Internal error in save method: " + e);
+			return "Internal error in save method";
 		}
 	}
 

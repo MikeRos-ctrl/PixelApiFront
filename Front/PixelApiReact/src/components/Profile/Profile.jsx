@@ -63,7 +63,7 @@ class Profile extends Component {
 
         const ProfileComponents = {
             1: <ProfileModifyInformation myUser={myUser} setMyUser={setMyUser} />,
-            2: <ProfileUpdatePlan />,
+            2: <ProfileUpdatePlan myUser={myUser} />,
         }
 
         let validatedEmail = myUser.email.length > 11 ? myUser.email.slice(0, 11) : myUser.email.length;
@@ -114,6 +114,3 @@ function ProfileWithNavigate(props) {
 }
 
 export { ProfileWithNavigate as Profile };
-
-
-//login -> traaigo la info de la db

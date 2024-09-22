@@ -85,8 +85,9 @@ public class FronController {
 		HttpStatus statusResponse = HttpStatus.OK;
 
 		try {
-			System.out.println(myOrder.toString());
-
+			response.put("response", myClientService.Save(myOrder));
+			statusResponse = HttpStatus.OK;
+			
 		} catch (Exception e) {
 			response.put("mensaje", "Error interno");
 			response.put("error", e.getMessage());

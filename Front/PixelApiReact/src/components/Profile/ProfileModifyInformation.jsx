@@ -53,7 +53,7 @@ function ProfileModifyInformation({ myUser, setMyUser }) {
             myUser.email = newEmail;
             myUser.accountKey = newPassword;
 
-            UpdateAccount(myUser, false).then(result => {
+            UpdateAccount(myUser).then(result => {
 
                 LocalDb.Delete()
                 setError(true)

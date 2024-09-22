@@ -1,82 +1,52 @@
 package com.PixelApi.Entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "paypalorder")
 public class PaypalOrder {
 
-	private String orderID;  
-	private String payerID;  
-	private String paymentID; 
-	private String status;
-	private String payerName;
-	private Double amount;
+	@Id
+	private String orderId;
+	private String suscriptionId;
+	private Long clientId;
+	private String plan;
 
 	public PaypalOrder() {
 
 	}
 
-
-	public String getOrderID() {
-		return orderID;
+	public String getOrderId() {
+		return orderId;
 	}
 
-
-	public void setOrderID(String orderID) {
-		this.orderID = orderID;
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 
-
-	public String getPayerID() {
-		return payerID;
+	public String getSuscriptionId() {
+		return suscriptionId;
 	}
 
-
-	public void setPayerID(String payerID) {
-		this.payerID = payerID;
+	public void setSuscriptionId(String suscriptionId) {
+		this.suscriptionId = suscriptionId;
 	}
 
-
-	public String getPaymentID() {
-		return paymentID;
+	public Long getClientId() {
+		return clientId;
 	}
 
-
-	public void setPaymentID(String paymentID) {
-		this.paymentID = paymentID;
+	public void setClientId(Long clientId) {
+		this.clientId = clientId;
 	}
 
-
-	public String getStatus() {
-		return status;
+	public String getPlan() {
+		return plan;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public String getPayerName() {
-		return payerName;
-	}
-
-	public void setPayerName(String payerName) {
-		this.payerName = payerName;
-	}
-
-	public Double getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Double amount) {
-		this.amount = amount;
-	}
-	
-
-	public String toString() {
-	    return "PaypalOrder{" +
-	           "orderID=" + orderID +
-	           ", payerID=" + payerID +
-	           ", paymentID=" + paymentID +
-	           ", status='" + status + '\'' +
-	           ", payerName='" + payerName + '\'' +
-	           ", amount=" + amount +
-	           '}';
+	public void setPlan(String plan) {
+		this.plan = plan;
 	}
 }

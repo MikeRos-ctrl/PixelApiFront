@@ -53,10 +53,16 @@ select count(*) as total from tokenaccount where `clientId` = 1 and reason = 'AC
 select count(*) as total from tokenaccount where `clientId` = 1 and reason = 'FORGOT-PWD' and confirmed = 0;
 -- ------------------------------------------------------------------------------------------------------------------------------------------------
 
+create table paypalorder(
+	orderId varchar (255) primary key,
+    suscriptionId varchar (255) not null,
+    `clientId` int not null,
+    `plan` varchar (255) not null comment 'premium or premium +',
+	foreign key(`clientId`) references `client`(id)
+);
 
-
-
-
+select * from paypalorder;
+-- ------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- animal  building landscape character
 select * from  image;
