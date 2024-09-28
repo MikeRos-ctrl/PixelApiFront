@@ -1,7 +1,7 @@
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import App from '../App/App';
 import { Profile } from '../Profile/Profile';
-import { Documentation } from '../Documentation/Documentation';
+import { Checkout } from '../Checkout/Checkout';
 import React, { useEffect, useRef, Component } from 'react';
 import { LocalDb } from '../../util/LocalDb';
 
@@ -29,7 +29,6 @@ class AppRouter extends Component {
             if (response != "" && response[0].ready == true) {
                 console.log("User has been loaded from DB")
                 this.setMyUser(response[0])
-                console.log(response)
             }
 
             this.setState({ loading: true });
@@ -60,7 +59,7 @@ class AppRouter extends Component {
                     <Routes>
                         <Route path='/' element={<App myUser={myUser} setMyUser={this.setMyUser} />} />
                         <Route path='/profile' element={myUser.ready != null ? <Profile myUser={myUser} setMyUser={this.setMyUser} /> : <App />} />
-                        <Route path='/documentation' element={<Documentation />} />
+                        <Route path='/checkout' element={<Checkout />} />
                         <Route path='*' element={<p>Not Found</p>} />
                     </Routes>
                 </HashRouter >

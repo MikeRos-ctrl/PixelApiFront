@@ -8,12 +8,12 @@ function Pricing({ changeModalstatus_, myUser, setMyUser }) {
     const navigate = useNavigate();
     const [buttonId, setButtonId] = React.useState(1)
 
-    const validateAccount = () => {
+    const validateAccount = async () => {
 
         if (myUser.ready == false) {
             changeModalstatus_()
         } else {
-            navigate('/profile')
+            navigate('/checkout')
         }
     }
 
