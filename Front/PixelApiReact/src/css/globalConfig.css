@@ -296,3 +296,7 @@ li {
     color: var(--grey) !important;
     cursor: pointer;
 }
+
+.clickable {
+    cursor: pointer;
+}

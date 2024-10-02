@@ -50,6 +50,21 @@ const UsePixelApi = () => {
         }
     }
 
+    async function StripeCredentials(plan) {
+
+        try {
+            const response = await fetch(API + "/stripeCredentials?plan=" + plan, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            return response.json();
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
+    }
+
     async function ValidateAccount(email) {
 
         try {
@@ -149,7 +164,8 @@ const UsePixelApi = () => {
         UpdateAccount,
         Login,
         ForgotPwd,
-        PaypalOrder
+        PaypalOrder,
+        StripeCredentials
     }
 }
 

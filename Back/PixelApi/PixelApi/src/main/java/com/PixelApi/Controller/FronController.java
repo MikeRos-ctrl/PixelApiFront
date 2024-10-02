@@ -78,6 +78,24 @@ public class FronController {
 	 * statusResponse); }
 	 */
 
+	@GetMapping("/stripeCredentials")
+	public ResponseEntity<?> StripeCredentials(@RequestParam("plan") String plan) {
+
+		Map<String, Object> response = new HashMap<>();
+		HttpStatus statusResponse = HttpStatus.OK;
+
+		try {
+			response.put("response", myClientService.StripeCredentials(plan));
+			statusResponse = HttpStatus.OK;
+			
+		} catch (Exception e) {
+			response.put("mensaje", "Error interno");
+			response.put("error", e.getMessage());
+			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<>(response, statusResponse);
+	}
+
 	@PostMapping("/paypalOrder")
 	public ResponseEntity<?> paypalOrder(@RequestBody PaypalOrder myOrder) {
 

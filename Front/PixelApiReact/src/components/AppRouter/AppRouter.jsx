@@ -43,7 +43,6 @@ class AppRouter extends Component {
     }
 
     setMyUser = (myUser_) => {
-
         this.setState({
             myUser: myUser_
         });
@@ -57,7 +56,7 @@ class AppRouter extends Component {
             return (
                 <HashRouter>
                     <Routes>
-                        <Route path='/' element={<App myUser={myUser} setMyUser={this.setMyUser} />} />
+                        <Route path='/' element={<App myUser={myUser} setMyUser={this.setMyUser} setMyUserPayment={this.setMyUserPayment} />} />
                         <Route path='/profile' element={myUser.ready != null ? <Profile myUser={myUser} setMyUser={this.setMyUser} /> : <App />} />
                         <Route path='/checkout' element={<Checkout />} />
                         <Route path='*' element={<p>Not Found</p>} />

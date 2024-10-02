@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,38 @@ public class ClientService {
 
 	@Autowired
 	PaypalRepo paypalRepo;
+
+	@Value("${stripe.public}")
+	private String stripePublic;
+
+	@Value("${stripe.secret}")
+	private String stripeSecret;
+
+	@Value("${stripe.premium}")
+	private String stripePremium;
+
+	@Value("${stripe.premium_plus}")
+	private String stripePremiumPlus;
+
+	@Transactional
+	public Map<String, String> StripeCredentials(String plan) {
+
+		log.info("Inside StripeCredentials method");
+		Map<String, String> response = new HashMap<>();
+
+		try {
+			response.put("STRIPE_PUBLIC", stripePublic);
+			response.put("STRIPE_SECRET", stripeSecret);
+			String planCode = plan.equals("PREMIUM") ? stripePremium : stripePremiumPlus;
+			response.put("STRIPE_PLAN_CODE", planCode);
+
+		} catch (Exception e) {
+			log.error("Internal error in save method: " + e);
+			response.put("code", "666");
+			response.put("internal error in confirmAccount", e.toString());
+		}
+		return response;
+	}
 
 	public Map<String, Object> update(Client myClient) {
 

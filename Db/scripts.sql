@@ -62,6 +62,8 @@ create table paypalorder(
 );
 
 select * from paypalorder;
+drop table paypalorder;
+truncate paypalorder;
 -- ------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- animal  building landscape character

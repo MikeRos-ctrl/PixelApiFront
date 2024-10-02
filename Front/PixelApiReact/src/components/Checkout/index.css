@@ -6,7 +6,7 @@
 .absolute {
     position: absolute;
     top: 8px;
-    left: -35px;
+    left: -40px;
     cursor: pointer;
 }
 
@@ -14,10 +14,16 @@
     position: relative;
 }
 
-.checkoutLeftSmartConatiner {
-    /* background-color: aqua; */
-    width: 40rem;
+.checkoutLeft {
+    width: 50%;
+    background-color: #262829;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 4rem;
+    gap: 4.5rem;
 }
+
 
 .checkoutLeftReceipt {
     width: 100%;
@@ -42,16 +48,6 @@
     /*   mover esta cosa un poco mas abajo xd*/
 }
 
-.checkoutLeft {
-    width: 50%;
-    background-color: #262829;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 4rem;
-    gap: 4.5rem;
-}
-
 .checkoutLeftInformation {
     display: flex;
     flex-direction: column;
@@ -68,10 +64,13 @@
 .checkoutRight {
     width: 50%;
     background-color: rgb(255, 255, 255);
+}
+
+.checkoutRightContainer {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow-y: auto;
+    height: 100%;
 }
 
 #payment-form {
@@ -108,4 +107,31 @@
 .payButton:disabled {
     opacity: 0.5;
     cursor: none;
+}
+
+@media (max-width: 850px) {
+    .checkout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .checkoutLeft {
+        width: 100%;
+        padding-top: 6rem;
+        padding-bottom: 2rem;
+    }
+
+    .checkoutRight {
+        width: 100%;
+        height: 100%;
+        background-color: rgb(255, 255, 255);
+        overflow-y: auto;
+    }
+
+    .checkoutRightContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: auto; 
+    }
 }

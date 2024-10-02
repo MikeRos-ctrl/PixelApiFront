@@ -14,6 +14,7 @@ import { ModalCreate_UpdateAccount } from '../Modal/ModalCreate_UpdateAccount';
 import { ModalConfirmAccount } from '../Modal/ModalConfirmAccount';
 import { ModalWelcomeAccount } from '../Modal/ModalWelcomeAccount';
 import { ModalWelcomeBack } from '../Modal/ModalWelcomeBack';
+import { ModalPaymentInfo } from '../Modal/ModalPaymentInfo';
 import './index.css';
 
 const {
@@ -34,7 +35,8 @@ class App extends Component {
       image5: null,
       openModal: false,
       modalIndex: 0,
-      modalFlow: 'A'
+      modalFlow: 'A',
+      myUserPlan: null,
     }
   }
 
@@ -132,8 +134,14 @@ class App extends Component {
     }
   }
 
+  setMyUserPlan = (plan) => {
+    this.setState({
+      myUserPlan: plan
+    });
+  }
+
   render() {
-    const { image1, image2, image3, image4, image5, openModal, modalIndex, modalFlow } = this.state
+    const { image1, image2, image3, image4, image5, openModal, modalIndex, modalFlow, myUserPlan } = this.state
     const { myUser, setMyUser } = this.props;
 
     const ModalComponents = {
@@ -142,6 +150,7 @@ class App extends Component {
       2: <ModalConfirmAccount modalFlow={modalFlow} setMyUser={setMyUser} myUser={myUser} setModalIndex={this.setModalIndex} />,
       3: <ModalWelcomeAccount />,
       4: <ModalWelcomeBack setModalFlow={this.setModalFlow} setModalIndex={this.setModalIndex} setMyUser={setMyUser} myUser={myUser} />,
+      5: <ModalPaymentInfo myUserPlan={myUserPlan} />,
     };
 
     return (
@@ -177,7 +186,7 @@ class App extends Component {
 
           <Implementation />
 
-          <Pricing changeModalstatus_={this.changeModalstatus} myUser={myUser} setMyUser={setMyUser} />
+          <Pricing setMyUserPayment={this.setMyUserPlan} changeModalstatus={this.changeModalstatus} myUser={myUser} setMyUser={setMyUser} setModalIndex={this.setModalIndex} />
 
           {openModal && (
 

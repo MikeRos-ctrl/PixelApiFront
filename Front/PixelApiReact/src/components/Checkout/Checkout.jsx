@@ -1,111 +1,133 @@
-import React, { useEffect, useRef, Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import './index.css';
 import Logo from '../../assets/icon4.png';
 import arrow from '../../assets/Icon-11.png';
 import CheckoutForm from './CheckoutForm';
-import { Elements } from "@stripe/react-stripe-js"
-import { loadStripe } from "@stripe/stripe-js"
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import Stripe from 'stripe';
+import { UsePixelApi } from '../../util/UsePixelApi';
+const { StripeCredentials } = UsePixelApi()
 
-class Checkout extends Component {
-
+class Checkout extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            stripePublic: "pk_test_51Q1zOEFPhxiQYA140A2eGK8gGL66iEfViDDqJIubGGGWrXeoWOHpPPOAXB8QigbnZ7Y24fQjSRuMVwWKwOni9lsO00j1hnkAd0",
-            stripeSecret: "sk_test_51Q1zOEFPhxiQYA14uOzEc2TSF1NAvvggrFAex14QHUj6V6OJRlSDI9cFAdWbsLLZZUgTUIqI0CZlgotO4sxcCGPy00rF6RBw8I",
+            stripePublic: "",
+            stripeSecret: "",
             stripePromise: null,
-            clientSecret: null
-        }
+            clientSecret: null,
+        };
     }
 
-    componentDidMount() {
-        const { stripePublic, stripeSecret } = this.state
-        this.setState({ stripePromise: loadStripe(stripePublic) })
-        const stripe = new Stripe(stripeSecret);
+    async componentDidMount() {
+        const { plan, email } = this.props;
 
-        stripe.customers.create({
-            email: "example@gmail.com"
-        }).then(res => {
+        try {
+
+            let stripeConfig = await StripeCredentials(plan);
+            let stripe = new Stripe(stripeConfig.response.STRIPE_SECRET);
+            let createdUser = await stripe.customers.create({ email: email })
 
             stripe.subscriptions.create({
-                customer: res.id,
+                customer: createdUser.id,
                 items: [{
-                    price: "price_1Q20xgFPhxiQYA14Cqvfu7GL",
+                    price: stripeConfig.response.STRIPE_PLAN_CODE,
                 }],
                 payment_behavior: 'default_incomplete',
                 payment_settings: { save_default_payment_method: 'on_subscription' },
                 expand: ['latest_invoice.payment_intent'],
             }).then(res => {
-                this.setState({ clientSecret: res.latest_invoice.payment_intent.client_secret })
+                this.setState({
+                    clientSecret: res.latest_invoice.payment_intent.client_secret,
+                    stripePromise: loadStripe(stripeConfig.response.STRIPE_PUBLIC),
+                });
             });
-        });
+        } catch (error) {
+            console.error('Error creating subscription: ', error);
+        }
     }
 
-    componentDidUpdate() { }
-
     render() {
-
-        const { stripePromise, clientSecret } = this.state
+        const { stripePromise, clientSecret } = this.state;
+        const { navigate, plan, price } = this.props;
 
         return (
-            <div className="checkout" >
+            <>
+                <div className="checkout">
 
-                <div className="checkoutLeft">
+                    <div className="checkoutLeft">
 
-                    <div className="checkoutLeftSmartConatiner">
-
-                        <div className="relative">
-                            <img src={arrow} className="qwer2 absolute" alt="" />
-                            <img src={Logo} className="qwer" alt="" />
-                        </div>
-
-                        <div className="checkoutLeftInformation">
-                            <h5 className="regularText">
-                                ThePixelApi - Premium suscription
-                            </h5>
-
-                            <div className="checkoutLeftInformation2">
-                                <h3 className="titleNotMain">
-                                    8,00 US$
-                                </h3>
-                                <h5 className="regularText">
-                                    per month
-                                </h5>
-                            </div>
-                        </div>
-
-                        <div className="checkoutLeftReceiptContainer">
-                            <div className="checkoutLeftReceipt">
-                                <h5 className="titleNotMain">Premium Plan</h5>
-                                <h5 className="titleNotMain">8,00 US$</h5>
+                        <div className="checkoutLeftSmartConatiner">
+                            <div className="relative clickable" onClick={() => navigate('/')}>
+                                <img src={arrow} className="qwer2 absolute" alt="" />
+                                <img src={Logo} className="qwer" alt="" />
                             </div>
 
-                            <div className="checkoutLeftReceipt">
-                                <h5 className="titleNotMain">Taxes</h5>
-                                <h5 className="titleNotMain grey-color">0,00 US$</h5>
+                            <div className="checkoutLeftInformation">
+                                <h5 className="regularText">{plan} subscription</h5>
+                                <div className="checkoutLeftInformation2">
+                                    <h3 className="titleNotMain">{price}</h3>
+                                    <h5 className="regularText">per month</h5>
+                                </div>
+                            </div>
+
+                            <div className="checkoutLeftReceiptContainer">
+                                <div className="checkoutLeftReceipt">
+                                    <h5 className="titleNotMain">Premium Plan</h5>
+                                    <h5 className="titleNotMain">{price}</h5>
+                                </div>
+
+                                <div className="checkoutLeftReceipt">
+                                    <h5 className="titleNotMain">Taxes</h5>
+                                    <h5 className="titleNotMain grey-color">0,00 US$</h5>
+                                </div>
+                            </div>
+
+                            <div className="checkoutLeftReceipt2">
+                                <h5 className="titleNotMain">{price}</h5>
                             </div>
                         </div>
+                    </div>
 
-                        <div className="checkoutLeftReceipt2">
-                            <h5 className="titleNotMain">8,00 US$</h5>
+
+                    <div className="checkoutRight">
+
+                        <div className='checkoutRightContainer'>
+                            {stripePromise && clientSecret && (
+                                <Elements stripe={stripePromise} options={{ clientSecret }}>
+                                    <CheckoutForm />
+                                </Elements>
+                            )}
                         </div>
 
                     </div>
                 </div>
 
-
-                <div className="checkoutRight">
-                    {stripePromise && clientSecret && (
-                        <Elements stripe={stripePromise} options={{ clientSecret }}>
-                            <CheckoutForm />
-                        </Elements>
-                    )}
-                </div>
-
-            </div>
-        )
+            </>
+        );
     }
 }
-export { Checkout }
+
+function CheckoutWithRouter(props) {
+
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        if (!location.state) {
+            navigate('/');
+        }
+    }, [location, navigate]);
+
+    if (!location.state) {
+        return <></>
+    } else {
+        let price = location.state.plan == "Premium" ? "8,00 USD" : "10,00 USD"
+        return <Checkout {...props} navigate={navigate} price={price} plan={location.state.plan} email={location.state.email} />;
+    }
+}
+
+export { CheckoutWithRouter as Checkout };
