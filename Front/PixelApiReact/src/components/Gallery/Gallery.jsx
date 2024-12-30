@@ -44,6 +44,9 @@ class Gallery extends Component {
                         <input onClick={() => { listByCategory_("character"); this.updateButton(2) }} className={`titleNotMain ${buttonId == 2 ? ("button-3") : ("button-4")}`} type="button" value="CHARACTER" />
                         <input onClick={() => { listByCategory_("animal"); this.updateButton(3) }} className={`titleNotMain ${buttonId == 3 ? ("button-3") : ("button-4")}`} type="button" value="ANIMAL" />
                         <input onClick={() => { listByCategory_("landscape"); this.updateButton(4) }} className={`titleNotMain ${buttonId == 4 ? ("button-3") : ("button-4")}`} type="button" value="LANDSCAPE" />
+                        <input onClick={() => { listByCategory_("food"); this.updateButton(5) }} className={`titleNotMain ${buttonId == 4 ? ("button-3") : ("button-4")}`} type="button" value="FOOD" />
+                        <input onClick={() => { listByCategory_("items"); this.updateButton(5) }} className={`titleNotMain ${buttonId == 4 ? ("button-3") : ("button-4")}`} type="button" value="ITEMS" />
+                        <input onClick={() => { listByCategory_("memes"); this.updateButton(5) }} className={`titleNotMain ${buttonId == 4 ? ("button-3") : ("button-4")}`} type="button" value="MEMES" />
                     </div>
                 </div>
 

@@ -1,52 +1,95 @@
 package com.PixelApi.Entity;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "TOKEN")
 public class Token {
 
-	private String Token;
-	private Boolean valid;
-	private Integer client_id;
-	private Date creation_date;
-	private Date last_modification_date;
+	@Id
+	@Column(name = "TOKEN_ID")
+	private String tokenId;
 
-	public String getToken() {
-		return Token;
+	@Column(name = "CLIENT")
+	private Long client;
+
+	@Column(name = "CREATION")
+	private Timestamp creation;
+
+	@Column(name = "EXPIRATION_DATE")
+	private Timestamp expirationDate;
+
+	@Column(name = "REASON")
+	private String reason;
+
+	@Column(name = "ACTIVE")
+	private Boolean active;
+
+	public Token() {
+
 	}
 
-	public void setToken(String token) {
-		Token = token;
+	public Token(String tokenId, Long client,
+			Timestamp expirationDate, String reason, 
+			Boolean active) {
+		this.tokenId = tokenId;
+		this.client = client;
+		this.expirationDate = expirationDate;
+		this.reason = reason;
+		this.active = active;
 	}
 
-	public Boolean getValid() {
-		return valid;
+	public String getTokenId() {
+		return tokenId;
 	}
 
-	public void setValid(Boolean valid) {
-		this.valid = valid;
+	public void setTokenId(String tokenId) {
+		this.tokenId = tokenId;
 	}
 
-	public Integer getClient_id() {
-		return client_id;
+	public Long getClient() {
+		return client;
 	}
 
-	public void setClient_id(Integer client_id) {
-		this.client_id = client_id;
+	public void setClient(Long client) {
+		this.client = client;
 	}
 
-	public Date getCreation_date() {
-		return creation_date;
+	public Timestamp getCreation() {
+		return creation;
 	}
 
-	public void setCreation_date(Date creation_date) {
-		this.creation_date = creation_date;
+	public void setCreation(Timestamp creation) {
+		this.creation = creation;
 	}
 
-	public Date getLast_modification_date() {
-		return last_modification_date;
+	public Timestamp getExpirationDate() {
+		return expirationDate;
 	}
 
-	public void setLast_modification_date(Date last_modification_date) {
-		this.last_modification_date = last_modification_date;
+	public void setExpirationDate(Timestamp expirationDate) {
+		this.expirationDate = expirationDate;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 }

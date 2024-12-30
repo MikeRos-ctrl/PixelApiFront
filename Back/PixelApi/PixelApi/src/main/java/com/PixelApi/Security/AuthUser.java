@@ -30,7 +30,7 @@ public class AuthUser implements UserDetailsService{
 		
 		return User.builder()
 				//.username(myUser.getUsername())
-				.password(myUser.getAccountKey())
+				.password(myUser.getAcctKey())
 				.roles(myUser.getRole().toString())
 				.accountLocked(false)
 				.disabled(false)

@@ -19,6 +19,7 @@ class Checkout extends React.Component {
             stripeSecret: "",
             stripePromise: null,
             clientSecret: null,
+            returnFlag: false
         };
     }
 
@@ -50,9 +51,21 @@ class Checkout extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        const { setCheckOutFlag, location } = this.props;
+        location.state = null
+        setCheckOutFlag()
+    }
+
+    setReturnFlag = () => {
+        this.setState({
+            returnFlag: !this.state.returnFlag
+        })
+    }
+
     render() {
-        const { stripePromise, clientSecret } = this.state;
-        const { navigate, plan, price } = this.props;
+        const { stripePromise, clientSecret, returnFlag } = this.state;
+        const { navigate, plan, price, email } = this.props;
 
         return (
             <>
@@ -61,7 +74,7 @@ class Checkout extends React.Component {
                     <div className="checkoutLeft">
 
                         <div className="checkoutLeftSmartConatiner">
-                            <div className="relative clickable" onClick={() => navigate('/')}>
+                            <div className="relative clickable" onClick={() => returnFlag ? navigate('/') : null}>
                                 <img src={arrow} className="qwer2 absolute" alt="" />
                                 <img src={Logo} className="qwer" alt="" />
                             </div>
@@ -92,20 +105,16 @@ class Checkout extends React.Component {
                         </div>
                     </div>
 
-
                     <div className="checkoutRight">
-
                         <div className='checkoutRightContainer'>
                             {stripePromise && clientSecret && (
                                 <Elements stripe={stripePromise} options={{ clientSecret }}>
-                                    <CheckoutForm />
+                                    <CheckoutForm navigate={navigate} setReturnFlag={this.setReturnFlag} plan={plan} email={email} />
                                 </Elements>
                             )}
                         </div>
-
                     </div>
                 </div>
-
             </>
         );
     }
@@ -116,17 +125,9 @@ function CheckoutWithRouter(props) {
     const navigate = useNavigate();
     const location = useLocation();
 
-    useEffect(() => {
-        if (!location.state) {
-            navigate('/');
-        }
-    }, [location, navigate]);
-
-    if (!location.state) {
-        return <></>
-    } else {
+    if (location.state) {
         let price = location.state.plan == "Premium" ? "8,00 USD" : "10,00 USD"
-        return <Checkout {...props} navigate={navigate} price={price} plan={location.state.plan} email={location.state.email} />;
+        return <Checkout {...props} navigate={navigate} price={price} plan={location.state.plan} email={location.state.email} location={location} />;
     }
 }
 

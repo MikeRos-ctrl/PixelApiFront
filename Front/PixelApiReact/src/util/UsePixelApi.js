@@ -18,15 +18,15 @@ const UsePixelApi = () => {
         }
     }
 
-    async function PaypalOrder(myOrder) {
+    async function CreateStripeSubscription(data) {
 
         try {
-            const response = await fetch(API + "/paypalOrder", {
+            const response = await fetch(API + "/stripeSubscription", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(myOrder)
+                body: JSON.stringify(data)
             })
             return response.json();
         } catch (error) {
@@ -125,10 +125,10 @@ const UsePixelApi = () => {
         }
     }
 
-    async function FillFront() {
+    async function FillFrontHeader() {
 
         try {
-            const response = await fetch(API + "/fillFront", {
+            const response = await fetch(API + "/fillFrontHeader", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -156,7 +156,7 @@ const UsePixelApi = () => {
     }
 
     return {
-        FillFront,
+        FillFrontHeader,
         listByCategory,
         ValidateAccount,
         CreateAccount,
@@ -164,7 +164,7 @@ const UsePixelApi = () => {
         UpdateAccount,
         Login,
         ForgotPwd,
-        PaypalOrder,
+        CreateStripeSubscription,
         StripeCredentials
     }
 }

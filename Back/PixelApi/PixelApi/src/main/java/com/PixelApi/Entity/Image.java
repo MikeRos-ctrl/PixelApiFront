@@ -1,34 +1,31 @@
 package com.PixelApi.Entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 
 @Entity
-@Table(name = "image")
+@Table(name = "IMAGE")
 public class Image {
 
-	@Id
-	private String name;
-	private String description;
-	private String category;
+	@Id @Column(name = "IMAGE_ID") private String imageId;
+	@Column(name = "NAME") private String name;
+	@Column(name = "DESCRIPTION") private String description;
 
 	////////////////////////////////////////////////////////////////
 
 	public Image() {
 		
 	}
-	
-	public Image(String name, String description) {
-		this.name = name;
-		this.description = description;
+
+	public String getImageId() {
+		return imageId;
 	}
 
-	public Image(String name, String description, String category) {
-		this.name = name;
-		this.description = description;
-		this.category = category;
+	public void setImageId(String imageId) {
+		this.imageId = imageId;
 	}
 
 	public String getName() {
@@ -45,13 +42,5 @@ public class Image {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
 	}
 }

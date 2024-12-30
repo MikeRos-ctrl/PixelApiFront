@@ -18,7 +18,8 @@ class AppRouter extends Component {
                 accountKey: null,
                 ready: false,
             },
-            loading: false
+            loading: false,
+            checkOutFlag: false
         }
     }
 
@@ -48,17 +49,22 @@ class AppRouter extends Component {
         });
     }
 
+    setCheckOutFlag = () => {
+        this.setState({ checkOutFlag: !this.state.checkOutFlag })
+    }
+
     render() {
-        const { myUser, loading } = this.state
+        const { myUser, loading, checkOutFlag } = this.state
 
         if (loading) {
 
             return (
                 <HashRouter>
                     <Routes>
-                        <Route path='/' element={<App myUser={myUser} setMyUser={this.setMyUser} setMyUserPayment={this.setMyUserPayment} />} />
+                        <Route path='/' element={<App setCheckOutFlag={this.setCheckOutFlag} myUser={myUser} setMyUser={this.setMyUser} />} />
+                        <Route path='/checkout' element={checkOutFlag == false ? <App setCheckOutFlag={this.setCheckOutFlag} myUser={myUser} setMyUser={this.setMyUser} /> : <Checkout setCheckOutFlag={this.setCheckOutFlag} />} />
+
                         <Route path='/profile' element={myUser.ready != null ? <Profile myUser={myUser} setMyUser={this.setMyUser} /> : <App />} />
-                        <Route path='/checkout' element={<Checkout />} />
                         <Route path='*' element={<p>Not Found</p>} />
                     </Routes>
                 </HashRouter >

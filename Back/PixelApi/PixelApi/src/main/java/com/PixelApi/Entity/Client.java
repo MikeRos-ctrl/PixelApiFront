@@ -2,6 +2,7 @@ package com.PixelApi.Entity;
 
 import org.hibernate.validator.constraints.UniqueElements;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,60 +13,51 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
 @Entity
-@Table(name = "client")
+@Table(name = "CLIENT")
 public class Client {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(name = "CLIENT_ID")
+	private Long clientId;
 
+	@Column(name = "ACCT_KEY")
 	@NotEmpty(message = "contraseña no puede estar vacia")
-	private String accountKey;
+	private String acctKey;
 
+	@Column(name = "EMAIL")
 	@NotEmpty(message = "correo no puede estar vacio")
 	@Email(message = "correo con formato no valido")
 	private String email;
 
+	@Column(name = "ROLE")
 	private Integer role;
 
-	private Integer accountType;
-
-	////////////////////////////////////////////////////////////////
-
 	public Client() {
-
+		
 	}
-
-	public Client(Long id, String accountKey, String email, Integer role, Integer accountType) {
-		this.id = id;
-		this.accountKey = accountKey;
+	
+	public Client(Long clientId, String acctKey, String email, Integer role) {
+		this.clientId = clientId;
+		this.acctKey = acctKey;
 		this.email = email;
 		this.role = role;
-		this.accountType = accountType;
 	}
 
-	public Integer getAccountType() {
-		return accountType;
+	public Long getClientId() {
+		return clientId;
 	}
 
-	public void setAccountType(Integer accountType) {
-		this.accountType = accountType;
+	public void setClientId(Long clientId) {
+		this.clientId = clientId;
 	}
 
-	public Long getId() {
-		return id;
+	public String getAcctKey() {
+		return acctKey;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getAccountKey() {
-		return accountKey;
-	}
-
-	public void setAccountKey(String accountKey) {
-		this.accountKey = accountKey;
+	public void setAcctKey(String acctKey) {
+		this.acctKey = acctKey;
 	}
 
 	public String getEmail() {

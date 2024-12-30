@@ -2,7 +2,7 @@ import React from "react";
 import validator from 'validator';
 import { useNavigate } from 'react-router-dom';
 
-function ModalPaymentInfo({ myUserPlan }) {
+function ModalPaymentInfo({ myUserPlan, setCheckOutFlag }) {
 
     const navigate = useNavigate();
     const [inputValue1, setInputValue1] = React.useState('')
@@ -34,10 +34,10 @@ function ModalPaymentInfo({ myUserPlan }) {
             }, 3000);
         }
         else {
+            setCheckOutFlag()
             navigate('/checkout', { state: { plan: myUserPlan, email: inputValue1 } });
         }
     }
-
 
     return (
         <>

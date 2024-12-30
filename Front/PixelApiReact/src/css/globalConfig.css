@@ -7,6 +7,8 @@
     --dark-light: #262829;
     --mint: #98FF98;
     --soul: #E6E6FA;
+    --okayGreen: #02992f;
+    --redColor: #d11010;
     --backgroundColor: #181A1B;
     --title: 'Balsamiq Sans', cursive;
     --regularText: 'Ysabeau Office', sans-serif
@@ -83,7 +85,7 @@ h4 {
 
 h5,
 label {
-    font-size: 1.9rem;
+    font-size: 2rem;
     margin: 0 0;
     color: var(--white);
 }
@@ -196,14 +198,25 @@ li {
 }
 
 .img-container-big {
-    padding: 1.5rem;
+    padding: 1.2rem;
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1.2rem;
     border-radius: 2rem;
     background: linear-gradient(45deg, var(--orange), var(--strongPink));
+}
+
+.img-container-2 {
+    padding: 1.3rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.3rem;
+    border-radius: 2rem;
+    background: linear-gradient(45deg, var(--strongPink), var(--mint));
 }
 
 .img-container-big-loading {
@@ -246,16 +259,7 @@ li {
     }
 }
 
-.img-container-2 {
-    padding: 1.4rem;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.4rem;
-    border-radius: 2rem;
-    background: linear-gradient(45deg, var(--strongPink), var(--mint));
-}
+
 
 .clickable {
     cursor: pointer;
@@ -280,6 +284,16 @@ li {
     background-color: #ff000034;
 }
 
+.modalbtnerrorStripe {
+    border: none;
+    margin-top: 1rem;
+    padding: 0.7rem;
+    border-radius: 1rem;
+    font-size: 1.4rem;
+    color: red;
+    background-color: #ff000034;
+}
+
 .modalbtnsuccess {
     border: none;
     padding: 0.7rem;
@@ -299,4 +313,25 @@ li {
 
 .clickable {
     cursor: pointer;
+}
+
+
+.swal2-title {
+    font-size: 2.8rem;
+    font-family: var(--title) !important;
+    font-weight: 400;
+}
+
+.swal2-modal .swal2-confirm {
+    font-size: 1.4rem;
+    font-family: var(--title) !important;
+    font-weight: 300;
+    background-color: var(--okayGreen);
+}
+
+.swal2-modal .swal2-deny {
+    font-size: 1.4rem;
+    font-family: var(--title) !important;
+    font-weight: 300;
+    background-color: var(--redColor);
 }

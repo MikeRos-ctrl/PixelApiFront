@@ -1,11 +1,19 @@
 import { useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js"
 import React, { useEffect, useRef, Component } from 'react';
+import { UsePixelApi } from "../../util/UsePixelApi";
+import Swal from 'sweetalert2'
 
-function CheckoutForm() {
+function CheckoutForm({ navigate, setReturnFlag, plan, email }) {
     const stripe = useStripe()
     const elements = useElements()
-    const [message, setMessage] = React.useState(null);
+    const [error, setError] = React.useState(false)
+    const [errorText, setErrorText] = React.useState(false)
     const [isProcessing, setIsProcessing] = React.useState(false);
+    const { CreateStripeSubscription } = UsePixelApi()
+
+    useEffect(() => {
+        setReturnFlag()
+    }, [isProcessing]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -15,21 +23,57 @@ function CheckoutForm() {
         }
 
         setIsProcessing(true);
+        setReturnFlag()
 
         const { error, paymentIntent } = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: `http://localhost:5173/`,
             },
+            redirect: 'if_required'
         });
 
-        if (error.type === "card_error" || error.type === "validation_error") {
-            setMessage(error.message);
-        } else {
-            setMessage("An unexpected error occured.");
-        }
+        if (error) {
+            if (error.type === "card_error" || error.type === "validation_error") {
+                setError(true);
+                setErrorText(error.message);
+                setTimeout(() => {
+                    setError(false);
+                }, 3000);
+            } else {
+                setError(true);
+                setErrorText("An unexpected error occurred.");
+                setTimeout(() => {
+                    setError(false);
+                }, 3000);
+            }
+        } else if (paymentIntent && paymentIntent.status === "succeeded") {
 
-        console.log(paymentIntent)
+            console.log(paymentIntent)
+            console.log(paymentIntent.id)
+
+            CreateStripeSubscription({
+                stripeSubscriptionId: paymentIntent.id,
+                email: email,
+                planTypeId: plan
+            }).then(res => {
+
+                console.log(res)
+
+                // Swal.fire({
+                //     icon: 'success',
+                //     title: 'Payment was confirmed',
+                //     showConfirmButton: true,
+                // }).then(res => {
+                //     /*
+                //     *Stripe sends an Invoice in prod
+                //     *Save subscription
+                //     */
+
+                //     navigate('/')
+                //     console.log(paymentIntent)
+                // })
+            })
+        }
 
         setIsProcessing(false);
     };
@@ -40,11 +84,9 @@ function CheckoutForm() {
                 <PaymentElement id="payment-element" />
                 <button disabled={isProcessing || !stripe || !elements} className="payButton titleNotMain">
                     <span id="button-text">
-                        {isProcessing ? "Processing ... " : "Pay now"}
+                        {isProcessing ? "Processing" : "Pay now"}
                     </span>
                 </button>
-
-                {message && <div id="payment-message">{message}</div>}
             </form>
         </>
     )

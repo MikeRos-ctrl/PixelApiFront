@@ -18,7 +18,7 @@ import { ModalPaymentInfo } from '../Modal/ModalPaymentInfo';
 import './index.css';
 
 const {
-  FillFront,
+  FillFrontHeader,
   listByCategory
 } = UsePixelApi()
 
@@ -44,7 +44,10 @@ class App extends Component {
 
     document.body.classList.remove('no-scroll');
 
-    FillFront().then(result => {
+    FillFrontHeader().then(result => {
+
+      console.log(result)
+
       this.setState({
         image1: result[0],
         image2: result[1],
@@ -107,7 +110,7 @@ class App extends Component {
   listByCategory_ = (category) => {
 
     if (category == "all") {
-      FillFront().then(result => {
+      FillFrontHeader().then(result => {
         this.setState({
           image2: result[1],
           image3: result[2],
@@ -142,7 +145,7 @@ class App extends Component {
 
   render() {
     const { image1, image2, image3, image4, image5, openModal, modalIndex, modalFlow, myUserPlan } = this.state
-    const { myUser, setMyUser } = this.props;
+    const { myUser, setMyUser, setCheckOutFlag } = this.props;
 
     const ModalComponents = {
       0: <ModalLogin setModalIndex={this.setModalIndex} setMyUser={setMyUser} />,
@@ -150,7 +153,7 @@ class App extends Component {
       2: <ModalConfirmAccount modalFlow={modalFlow} setMyUser={setMyUser} myUser={myUser} setModalIndex={this.setModalIndex} />,
       3: <ModalWelcomeAccount />,
       4: <ModalWelcomeBack setModalFlow={this.setModalFlow} setModalIndex={this.setModalIndex} setMyUser={setMyUser} myUser={myUser} />,
-      5: <ModalPaymentInfo myUserPlan={myUserPlan} />,
+      5: <ModalPaymentInfo myUserPlan={myUserPlan} setCheckOutFlag={setCheckOutFlag} />,
     };
 
     return (
@@ -159,28 +162,21 @@ class App extends Component {
         <div className="myWidth">
 
           <Header changeModalstatus={this.changeModalstatus} myUser={myUser}>
-
-            {image1 ? (
+            {image1 &&
               <HeaderImage image={image1} />
-            ) : (
-              <HeaderImageLoading />
-            )}
-
+            }
           </Header>
 
           <Gallery listByCategory_={this.listByCategory_}>
 
-            {image2 && image3 && image4 && image5 ? (
-
+            {image2 && image3 && image4 && image5 &&
               <GalleryImages
                 image1={image2}
                 image2={image3}
                 image3={image4}
                 image4={image5}
               />
-            ) : (
-              <GalleryImagesLoading />
-            )}
+            }
 
           </Gallery>
 
@@ -189,7 +185,6 @@ class App extends Component {
           <Pricing setMyUserPayment={this.setMyUserPlan} changeModalstatus={this.changeModalstatus} myUser={myUser} setMyUser={setMyUser} setModalIndex={this.setModalIndex} />
 
           {openModal && (
-
             <Modal setModalIndex={this.setModalIndex} changeModalstatus={this.changeModalstatus}>
               {ModalComponents[modalIndex]}
             </Modal>

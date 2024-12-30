@@ -7,19 +7,20 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.hibernate.annotations.CurrentTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.PixelApi.Entity.ClientAccountId;
-import com.PixelApi.Entity.PaypalOrder;
-import com.PixelApi.Entity.TokenAccount;
 import com.PixelApi.Entity.Client;
+import com.PixelApi.Entity.StripeSubscription;
+import com.PixelApi.Entity.StripeSubscriptionDto;
+import com.PixelApi.Entity.Token;
 import com.PixelApi.Repository.ClientRepo;
-import com.PixelApi.Repository.PaypalRepo;
-import com.PixelApi.Repository.TokenAccounttRepo;
+import com.PixelApi.Repository.StripeSubscriptionRepo;
+import com.PixelApi.Repository.TokenRepo;
 import com.PixelApi.Util.SendMail;
 
 import jakarta.transaction.Transactional;
@@ -33,13 +34,13 @@ public class ClientService {
 	SendMail sendMailClass;
 
 	@Autowired
-	TokenAccounttRepo tokenRepo;
+	TokenRepo tokenRepo;
 
 	@Autowired
 	ClientRepo clientRepo;
 
 	@Autowired
-	PaypalRepo paypalRepo;
+	StripeSubscriptionRepo stripeRepo;
 
 	@Value("${stripe.public}")
 	private String stripePublic;
@@ -73,14 +74,38 @@ public class ClientService {
 		return response;
 	}
 
-	public Map<String, Object> update(Client myClient) {
+	@Transactional
+	public Map<String, Object> CreateStripeSubscription(StripeSubscriptionDto mySubscription) {
+
+		log.info("Inside CreateStripeSubscription method");
+		Map<String, Object> response = new HashMap<>();
+
+		try {
+			StripeSubscription clientubscription = new StripeSubscription(
+					mySubscription.getStripeSubscriptionId(),
+					clientRepo.findByEmail(mySubscription.getEmail()).getClientId(), 
+					mySubscription.getPlanTypeId(), true, 1);
+
+			stripeRepo.save(clientubscription);
+			log.info("StripeSubscription has been saved");
+
+			response.put("StripeSubscription", mySubscription);
+		} catch (Exception e) {
+			log.error("Internal error in save method: " + e);
+			response.put("code", "666");
+			response.put("internal error in confirmAccount", e.toString());
+		}
+		return response;
+	}
+
+	public Map<String, Object> Update(Client myClient) {
 
 		Map<String, Object> response = new HashMap<>();
 		log.info("Inside update method");
 
-		Client updateClient = clientRepo.findById(myClient.getId()).get();
+		Client updateClient = clientRepo.findById(myClient.getClientId()).get();
 		updateClient.setEmail(myClient.getEmail());
-		updateClient.setAccountKey(new BCryptPasswordEncoder().encode(myClient.getAccountKey()));
+		updateClient.setAcctKey(new BCryptPasswordEncoder().encode(myClient.getAcctKey()));
 		response.put("Updated client", clientRepo.save(updateClient));
 
 		return response;
@@ -91,7 +116,7 @@ public class ClientService {
 		log.info("Inside Login method");
 
 		Client myClient = clientRepo.findByEmail(email);
-		Boolean answer = new BCryptPasswordEncoder().matches(accountKey, myClient.getAccountKey());
+		Boolean answer = new BCryptPasswordEncoder().matches(accountKey, myClient.getAcctKey());
 		return (answer) ? myClient : null;
 	}
 
@@ -109,21 +134,72 @@ public class ClientService {
 
 			Client myClient = clientRepo.findByEmail(email);
 
-			if (tokenRepo.tokenValidation(myClient.getId(), "ACCOUNT-CONFIRMATION", true) == 1) {
+			if (tokenRepo.tokenValidation(myClient.getClientId(), "ACCOUNT-CONFIRMATION", true) == 1) {
 				log.info("Existing user trying to login, let's validate now the password ");
 				response.put("message", "Existing email, let's validate password");
 				response.put("code", "B");
 				response.put("codeExplanation", "Existing functional account");
-				response.put("id", myClient.getId().toString());
+				response.put("id", myClient.getClientId().toString());
 			} else {
 				response.put("message", "Existing record given that email, but not activated");
 				response.put("code", "C");
 				response.put("codeExplanation", "Account hasn't been activated");
-				response.put("additionalField", myClient.getId().toString());
+				response.put("additionalField", myClient.getClientId().toString());
 				log.info("Account hasn't been activated");
 			}
 		}
 		return response;
+	}
+
+	@Transactional
+	public Client Save(Client myClient) {
+
+		Client myResponse = null;
+		Boolean sendMail = false;
+
+		log.info("Inside save method");
+
+		try {
+			String email = myClient.getEmail();
+			String confirmationCode = UUID.randomUUID().toString();
+
+			/*
+			 * SEND CONFIRMATION EMAIL
+			 */
+
+			if (clientRepo.countByEmail(email) == 0) {
+				String encryptedPwd = new BCryptPasswordEncoder().encode(myClient.getAcctKey());
+				myClient.setAcctKey(encryptedPwd);
+				myResponse = clientRepo.save(myClient);
+				sendMail = true;
+				log.info("Client saved");
+
+				tokenRepo.save(new Token(confirmationCode, myResponse.getClientId(), null, "ACCT_CONFIRMATION", true));
+				log.info("Client token saved");
+
+				new Thread(() -> {
+					log.info("Sending email to: " + email);
+					sendMailClass.sendMail(email, confirmationCode, 'A');
+					log.info("Email has been sent");
+				}).start();
+
+			} else {
+
+				/*
+				 * DON'T SENT CONFIRMATION EMAIL
+				 */
+				Client existingClient = clientRepo.findByEmail(email);
+				existingClient.setAcctKey(new BCryptPasswordEncoder().encode(myClient.getAcctKey()));
+				myResponse = clientRepo.save(existingClient);
+				log.info("Client just changed pwd xd in the modal flow");
+			}
+
+			return myResponse;
+
+		} catch (Exception e) {
+			log.error("Internal error in save method: " + e);
+			return null;
+		}
 	}
 
 	@Transactional
@@ -136,11 +212,12 @@ public class ClientService {
 			/*
 			 * Numero de emails sin confirmar se han enviado
 			 */
-			if (tokenRepo.tokenValidation(id, "FORGET-PWD", false) == 0) {
+			if (tokenRepo.tokenValidation(id, "RECOVER_PWD", false) == 0) {
 
 				String confirmationCode = UUID.randomUUID().toString();
-				TokenAccount register = new TokenAccount(confirmationCode, id, false, "FORGET-PWD");
-				tokenRepo.save(register);
+
+				tokenRepo.save(new Token(confirmationCode, id, null, "RECOVER_PWD", true));
+
 				log.info("Client token saved");
 				response.put("value", "true");
 				response.put("message", "Email has been sent :)");
@@ -165,83 +242,13 @@ public class ClientService {
 	}
 
 	@Transactional
-	public Client Save(Client myClient) {
-
-		Client myResponse = null;
-		Boolean sendMail = false;
-
-		log.info("Inside save method");
-
-		try {
-			String email = myClient.getEmail();
-			String confirmationCode = UUID.randomUUID().toString();
-
-			/*
-			 * SEND CONFIRMATION EMAIL
-			 */
-
-			if (clientRepo.countByEmail(email) == 0) {
-				String encryptedPwd = new BCryptPasswordEncoder().encode(myClient.getAccountKey());
-				myClient.setAccountKey(encryptedPwd);
-				myResponse = clientRepo.save(myClient);
-				sendMail = true;
-				log.info("Client saved");
-			} else {
-
-				/*
-				 * DON'T SENT CONFIRMATION EMAIL
-				 */
-				Client existingClient = clientRepo.findByEmail(email);
-				existingClient.setAccountKey(new BCryptPasswordEncoder().encode(myClient.getAccountKey()));
-				myResponse = clientRepo.save(existingClient);
-				log.info("Client just changed pwd xd in the modal flow");
-			}
-
-			if (myResponse != null && sendMail == true) {
-				TokenAccount confirmAccount = new TokenAccount(confirmationCode, myResponse.getId(), false,
-						"ACCOUNT-CONFIRMATION");
-				tokenRepo.save(confirmAccount);
-				log.info("Client token saved");
-
-				new Thread(() -> {
-					log.info("Sending email to: " + email);
-					sendMailClass.sendMail(email, confirmationCode, 'A');
-					log.info("Email has been sent");
-				}).start();
-			}
-
-			return myResponse;
-
-		} catch (Exception e) {
-			log.error("Internal error in save method: " + e);
-			return null;
-		}
-	}
-
-	@Transactional
-	public String Save(PaypalOrder myOrder) {
-
-		log.info("Inside Save paypal order method");
-
-		try {
-			paypalRepo.save(myOrder);
-			log.info("Order saved");
-			return "Order saved";
-
-		} catch (Exception e) {
-			log.error("Internal error in save method: " + e);
-			return "Internal error in save method";
-		}
-	}
-
-	@Transactional
 	public Map<String, String> ConfirmAccount(Long clientId, String token) {
 
 		log.info("Inside confirmAccount method");
 		Map<String, String> response = new HashMap<>();
 
 		try {
-			TokenAccount myToken = tokenRepo.findById(new ClientAccountId(clientId, token)).orElse(null);
+			Token myToken = tokenRepo.findById(token).orElse(null);
 
 			if (myToken == null) {
 				log.info("Invalid Token");
@@ -249,7 +256,7 @@ public class ClientService {
 				response.put("message", "Invalid token");
 			} else {
 
-				myToken.setConfirmed(true);
+				myToken.setActive(true);
 				tokenRepo.save(myToken);
 				log.info("Token has beed confirmed");
 				log.info("Token reason: " + myToken.getReason());

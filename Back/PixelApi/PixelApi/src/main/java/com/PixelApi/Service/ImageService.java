@@ -14,11 +14,11 @@ public class ImageService {
 	@Autowired
 	ImageRepo repo;
 
-	public String findDescriptionById(String name) {
-		return (repo.findById(name).get()).getDescription();
+	public String findNameById(String name) {
+		return (repo.findById(name).get()).getName();
 	}
 	
-	public List<Image> categoryList(String cetegory){
-		return repo.categorieList(cetegory);
-	}
+	//public List<Image> categoryList(String cetegory){
+	//	return repo.categorieList(cetegory);
+	//}
 }
