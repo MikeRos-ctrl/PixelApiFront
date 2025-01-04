@@ -60,7 +60,7 @@ a {
 }
 
 h1 {
-    font-size: 5.5rem;
+    font-size: 5rem;
     margin: 0 0;
     color: var(--white);
 }
@@ -72,13 +72,13 @@ h2 {
 }
 
 h3 {
-    font-size: 3.3rem;
+    font-size: 3rem;
     margin: 0 0;
     color: var(--white);
 }
 
 h4 {
-    font-size: 2.6rem;
+    font-size: 2.5rem;
     margin: 0 0;
     color: var(--white);
 }
@@ -90,9 +90,14 @@ label {
     color: var(--white);
 }
 
-p,
+p {
+    font-size: 1.8rem;
+    margin: 0 0;
+    color: var(--white);
+}
+
 input {
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     margin: 0 0;
     color: var(--white);
 }
@@ -197,7 +202,46 @@ li {
     width: 20px;
 }
 
-.img-container-big {
+.legendaryCard {
+    padding: 1.2rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    border-radius: 2rem;
+    background: linear-gradient(90deg, #181A1B 25%, #FFD700 50%, #181A1B 75%);
+    background-size: 200% 200%;
+    animation: imageLoadingAnimation 3s ease-in-out infinite, legendaryGlow 1.5s ease-in-out infinite alternate;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 0 50px #98FF98;
+    border: 2px solid #FFD700;
+}
+
+@keyframes imageLoadingAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes legendaryGlow {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.6), 0 0 50px #181A1B;
+    }
+
+    100% {
+        box-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 80px #181A1B;
+    }
+}
+
+/* .img-container-big {
     padding: 1.2rem;
     display: flex;
     justify-content: center;
@@ -206,6 +250,21 @@ li {
     gap: 1.2rem;
     border-radius: 2rem;
     background: linear-gradient(45deg, var(--orange), var(--strongPink));
+} */
+
+.img-container-big-loading {
+    padding: 1.2rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    border-radius: 2rem;
+    width: 277px;
+    height: 350px;
+    background: linear-gradient(90deg, #181A1B 25%, #4169e1 50%, #181A1B 75%);
+    background-size: 200% 200%;
+    animation: imageLoadingAnimation 2s ease-in-out infinite;
 }
 
 .img-container-2 {
@@ -219,21 +278,6 @@ li {
     background: linear-gradient(45deg, var(--strongPink), var(--mint));
 }
 
-.img-container-big-loading {
-    padding: 1.5rem;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    border-radius: 2rem;
-    width: 280px;
-    height: 331px;
-    background: linear-gradient(90deg, #181A1B 25%, #4169e1 50%, #181A1B 75%);
-    background-size: 200% 200%;
-    animation: imageLoadingAnimation 2s ease-in-out infinite;
-}
-
 .img-container-medium-loading {
     padding: 1.5rem;
     display: flex;
@@ -242,8 +286,8 @@ li {
     align-items: center;
     gap: 0.5rem;
     border-radius: 2rem;
-    width: 228px;
-    height: 262px;
+    width: 226px;
+    height: 258px;
     background: linear-gradient(90deg, #181A1B 25%, #4169e1 50%, #181A1B 75%);
     background-size: 200% 200%;
     animation: imageLoadingAnimation 2s ease-in-out infinite;

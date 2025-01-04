@@ -18,6 +18,20 @@ const UsePixelApi = () => {
         }
     }
 
+    async function GetRandomImageWithCategories() {
+        try {
+            const response = await fetch(API + "/getRandomImageWithCategories", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            return response.json();
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
+    }
+
     async function CreateStripeSubscription(data) {
 
         try {
@@ -155,9 +169,25 @@ const UsePixelApi = () => {
         }
     }
 
+    async function listByCategory2(category, imageId) {
+
+        try {
+            const response = await fetch(API + "/listByCategory/" + category + "/" + imageId, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            return response.json();
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
+    }
+
     return {
         FillFrontHeader,
         listByCategory,
+        listByCategory2,
         ValidateAccount,
         CreateAccount,
         ConfirmAccount,
@@ -165,7 +195,8 @@ const UsePixelApi = () => {
         Login,
         ForgotPwd,
         CreateStripeSubscription,
-        StripeCredentials
+        StripeCredentials,
+        GetRandomImageWithCategories
     }
 }
 

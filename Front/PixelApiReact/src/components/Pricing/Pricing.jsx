@@ -21,13 +21,13 @@ function Pricing({ changeModalstatus, myUser, setModalIndex, setMyUserPayment })
     return (
         <div className='pricingMain'>
 
-            <Element name="pricingSection">
+            <div name="pricingSection">
                 <h2 className="titleMain pricingMainBtn">
                     Choose your
                     <span className="strongPinkColor">montly</span>
                     plan
                 </h2>
-            </Element>
+            </div>
 
             <br />
 

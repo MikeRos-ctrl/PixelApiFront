@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Component } from 'react';
+import 'animate.css'
 import { HeaderImageLoading } from '../HeaderImageLoading/HeaderImageLoading';
 
 class HeaderImage extends Component {
@@ -7,53 +8,32 @@ class HeaderImage extends Component {
         super(props);
 
         this.state = {
-            fetchedImg: null
+            ready: false
         }
     }
 
     componentDidMount() {
-        this.fetchImage()
     }
 
     componentWillUnmount() {
-        const { fetchedImg } = this.state;
 
-        if (fetchedImg) {
-            URL.revokeObjectURL(fetchedImg);
-        }
-    }
-
-    fetchImage = async () => {
-        const { image } = this.props;
-
-        try {
-            const response = await fetch(image["Image"])
-
-            if (response.ok) {
-                const blob = await response.blob();
-                const localImg = URL.createObjectURL(blob);
-                this.setState({ fetchedImg: localImg })
-            }
-        } catch (error) {
-            console.error('Fetch error:', error);
-        }
     }
 
     render() {
         const { image } = this.props;
-        const { fetchedImg } = this.state;
+        const { ready } = this.state;
 
         return (
             <React.Fragment>
-
-                <div className={`${fetchedImg != null ? ("img-container-big") : ("img-container-big-loading")}`}>
-
-                    {fetchedImg != null &&
-                        <>
-                            <p className="titleNotMain">Explore our art gallery ❤️</p>
-                            <img src={fetchedImg} className="image" alt="" />
-                            <h5 className="titleNotMain white-color">{image["Name"]}</h5>
-                        </>
+                <div className={`${ready ? ("legendaryCard animate__animated animate__fadeIn") : ("img-container-big-loading")}`}>
+                    {ready &&
+                        <h5 className="titleNotMain white-color">{image["Name"]}</h5>
+                    }
+                    {image &&
+                        <img onLoad={() => { this.setState({ ready: true }) }} src={image["Image"]} className="image" alt="" />
+                    }
+                    {ready &&
+                        <p className="titleNotMain">ThePixelApi greets you ❤️</p>
                     }
                 </div>
             </React.Fragment>

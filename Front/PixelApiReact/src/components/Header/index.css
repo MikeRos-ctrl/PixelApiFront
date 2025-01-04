@@ -89,6 +89,13 @@ nav {
     height: 150px; */
 }
 
+.qwer3 {
+    width: 35px;
+    cursor: pointer;
+    /* width: 150px;
+    height: 150px; */
+}
+
 
 .showMenu {
     display: flex;

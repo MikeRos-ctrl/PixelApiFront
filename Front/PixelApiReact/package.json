@@ -12,6 +12,7 @@
   "dependencies": {
     "@stripe/react-stripe-js": "^2.8.0",
     "@stripe/stripe-js": "^4.5.0",
+    "animate.css": "^4.1.1",
     "crypto-js": "^4.2.0",
     "highlight.js": "^11.9.0",
     "react": "^18.2.0",

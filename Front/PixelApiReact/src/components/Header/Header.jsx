@@ -35,7 +35,7 @@ function Header({ children, changeModalstatus, myUser }) {
                     <Link to="pricingSection" smooth={true} duration={500}>
                         <div className="navRightCouple clickable">
                             <img src={Money} className="qwer2" alt="" />
-                            <h5 className="regularText">PRICING</h5>
+                            <h5 className="titleNotMain">PRICING</h5>
                         </div>
                     </Link>
 
@@ -43,17 +43,17 @@ function Header({ children, changeModalstatus, myUser }) {
                         navigate('/documentation')
                     }}>
                         <img src={Doc} className="qwer2" alt="" />
-                        <h5 className="regularText">DOCUMENTATION</h5>
+                        <h5 className="titleNotMain">DOCUMENTATION</h5>
                     </div>
 
                     <div className="navRightCouple clickable">
                         <img src={About} className="qwer2" alt="" />
-                        <h5 className="regularText">ABOUT</h5>
+                        <h5 className="titleNotMain">ABOUT</h5>
                     </div>
 
                     <div className="navRightCouple clickable" onClick={() => OpenModal()}>
                         <img src={User} className="qwer2" alt="" />
-                        <h5 className="regularText">ACCOUNT</h5>
+                        <h5 className="titleNotMain">ACCOUNT</h5>
                     </div>
                 </div>
             </nav>
@@ -74,7 +74,7 @@ function Header({ children, changeModalstatus, myUser }) {
                     <div className="information">
 
                         <h5 className="titleNotMain grey-color">
-                            Api to retreive awesome heart made Pixel Art.
+                            Api to fetch awesome heart made Pixel Art.
                         </h5>
 
                         <h5 className="titleNotMain grey-color">

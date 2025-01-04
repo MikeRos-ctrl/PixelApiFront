@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.PixelApi.Entity.Image;
+import com.PixelApi.Entity.ImageCategoryDTO;
 import com.PixelApi.Entity.StripeSubscriptionDto;
+import com.PixelApi.Entity.CategoryImage;
 import com.PixelApi.Entity.Client;
 import com.PixelApi.Service.ClientService;
 import com.PixelApi.Service.ImageService;
@@ -57,29 +59,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RequestMapping("/frontController")
 public class FronController {
 
-	@Autowired ImageService service;
+	@Autowired
+	ImageService service;
 
-	@Autowired ClientService myClientService;
+	@Autowired
+	ClientService myClientService;
 
-    @Value("${image.link}") private String imageLink;
-	
-	/*
-	 * @GetMapping("/random") public ResponseEntity<?> getImage() {
-	 * 
-	 * Map<String, Object> response = new HashMap<>(); HttpStatus statusResponse =
-	 * HttpStatus.OK;
-	 * 
-	 * try { Path imagePath = Paths.get("src/main/resources/IMG/cute-girl.jpeg");
-	 * byte[] imageBytes = Files.readAllBytes(imagePath); HttpHeaders headers = new
-	 * HttpHeaders(); headers.setContentType(MediaType.IMAGE_JPEG);
-	 * headers.setContentLength(imageBytes.length); return new
-	 * ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
-	 * 
-	 * } catch (IOException e) { response.put("mensaje", "Error interno");
-	 * response.put("error", e.getMessage()); statusResponse =
-	 * HttpStatus.INTERNAL_SERVER_ERROR; } return new ResponseEntity<>(response,
-	 * statusResponse); }
-	 */
+	@Value("${image.link}")
+	private String imageLink;
 
 	@GetMapping("/stripeCredentials")
 	public ResponseEntity<?> StripeCredentials(@RequestParam("plan") String plan) {
@@ -245,41 +232,79 @@ public class FronController {
 		return new ResponseEntity<>(response, statusResponse);
 	}
 
-	@GetMapping("/nepe")
-	public void xd() throws SerialException, SQLException {
+	@GetMapping("/getRandomImageWithCategories")
+	public ResponseEntity<?> GetRandomImageWithCategories() {
 
-		log.info("xd");
-
+		HttpStatus statusResponse = HttpStatus.OK;
+		List<Map<String, Object>> myResponse = new ArrayList<>();
+		
+		try {
+			ImageCategoryDTO myImage = service.getRandomImageWithCategories();	
+			Map<String, Object> formatedDto = Map.of(
+					"Image", imageLink + myImage.getImageId(),
+					"Name", myImage.getName(),
+					"ImageId", myImage.getImageId(),
+					"Categories", myImage.getCategoryNames(),
+					"Description", myImage.getDescription()
+					);
+			myResponse.add(formatedDto);
+			return new ResponseEntity<>(myResponse, HttpStatus.OK);
+			
+		} catch (Exception e) {
+			Map<String, Object> response = new HashMap<>();
+			response.put("mensaje", "Error interno");
+			response.put("error", e.getMessage());
+			myResponse.add(response);
+			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<>(myResponse, statusResponse);
 	}
 
 	@GetMapping("/fillFrontHeader")
-	public ResponseEntity<?> fillFrontHeader(){
+	public ResponseEntity<?> fillFrontHeader() {
+
+		HttpStatus statusResponse = HttpStatus.OK;
+		List<Map<String, Object>> myResponse = new ArrayList<>();
+
+		try {
+			List<Image> myList = service.FillFront();
+
+			for (Image element : myList) {
+
+				Map<String, Object> response = new HashMap<>();
+				response.put("Image", imageLink + element.getImageId());
+				response.put("Name", element.getName());
+				response.put("ImageId", element.getImageId());
+				myResponse.add(response);
+			}
+
+			return new ResponseEntity<>(myResponse, HttpStatus.OK);
+
+		} catch (Exception e) {
+			Map<String, Object> response = new HashMap<>();
+			response.put("mensaje", "Error interno");
+			response.put("error", e.getMessage());
+			myResponse.add(response);
+			return new ResponseEntity<>(myResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping({ "/listByCategory/{category}", "/listByCategory/{category}/{imageId}" })
+	public ResponseEntity<?> listByCategory(@PathVariable int category,
+			@PathVariable(required = false) String imageId) {
 
 		HttpStatus statusResponse = HttpStatus.OK;
 		List<Map<String, Object>> myList = new ArrayList<>();
 
 		try {
-			
-			/*Set doesn't allow duplicated elements*/
-			Set<Integer> uniqueNumbers = new HashSet<>();
-			Random random = new Random();
 
-			while (uniqueNumbers.size() < 5) {
-				int randomNumber = random.nextInt(128);			
+			List<CategoryImage> myImages = (imageId != null) ? myImages = service.getImagesByCategorie2(imageId)
+					: service.getImagesByCategorie(category);
 
-				if(randomNumber != 0 && randomNumber != 90 && randomNumber != 120 && randomNumber != 69 && randomNumber != 97 && 
-						randomNumber != 70 && randomNumber != 71 && randomNumber != 72 && randomNumber != 127 && randomNumber != 23) {	//doesn't exist
-					uniqueNumbers.add(randomNumber);				
-					//log.info(String.valueOf(randomNumber));
-				}
-			}
-				
-			for (Integer element : uniqueNumbers) {
-
+			for (CategoryImage element : myImages) {
 				Map<String, Object> response = new HashMap<>();
-				String imageId = "image-" + element + ".jpeg";
-				response.put("Image", imageLink + imageId);
-				response.put("Name", service.findNameById(imageId));
+				response.put("Image", imageLink + element.getImageId());
+				response.put("Name", service.findNameById(element.getImageId()));
 				myList.add(response);
 			}
 
@@ -293,51 +318,4 @@ public class FronController {
 			return new ResponseEntity<>(myList, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
-	/*@GetMapping("/listByCategory/{category}")
-	public ResponseEntity<?> listByCategory(@PathVariable String category) throws SerialException, SQLException {
-
-		HttpStatus statusResponse = HttpStatus.OK;
-		List<Map<String, Object>> myList = new ArrayList<>();
-
-		try {
-
-			List<Image> myImagesCount = service.categoryList(category);
-			List<Path> routes = new ArrayList<>();
-
-			for (int i = 0; i < myImagesCount.size(); i++) {
-				routes.add(Paths.get("src/main/resources/IMG/" + myImagesCount.get(i).getName()));
-			}
-
-			Set<Integer> uniqueNumbers = new HashSet<>();
-			Random random = new Random();
-
-			while (uniqueNumbers.size() < 4) {
-				int randomNumber = random.nextInt(routes.size());
-				uniqueNumbers.add(randomNumber);
-			}
-
-			for (Integer element : uniqueNumbers) {
-
-				Map<String, Object> response = new HashMap<>();
-				Path imagePath = routes.get(element);
-
-				byte[] imageBytes = Files.readAllBytes(imagePath);
-				String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-				response.put("Image", "data:image/jpeg;base64," + base64Image);
-				//response.put("Description", service.findDescriptionById(imagePath.getFileName().toString()));
-
-				myList.add(response);
-			}
-
-			return new ResponseEntity<>(myList, HttpStatus.OK);
-
-		} catch (IOException e) {
-			Map<String, Object> response = new HashMap<>();
-			response.put("mensaje", "Error interno");
-			response.put("error", e.getMessage());
-			myList.add(response);
-			return new ResponseEntity<>(myList, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}*/
 }

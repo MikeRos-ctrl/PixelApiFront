@@ -10,14 +10,28 @@ import jakarta.validation.constraints.NotEmpty;
 @Table(name = "IMAGE")
 public class Image {
 
-	@Id @Column(name = "IMAGE_ID") private String imageId;
-	@Column(name = "NAME") private String name;
-	@Column(name = "DESCRIPTION") private String description;
+	@Id
+	@Column(name = "IMAGE_ID")
+	private String imageId;
+	@Column(name = "NAME")
+	private String name;
+	@Column(name = "DESCRIPTION")
+	private String description;
 
 	////////////////////////////////////////////////////////////////
 
 	public Image() {
-		
+
+	}
+	public Image(String imageId, String name) {
+		this.imageId = imageId;
+		this.name = name;
+	}
+	
+	public Image(String imageId, String name, String description) {
+		this.imageId = imageId;
+		this.name = name;
+		this.description = description;
 	}
 
 	public String getImageId() {

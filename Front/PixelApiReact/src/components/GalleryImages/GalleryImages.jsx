@@ -6,98 +6,62 @@ class GalleryImages extends Component {
         super(props);
 
         this.state = {
-            fetchedImg1: null,
-            fetchedImg2: null,
-            fetchedImg3: null,
-            fetchedImg4: null
+            ready1: false,
+            ready2: false,
+            ready3: false,
+            ready4: false,
         }
     }
 
     componentDidMount() {
-        this.fetchImages()
     }
 
     componentWillUnmount() {
     }
 
-    fetchImages = async () => {
-        const { image1, image2, image3, image4 } = this.props;
-
-        try {
-            const response1 = await fetch(image1["Image"])
-            const response2 = await fetch(image2["Image"])
-            const response3 = await fetch(image3["Image"])
-            const response4 = await fetch(image4["Image"])
-
-            if (response1.ok && response2.ok &&
-                response3.ok && response4.ok) {
-
-                const blob1 = await response1.blob();
-                const blob2 = await response2.blob();
-                const blob3 = await response3.blob();
-                const blob4 = await response4.blob();
-
-                const localImg1 = URL.createObjectURL(blob1);
-                const localImg2 = URL.createObjectURL(blob2);
-                const localImg3 = URL.createObjectURL(blob3);
-                const localImg4 = URL.createObjectURL(blob4);
-
-                this.setState({
-                    fetchedImg1: localImg1,
-                    fetchedImg2: localImg2,
-                    fetchedImg3: localImg3,
-                    fetchedImg4: localImg4
-                })
-            }
-        } catch (error) {
-            console.error('Fetch error:', error);
-        }
+    componentDidUpdate() {
+  
     }
-
 
     render() {
         const { image1, image2, image3, image4 } = this.props;
-        const { fetchedImg1, fetchedImg2, fetchedImg3, fetchedImg4 } = this.state;
+        const { ready1, ready2, ready3, ready4, } = this.state;
 
         return (
             <>
-                <div className={`${fetchedImg1 != null ? ("img-container-2") : ("img-container-medium-loading")}`}>
-
-                    {fetchedImg1 != null &&
-                        <>
-                            <img src={fetchedImg1} className="image2" alt="" />
-                            <p className="titleNotMain">{image1["Name"]}</p>
-                        </>
+                <div className={`${ready1 ? ("img-container-2") : ("img-container-medium-loading")}`}>
+                    {image1 &&
+                        <img onLoad={() => { this.setState({ ready1: true }) }} src={image1["Image"]} className="image2" alt="" />
+                    }
+                    {ready1 &&
+                        <p className="titleNotMain">{image1["Name"]}</p>
                     }
                 </div>
 
-                <div className={`${fetchedImg2 != null ? ("img-container-2") : ("img-container-medium-loading")}`}>
-
-                    {fetchedImg2 != null &&
-                        <>
-                            <img src={fetchedImg2} className="image2" />
-                            <p className="titleNotMain">{image2["Name"]}</p>
-                        </>
+                <div className={`${ready2 ? ("img-container-2") : ("img-container-medium-loading")}`}>
+                    {image2 &&
+                        <img onLoad={() => { this.setState({ ready2: true }) }} src={image2["Image"]} className="image2" alt="" />
+                    }
+                    {ready2 &&
+                        <p className="titleNotMain">{image2["Name"]}</p>
                     }
                 </div>
 
-                <div className={`${fetchedImg3 != null ? ("img-container-2") : ("img-container-medium-loading")}`}>
-
-                    {fetchedImg3 != null &&
-                        <>
-                            <img src={fetchedImg3} className="image2" />
-                            <p className="titleNotMain">{image3["Name"]}</p>
-                        </>
+                <div className={`${ready3 ? ("img-container-2") : ("img-container-medium-loading")}`}>
+                    {image3 &&
+                        <img onLoad={() => { this.setState({ ready3: true }) }} src={image3["Image"]} className="image2" alt="" />
+                    }
+                    {ready3 &&
+                        <p className="titleNotMain">{image3["Name"]}</p>
                     }
                 </div>
 
-                <div className={`${fetchedImg4 != null ? ("img-container-2") : ("img-container-medium-loading")}`}>
-
-                    {fetchedImg4 != null &&
-                        <>
-                            <img src={fetchedImg4} className="image2" />
-                            <p className="titleNotMain">{image4["Name"]}</p>
-                        </>
+                <div className={`${ready4 ? ("img-container-2") : ("img-container-medium-loading")}`}>
+                    {image4 &&
+                        <img onLoad={() => { this.setState({ ready4: true }) }} src={image4["Image"]} className="image2" alt="" />
+                    }
+                    {ready4 &&
+                        <p className="titleNotMain">{image4["Name"]}</p>
                     }
                 </div>
             </>
