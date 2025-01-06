@@ -289,17 +289,18 @@ public class FronController {
 		}
 	}
 
-	@GetMapping({ "/listByCategory/{category}", "/listByCategory/{category}/{imageId}" })
-	public ResponseEntity<?> listByCategory(@PathVariable int category,
-			@PathVariable(required = false) String imageId) {
+	@GetMapping("/listByCategory/{category}/{imageId}")
+	public ResponseEntity<?> listByCategory(
+			@PathVariable int category,
+			@PathVariable String imageId) {
 
 		HttpStatus statusResponse = HttpStatus.OK;
 		List<Map<String, Object>> myList = new ArrayList<>();
 
 		try {
 
-			List<CategoryImage> myImages = (imageId != null) ? myImages = service.getImagesByCategorie2(imageId)
-					: service.getImagesByCategorie(category);
+			List<CategoryImage> myImages = (category == 8) ? myImages = service.getImagesByCategory2(imageId)
+					: service.getImagesByCategory(category, imageId);
 
 			for (CategoryImage element : myImages) {
 				Map<String, Object> response = new HashMap<>();

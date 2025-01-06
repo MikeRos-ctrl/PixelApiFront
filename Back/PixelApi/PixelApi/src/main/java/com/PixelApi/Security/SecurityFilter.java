@@ -49,7 +49,6 @@ public class SecurityFilter {
 						.requestMatchers(HttpMethod.GET, "/frontController/login/{email}/{accountKey}").permitAll()
 						.requestMatchers(HttpMethod.GET, "/frontController/stripeCredentials").permitAll()
 						.requestMatchers(HttpMethod.GET, "/frontController/fillFrontHeader").permitAll()
-						.requestMatchers(HttpMethod.GET, "/frontController/listByCategory/{category}").permitAll()
 						.requestMatchers(HttpMethod.GET, "/frontController/listByCategory/{category}/{imageId}")
 						.permitAll().requestMatchers(HttpMethod.PUT, "/frontController/updateAccount").permitAll()
 						.anyRequest().authenticated())

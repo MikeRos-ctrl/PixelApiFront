@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, Component } from 'react';
 import { Header } from '../Header/Header';
 import { HeaderImage } from '../HeaderImage/HeaderImage';
-import { HeaderImageLoading } from '../HeaderImageLoading/HeaderImageLoading';
 import { Gallery } from '../Gallery/Gallery';
 import { GalleryImagesLoading } from '../GalleryImagesLoading/GalleryImagesLoading';
 import { UsePixelApi } from '../../util/UsePixelApi';
@@ -16,16 +15,10 @@ import { ModalConfirmAccount } from '../Modal/ModalConfirmAccount';
 import { ModalWelcomeAccount } from '../Modal/ModalWelcomeAccount';
 import { ModalWelcomeBack } from '../Modal/ModalWelcomeBack';
 import { ModalPaymentInfo } from '../Modal/ModalPaymentInfo';
-import Reload from '../../assets/Icon-8.png'
+import { Demo } from '../Demo/Demo';
+import { Footer } from '../Footer/Footer';
 import './index.css';
-
-const {
-  FillFrontHeader,
-  listByCategory,
-  listByCategory2,
-  GetRandomImageWithCategories
-} = UsePixelApi()
-
+const { FillFrontHeader, listByCategory2, } = UsePixelApi()
 const { fetchImages } = FetchImgLogic()
 
 class App extends Component {
@@ -49,6 +42,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+
     document.body.classList.remove('no-scroll');
 
     FillFrontHeader().then(result => {
@@ -64,13 +58,8 @@ class App extends Component {
       })
     }).catch(error => {
       console.error("I've got a mistake: ", error);
+      alert("I've got a mistake: ", error);
     });
-
-    GetRandomImageWithCategories().then(result => {
-      fetchImages(result).then(res => {
-        this.setState({ fetchedImg6: res["fetchedGallery"][0] })
-      })
-    })
   }
 
   componentDidUpdate() {
@@ -131,11 +120,7 @@ class App extends Component {
       refreshGallery: null
     })
 
-    const selectedFuntion = category == 8 ?
-      () => listByCategory2(category, fetchedImg1["ImageId"]) :
-      () => listByCategory(category)
-
-    selectedFuntion().then(res => {
+    listByCategory2(category, fetchedImg1["ImageId"]).then(res => {
       fetchImages(res).then(res => {
         this.setState({
           fetchedImg2: res["fetchedGallery"][0],
@@ -194,32 +179,7 @@ class App extends Component {
 
           <Implementation />
 
-          {fetchedImg6 &&
-            <div className='demoSection'>
-              <h2 className='titleMain'>
-                Picture This:
-                <span className="strongPinkColor"> Your API in Action</span>
-              </h2>
-              <div className='demoSectionContainer'>
-
-                <div className='demoSectionContainerLeft'>
-                  <div className='DemoSectionImg'>
-                    <h5 className='titleNotMain'>{fetchedImg6["Name"]}</h5>
-                    <img src={fetchedImg6["Image"]} className='image2' />
-                    <p className='regularText'>Categories: {fetchedImg6["Categories"]}</p>
-                  </div>
-
-                  <div className='DemoSectionComplement'>
-                    <p className='regularText'>{fetchedImg6["Description"]}</p>
-                  </div>
-                </div>
-
-                <div>
-                  <img src={Reload} className="qwer3" alt="" />
-                </div>
-              </div>
-            </div>
-          }
+          <Demo />
 
           <Pricing setMyUserPayment={this.setMyUserPlan} changeModalstatus={this.changeModalstatus} myUser={myUser} setMyUser={setMyUser} setModalIndex={this.setModalIndex} />
 
@@ -230,7 +190,10 @@ class App extends Component {
           )}
 
         </div>
-      </React.Fragment>
+
+        <Footer />
+
+      </React.Fragment >
     )
   }
 }

@@ -12,11 +12,11 @@ import com.PixelApi.Entity.ImageCategoryDTO;
 @Repository
 public interface CategoryImageRepo extends JpaRepository<CategoryImage, Long> {
 
-	@Query("SELECT NEW CategoryImage(categoryId,imageId) FROM CategoryImage where categoryId=:categoryId ORDER BY RAND(:seed) LIMIT 4")
-	List<CategoryImage> getImagesByCategorie(@Param("seed") Long seed, @Param("categoryId") int categoryId);
-
+	@Query("SELECT NEW CategoryImage(categoryId,imageId) FROM CategoryImage where categoryId=:categoryId AND imageId NOT IN (:imageId) ORDER BY RAND(:seed) LIMIT 4")
+	List<CategoryImage> getImagesByCategory(@Param("seed") Long seed, @Param("categoryId") int categoryId , @Param("imageId") String imageId);
+	
 	@Query("SELECT DISTINCT NEW CategoryImage(categoryId,imageId) FROM CategoryImage where imageId NOT IN (:imageId) ORDER BY RAND(:seed) LIMIT 4")
-	List<CategoryImage> getImagesByCategorie2(@Param("seed") Long seed, @Param("imageId") String imageId);
+	List<CategoryImage> getImagesByCategory2(@Param("seed") Long seed, @Param("imageId") String imageId);
 
 	@Query(value = """
 			SELECT

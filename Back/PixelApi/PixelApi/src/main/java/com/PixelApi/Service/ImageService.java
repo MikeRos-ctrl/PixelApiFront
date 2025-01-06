@@ -28,12 +28,12 @@ public class ImageService {
 		return repo.FillFront(System.currentTimeMillis());
 	}
 
-	public List<CategoryImage> getImagesByCategorie(int category) {
-		return repo2.getImagesByCategorie(System.currentTimeMillis(), category);
+	public List<CategoryImage> getImagesByCategory(int category, String imageId) {
+		return repo2.getImagesByCategory(System.currentTimeMillis(), category, imageId);
 	}
 
-	public List<CategoryImage> getImagesByCategorie2(String imageId) {
-		return repo2.getImagesByCategorie2(System.currentTimeMillis(), imageId);
+	public List<CategoryImage> getImagesByCategory2(String imageId) {
+		return repo2.getImagesByCategory2(System.currentTimeMillis(), imageId);
 	}
 
 	public ImageCategoryDTO getRandomImageWithCategories() {
