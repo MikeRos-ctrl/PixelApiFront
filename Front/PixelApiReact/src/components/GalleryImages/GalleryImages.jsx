@@ -1,72 +1,85 @@
 import React, { Component } from 'react';
+import { AppContext } from '../../context';
 
 class GalleryImages extends Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            ready1: false,
-            ready2: false,
-            ready3: false,
-            ready4: false,
-        }
     }
 
     componentDidMount() {
+
     }
 
     componentWillUnmount() {
+
     }
 
-    componentDidUpdate() {
-  
+    componentDidUpdate(prevProps, prevState) {
+        const { myImages } = this.props;
+
+
+        // const { ready1, ready2, ready3, ready4, } = this.state;
+        // const { setRefreshGallery } = this.props;
+
+        // if (ready1 && ready2 && ready3 && ready4 &&
+        //     (!prevState.ready1 || !prevState.ready2 || !prevState.ready3 || !prevState.ready4)) {
+        //     setRefreshGallery(true)
+        // }
     }
 
     render() {
-        const { image1, image2, image3, image4 } = this.props;
-        const { ready1, ready2, ready3, ready4, } = this.state;
+        const { myImages } = this.props;
 
         return (
             <>
-                <div className={`${ready1 ? ("img-container-2") : ("img-container-medium-loading")}`}>
-                    {image1 &&
-                        <img onLoad={() => { this.setState({ ready1: true }) }} src={image1["Image"]} className="image2" alt="" />
-                    }
-                    {ready1 &&
-                        <p className="titleNotMain">{image1["Name"]}</p>
-                    }
+                <div className={myImages[1] ? "img-container-2" : "img-container-medium-loading"}>
+                    {myImages[1] && (
+                        <>
+                            <img src={myImages[1]["Image"]} className="image2" alt="" />
+                            {myImages[1] && <p className="titleNotMain">{myImages[1]["Name"]}</p>}
+                        </>
+                    )}
                 </div>
 
-                <div className={`${ready2 ? ("img-container-2") : ("img-container-medium-loading")}`}>
-                    {image2 &&
-                        <img onLoad={() => { this.setState({ ready2: true }) }} src={image2["Image"]} className="image2" alt="" />
-                    }
-                    {ready2 &&
-                        <p className="titleNotMain">{image2["Name"]}</p>
-                    }
+                <div className={myImages[2] ? "img-container-2" : "img-container-medium-loading"}>
+                    {myImages[2] && (
+                        <>
+                            <img src={myImages[2]["Image"]} className="image2" alt="" />
+                            {myImages[2] && <p className="titleNotMain">{myImages[2].Name}</p>}
+                        </>
+                    )}
                 </div>
 
-                <div className={`${ready3 ? ("img-container-2") : ("img-container-medium-loading")}`}>
-                    {image3 &&
-                        <img onLoad={() => { this.setState({ ready3: true }) }} src={image3["Image"]} className="image2" alt="" />
-                    }
-                    {ready3 &&
-                        <p className="titleNotMain">{image3["Name"]}</p>
-                    }
+                <div className={myImages[3] ? "img-container-2" : "img-container-medium-loading"}>
+                    {myImages[3] && (
+                        <>
+                            <img src={myImages[3]["Image"]} className="image2" alt="" />
+                            {myImages[3] && <p className="titleNotMain">{myImages[3].Name}</p>}
+                        </>
+                    )}
                 </div>
 
-                <div className={`${ready4 ? ("img-container-2") : ("img-container-medium-loading")}`}>
-                    {image4 &&
-                        <img onLoad={() => { this.setState({ ready4: true }) }} src={image4["Image"]} className="image2" alt="" />
-                    }
-                    {ready4 &&
-                        <p className="titleNotMain">{image4["Name"]}</p>
-                    }
+                <div className={myImages[4] ? "img-container-2" : "img-container-medium-loading"}>
+                    {myImages[4] && (
+                        <>
+                            <img src={myImages[4]["Image"]} className="image2" alt="" />
+                            {myImages[4] && <p className="titleNotMain">{myImages[4].Name}</p>}
+                        </>
+                    )}
                 </div>
             </>
         );
     }
 }
 
-export { GalleryImages }
+function GalleryImagesWrapper(props) {
+    const { myImages, setRefreshGallery } = React.useContext(AppContext)
+    return <GalleryImages
+        {...props}
+        myImages={myImages}
+        setRefreshGallery={setRefreshGallery}
+    />
+}
+
+export { GalleryImagesWrapper as GalleryImages }

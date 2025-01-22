@@ -46,7 +46,7 @@ create table STRIPE_SUBSCRIPTION(
 	foreign key(`PLAN_TYPE`) references `PLAN_TYPE`(PLAN_TYPE_ID)
 );
 
-select * from paypalorder;
+select * from STRIPE_SUBSCRIPTION;
 drop table STRIPE_SUBSCRIPTION;
 truncate paypalorder;
 -- ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -61,6 +61,7 @@ create table TOKEN(
 	foreign key(`CLIENT`) references `CLIENT`(CLIENT_ID)
 );
 
+SELECT * FROM TOKEN;
 drop table TOKEN;
 
 select count(*) as total from tokenaccount where `clientId` = 1 and reason = 'ACCOUNT-CONFIRMATION';
@@ -92,7 +93,7 @@ truncate table `image`;
 drop table image;
 
 update image set `name`= 'Old Castle Vestiges' where image_id = 'image-85.jpeg';
-delete from image where image_id = 'image-30.jpeg';
+delete from image where image_id = 'image-21.jpeg';
 
 insert into `image` values('image-1.jpeg','Melancholic swan','Once a lover, now my swan carries its pink hues like a crown of solitude. Perhaps one day, destiny will weave their paths together again under a moonlit sky.');
 insert into `image` values('image-2.jpeg','Toxin, Mexican Jaeger','A fiery spirit with a keen eye, ready to outsmart anyone who dares cross their path. Toxin flies not for glory, but for the thrill of proving resilience.');
@@ -114,7 +115,6 @@ insert into `image` values('image-17.jpeg','Family playing','Laughter fills the 
 insert into `image` values('image-18.jpeg','Sexy turtle','Captured on a sunlit beach, this turtle’s natural charm turns heads and sparks smiles. Sometimes, the simplest moments are the most captivating.');
 insert into `image` values('image-19.jpeg','Kayle','A fleeting infatuation with a game character, yet her presence lingers in the corners of my mind. Perhaps it’s not her, but what she represents, that I miss.');
 insert into `image` values('image-20.jpeg','Just Ramero','Years of toil and craft have earned me respect, but it’s the quiet pride in my work that speaks louder. Parents, I hope you see me now and smile.');
-insert into `image` values('image-21.jpeg','Princess Telissa','A vision of grace, yet her silence carries a story untold—perhaps courage lies in the asking.');
 insert into `image` values('image-22.jpeg','Legendary phoenix bird','A symbol of rebirth, its fiery feathers promise renewal for those bold enough to believe.');
 insert into `image` values('image-24.jpeg','Folkloric dancer','Her movements echo the stories of her ancestors, weaving tradition into a living tapestry.');
 insert into `image` values('image-25.jpeg','Big cat','A majestic feline whose gaze challenges you to earn its trust before you dare to rub its belly.');

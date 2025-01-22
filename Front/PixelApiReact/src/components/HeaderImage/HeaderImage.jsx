@@ -1,6 +1,8 @@
 import React, { useState, useEffect, Component } from 'react';
 import 'animate.css'
 import { HeaderImageLoading } from '../HeaderImageLoading/HeaderImageLoading';
+import { AppContext } from '../../context';
+
 
 class HeaderImage extends Component {
 
@@ -41,4 +43,9 @@ class HeaderImage extends Component {
     }
 }
 
-export { HeaderImage }
+function HeaderImageWrapper(props) {
+    const { myImages } = React.useContext(AppContext)
+    return <HeaderImage  {...props} image={myImages[0]} />
+}
+
+export { HeaderImageWrapper as HeaderImage }

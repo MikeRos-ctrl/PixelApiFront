@@ -1,7 +1,7 @@
 import React from "react";
 import { LocalDb } from '../../util/LocalDb';
-import { UsePixelApi } from "../../util/UsePixelApi";
-const { Login } = UsePixelApi()
+import { ApiCall } from "../../util/ApiCall";
+const { Login } = ApiCall()
 import { FaEye } from "react-icons/fa";
 
 /* Modal Flow

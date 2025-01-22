@@ -2,10 +2,13 @@ import './index.css';
 import { Element } from 'react-scroll';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
+import { AppContext } from '../../context';
 
-function Pricing({ changeModalstatus, myUser, setModalIndex, setMyUserPayment }) {
+function Pricing({ changeModalstatus, setModalIndex, setMyUserPayment }) {
 
     const navigate = useNavigate();
+    const { myUser } = React.useContext(AppContext)
+
 
     const OpenModal = (plan) => {
 

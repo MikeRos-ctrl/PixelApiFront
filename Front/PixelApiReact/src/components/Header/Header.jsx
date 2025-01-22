@@ -6,9 +6,12 @@ import User from '../../assets/Icon-16.png'
 import Doc from '../../assets/Icon-3.png'
 import About from '../../assets/Icon-21.png'
 import { Link } from 'react-scroll';
+import { AppContext } from '../../context';
 import { useNavigate } from 'react-router-dom';
 
-function Header({ children, changeModalstatus, myUser }) {
+function Header({ children, changeModalstatus }) {
+
+    const { myUser } = React.useContext(AppContext)
 
     const navigate = useNavigate();
 

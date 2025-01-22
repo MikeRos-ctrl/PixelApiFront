@@ -25,9 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.PixelApi.Security.Jwt;
 //import com.PixelApi.Security.JwtUtil;
 import com.PixelApi.Service.ClientService;
-import com.paypal.api.payments.Links;
-import com.paypal.api.payments.Payment;
-import com.paypal.core.rest.PayPalRESTException;
 import jakarta.validation.Valid;
 
 /*

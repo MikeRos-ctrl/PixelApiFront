@@ -1,10 +1,10 @@
 import './index.css';
 import React, { useState, useEffect, Component } from 'react';
 import Reload from '../../assets/Icon-8.png'
-import { UsePixelApi } from '../../util/UsePixelApi';
+import { ApiCall } from '../../util/ApiCall';
 import { FetchImgLogic } from '../../util/FetchImgLogic';
 const { fetchImages } = FetchImgLogic()
-const { GetRandomImageWithCategories } = UsePixelApi()
+const { GetRandomImageWithCategories } = ApiCall()
 
 class Demo extends Component {
 

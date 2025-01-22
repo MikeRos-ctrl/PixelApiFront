@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Component } from 'react';
-import { UsePixelApi } from '../../util/UsePixelApi';
-const { PaypalOrder } = UsePixelApi()
+import { ApiCall } from '../../util/ApiCall';
+const { PaypalOrder } = ApiCall()
 
 class ProfileUpdatePlan extends Component {
 

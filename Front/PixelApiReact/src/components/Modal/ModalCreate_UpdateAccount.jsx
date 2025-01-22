@@ -1,7 +1,7 @@
 import React from "react";
 import { FaEye } from "react-icons/fa";
-import { UsePixelApi } from "../../util/UsePixelApi";
-const { CreateAccount, ForgotPwd } = UsePixelApi()
+import { ApiCall } from "../../util/ApiCall";
+const { CreateAccount, ForgotPwd } = ApiCall()
 
 function ModalCreate_UpdateAccount({ modalFlow, myUser, setMyUser, setModalIndex }) {
 

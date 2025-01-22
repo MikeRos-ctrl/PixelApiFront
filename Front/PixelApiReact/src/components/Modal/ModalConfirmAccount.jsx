@@ -1,8 +1,8 @@
 import React from "react";
 import { useRef } from 'react';
 import { LocalDb } from '../../util/LocalDb';
-import { UsePixelApi } from "../../util/UsePixelApi";
-const { ConfirmAccount, UpdateAccount } = UsePixelApi()
+import { ApiCall } from "../../util/ApiCall";
+const { ConfirmAccount, UpdateAccount } = ApiCall()
 
 /* Modal Flow
  * ModalLogin -> ModalCreateAccount -> ModalConfirmAccount -> ModalWelcomeAccount

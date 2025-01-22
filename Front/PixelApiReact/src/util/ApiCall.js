@@ -1,7 +1,7 @@
 // const API = 'http://localhost:8080/pixel/frontController';
 const API = 'http://192.168.100.149:8080/pixel/frontController';
 
-const UsePixelApi = () => {
+const ApiCall = () => {
 
     async function CreateAccount(myClient) {
 
@@ -170,7 +170,7 @@ const UsePixelApi = () => {
         }
     }
 
-    async function listByCategory2(category, imageId) {
+    async function listByCategory(category, imageId) {
 
         try {
             const response = await fetch(API + "/listByCategory/" + category + "/" + imageId, {
@@ -188,7 +188,7 @@ const UsePixelApi = () => {
     return {
         FillFrontHeader,
         listByCategory,
-        listByCategory2,
+        listByCategory,
         ValidateAccount,
         CreateAccount,
         ConfirmAccount,
@@ -201,4 +201,4 @@ const UsePixelApi = () => {
     }
 }
 
-export { UsePixelApi }
+export { ApiCall }

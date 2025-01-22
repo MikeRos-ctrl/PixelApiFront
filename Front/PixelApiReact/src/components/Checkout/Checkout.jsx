@@ -7,8 +7,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import Stripe from 'stripe';
-import { UsePixelApi } from '../../util/UsePixelApi';
-const { StripeCredentials } = UsePixelApi()
+import { ApiCall } from '../../util/ApiCall';
+const { StripeCredentials } = ApiCall()
 
 class Checkout extends React.Component {
     constructor(props) {

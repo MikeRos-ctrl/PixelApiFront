@@ -1,8 +1,8 @@
 import React from "react";
 import validator from 'validator';
 import { FaEye } from "react-icons/fa";
-import { UsePixelApi } from "../../util/UsePixelApi";
-const { UpdateAccount } = UsePixelApi()
+import { ApiCall } from "../../util/ApiCall";
+const { UpdateAccount } = ApiCall()
 import { LocalDb } from '../../util/LocalDb';
 import { useNavigate } from 'react-router-dom';
 

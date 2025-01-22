@@ -1,8 +1,8 @@
 import React from "react";
 import validator from 'validator';
 import { useRef } from 'react';
-import { UsePixelApi } from "../../util/UsePixelApi";
-const { ValidateAccount } = UsePixelApi()
+import { ApiCall } from "../../util/ApiCall";
+const { ValidateAccount } = ApiCall()
 
 function ModalLogin({ setModalIndex, setMyUser }) {
 

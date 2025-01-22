@@ -1,6 +1,6 @@
 import { useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js"
 import React, { useEffect, useRef, Component } from 'react';
-import { UsePixelApi } from "../../util/UsePixelApi";
+import { ApiCall } from "../../util/ApiCall";
 import Swal from 'sweetalert2'
 
 function CheckoutForm({ navigate, setReturnFlag, plan, email }) {
@@ -9,7 +9,7 @@ function CheckoutForm({ navigate, setReturnFlag, plan, email }) {
     const [error, setError] = React.useState(false)
     const [errorText, setErrorText] = React.useState(false)
     const [isProcessing, setIsProcessing] = React.useState(false);
-    const { CreateStripeSubscription } = UsePixelApi()
+    const { CreateStripeSubscription } = ApiCall()
 
     useEffect(() => {
         setReturnFlag()

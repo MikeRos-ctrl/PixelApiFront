@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from 'react-dom'
 import './index.css';
-import xd from './cat-2.jpeg'
+import xd from './skatingman.jpeg'
 
 function Modal({ changeModalstatus, children }) {
 
@@ -20,7 +20,7 @@ function Modal({ changeModalstatus, children }) {
                 </div>
 
                 <div className="modalContentRight">
-                    <img src={xd} className="imageModal" alt="" />
+                    <img src={xd} className="imageModal" alt="" loading="lazy" />
                 </div>
 
             </div>
