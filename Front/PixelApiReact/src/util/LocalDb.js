@@ -4,7 +4,7 @@ export class LocalDb {
 
     static Schema = "UserDb"
     static SchemaVersion = 1
-    static DbId = "id"
+    static DbId = "clientId"
     static DbUserTable = "myUser"
     static AutoIncrement = true
     static EncryptionKey = "TwiceDiosasLalaOranjheller"

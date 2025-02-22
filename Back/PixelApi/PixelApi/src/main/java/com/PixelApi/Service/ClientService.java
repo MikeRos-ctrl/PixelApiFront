@@ -134,7 +134,7 @@ public class ClientService {
 
 			Client myClient = clientRepo.findByEmail(email);
 
-			if (tokenRepo.tokenValidation(myClient.getClientId(), "ACCOUNT-CONFIRMATION", true) == 1) {
+			if (tokenRepo.tokenValidation(myClient.getClientId(), "ACCT_CONFIRMATION", true) == 1) {
 				log.info("Existing user trying to login, let's validate now the password ");
 				response.put("message", "Existing email, let's validate password");
 				response.put("code", "B");
@@ -144,7 +144,7 @@ public class ClientService {
 				response.put("message", "Existing record given that email, but not activated");
 				response.put("code", "C");
 				response.put("codeExplanation", "Account hasn't been activated");
-				response.put("additionalField", myClient.getClientId().toString());
+				response.put("additionalField", myClient.getClientId().toString() + "," + myClient.getAcctKey());
 				log.info("Account hasn't been activated");
 			}
 		}
@@ -174,8 +174,8 @@ public class ClientService {
 				sendMail = true;
 				log.info("Client saved");
 
-				tokenRepo.save(new Token(confirmationCode, myResponse.getClientId(), null, "ACCT_CONFIRMATION", true));
-				log.info("Client token saved");
+				tokenRepo.save(new Token(confirmationCode, myResponse.getClientId(), null, "ACCT_CONFIRMATION", false));
+				log.info("Confirmation token saved");
 
 				new Thread(() -> {
 					log.info("Sending email to: " + email);
@@ -203,23 +203,26 @@ public class ClientService {
 	}
 
 	@Transactional
-	public Map<String, String> ForgotPwd(String email, Long id) {
+	public Map<String, String> ForgotPwd(String email) {
 
 		Map<String, String> response = new HashMap<>();
 		log.info("Inside ForgotPwd method");
 
 		try {
-			/*
-			 * Numero de emails sin confirmar se han enviado
-			 */
+			
+			Long id = clientRepo.findByEmail(email).getClientId();
+			
+			Long xd = tokenRepo.tokenValidation(id, "RECOVER_PWD", false);
+			log.info("nepe" + xd.toString());
+			
 			if (tokenRepo.tokenValidation(id, "RECOVER_PWD", false) == 0) {
 
 				String confirmationCode = UUID.randomUUID().toString();
 
-				tokenRepo.save(new Token(confirmationCode, id, null, "RECOVER_PWD", true));
+				tokenRepo.save(new Token(confirmationCode, id, null, "RECOVER_PWD", false));
 
 				log.info("Client token saved");
-				response.put("value", "true");
+				response.put("value", id.toString());
 				response.put("message", "Email has been sent :)");
 
 				new Thread(() -> {
@@ -229,7 +232,7 @@ public class ClientService {
 
 				}).start();
 			} else {
-				response.put("value", "false");
+				response.put("value", id.toString());
 				response.put("message", "Email has already been sent :P");
 			}
 
@@ -242,7 +245,7 @@ public class ClientService {
 	}
 
 	@Transactional
-	public Map<String, String> ConfirmAccount(Long clientId, String token) {
+	public Map<String, String> ConfirmAccount(String token) {
 
 		log.info("Inside confirmAccount method");
 		Map<String, String> response = new HashMap<>();
@@ -256,7 +259,7 @@ public class ClientService {
 				response.put("message", "Invalid token");
 			} else {
 
-				myToken.setActive(true);
+				myToken.setUsed(true);
 				tokenRepo.save(myToken);
 				log.info("Token has beed confirmed");
 				log.info("Token reason: " + myToken.getReason());

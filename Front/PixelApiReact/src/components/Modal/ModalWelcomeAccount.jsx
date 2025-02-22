@@ -1,28 +1,51 @@
-import React from "react";
+import React, { Component } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../../context';
 
-function ModalWelcomeAccount() {
+class ModalWelcomeAccount extends Component {
 
-    const navigate = useNavigate();
+    constructor(props) {
+        super(props);
 
-    return (
-        <>
-            <div className="modalContentInformationHeader">
+        this.state = {
 
-                <h4 className="titleNotMain dark-color">
-                    <span className="clickable" >✅</span>
-                    Welcome to your account
-                </h4>
+        }
+    }
 
-                <h5 className="regularText dark-color">We are excited to have you on board!</h5>
-            </div>
+    componentWillUnmount() {
+        const { myModal, setMyModal } = this.props
+        setMyModal({ ...myModal, open: !myModal.open })
+    }
 
-            <div className="modalContentInformationBody">
-                <input onClick={() => { navigate('/profile') }} className="regularText modalbtn" type="button" value="Continue" />
+    render() {
 
-            </div>
-        </>
-    );
+        const { navigate } = this.props
+
+        return (
+            <>
+                <div className="modalContentInformationHeader">
+
+                    <h4 className="titleNotMain dark-color">
+                        <span className="clickable" >✅</span>
+                        Welcome to your account
+                    </h4>
+
+                    <h5 className="regularText dark-color">We are excited to have you on board!</h5>
+                </div>
+
+                <div className="modalContentInformationBody">
+                    <input onClick={() => { navigate('/profile') }} className="regularText modalbtn" type="button" value="Continue" />
+                </div>
+            </>
+        );
+    }
 }
 
-export { ModalWelcomeAccount };
+function ModalWelcomeAccountWrapper() {
+    const { myModal, setMyModal } = React.useContext(AppContext)
+    const navigate = useNavigate();
+
+    return <ModalWelcomeAccount navigate={navigate} myModal={myModal} setMyModal={setMyModal} />
+}
+
+export { ModalWelcomeAccountWrapper as ModalWelcomeAccount };

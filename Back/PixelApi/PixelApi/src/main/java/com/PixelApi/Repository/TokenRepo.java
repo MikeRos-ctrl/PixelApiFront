@@ -14,10 +14,10 @@ public interface TokenRepo extends JpaRepository<Token, String> {
 
 	//Token findByClientId(String id);
 
-	@Query("SELECT COUNT(t) FROM Token t WHERE t.client=:client AND t.reason=:reason AND t.active=:active")
+	@Query("SELECT COUNT(t) FROM Token t WHERE t.client=:client AND t.reason=:reason AND t.used=:used")
 	Long tokenValidation(
 			@Param("client") Long client, 
 			@Param("reason") String reason,
-			@Param("active") Boolean activa);
+			@Param("used") Boolean activa);
 
 }

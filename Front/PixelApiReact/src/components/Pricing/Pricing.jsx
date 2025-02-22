@@ -4,18 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { AppContext } from '../../context';
 
-function Pricing({ changeModalstatus, setModalIndex, setMyUserPayment }) {
+function Pricing() {
 
     const navigate = useNavigate();
-    const { myUser } = React.useContext(AppContext)
-
+    const { myUser, setMyUser, setMyModal, myModal } = React.useContext(AppContext)
 
     const OpenModal = (plan) => {
 
         if (myUser.ready == false) {
-            setMyUserPayment(plan)
-            changeModalstatus()
-            setModalIndex(5)
+            setMyUser({ ...myUser, plan: plan })
+            setMyModal({ ...myModal, open: !myModal.open })
         } else {
             navigate('/profile')
         }

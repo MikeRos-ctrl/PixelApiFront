@@ -1,18 +1,20 @@
 import React from "react";
 import { FaEye } from "react-icons/fa";
 import { ApiCall } from "../../util/ApiCall";
+import { AppContext } from '../../context';
 const { CreateAccount, ForgotPwd } = ApiCall()
 
-function ModalCreate_UpdateAccount({ modalFlow, myUser, setMyUser, setModalIndex }) {
+function ModalCreate_UpdateAccount() {
 
+    const { myModal, setMyModal, myUser, setMyUser } = React.useContext(AppContext)
     const [inputValue1, setInputValue1] = React.useState('')
     const [inputValue2, setInputValue2] = React.useState('')
     const [error, setError] = React.useState(false)
     const [errorText, setErrorText] = React.useState(false)
     const [inputStyle, setInputStyle] = React.useState("password")
     const [inputStyle2, setInputStyle2] = React.useState("password")
-    const [modalFlowIndexBack, setModalFlowIndexBack] = React.useState(modalFlow == 'A' ? 0 : 4)
-    const [title, setTitle] = React.useState(modalFlow == 'A' ? "Create your account" : "Update your password")
+    const [modalFlowIndexBack, setModalFlowIndexBack] = React.useState(myModal.flow == 'A' ? 0 : 4)
+    const [title, setTitle] = React.useState(myModal.flow == 'A' ? "Create your account" : "Update your password")
 
     /*
     * role = 2 Equals to COSTUMER
@@ -43,29 +45,22 @@ function ModalCreate_UpdateAccount({ modalFlow, myUser, setMyUser, setModalIndex
         }
         else {
 
-            if (modalFlow == 'A') {
+            if (myModal.flow == 'A') {
 
-                CreateAccount({
-                    role: 2,
-                    email: myUser.email,
-                    accountKey: inputValue1,
-                }).then(result => {
-
-                    myUser.id = result.value.id
-                    myUser.accountKey = inputValue1
-                    setMyUser(myUser)
-                    setModalIndex(2)
-                }).catch(error => {
-                    console.error("I've got a mistake: ", error);
-                })
-
+                CreateAccount({ role: 2, email: myUser.email, acctKey: inputValue1 })
+                    .then(result => {
+                        setMyUser({ ...myUser, clientId: result.value.clientId, acctKey: inputValue1 })
+                        setMyModal({ ...myModal, index: 2 })
+                    }).catch(error => {
+                        console.error("I've got a mistake: ", error);
+                    })
             } else {
-
-                ForgotPwd(myUser.email, myUser.id).then(result => {
-                    console.log(result)
-                    myUser.accountKey = inputValue1
-                    setMyUser(myUser)
-                    setModalIndex(2)
+                /*
+                * ForgotPwd only sends an email
+                 */
+                ForgotPwd(myUser.email).then(result => {
+                    setMyUser({ ...myUser, acctKey: inputValue1, clientId: result.value })
+                    setMyModal({ ...myModal, index: 2 })
                 }).catch(error => {
                     console.error("I've got a mistake: ", error);
                 })
@@ -93,7 +88,9 @@ function ModalCreate_UpdateAccount({ modalFlow, myUser, setMyUser, setModalIndex
         <>
             <div className="modalContentInformationHeader">
                 <h4 className="titleNotMain dark-color">
-                    <span className="clickable" onClick={() => setModalIndex(modalFlowIndexBack)}>⬅️</span>
+                    <span className="clickable" onClick={() => {
+                        setMyModal({ ...myModal, index: modalFlowIndexBack })
+                    }}>⬅️</span>
                     {title}
                 </h4>
 

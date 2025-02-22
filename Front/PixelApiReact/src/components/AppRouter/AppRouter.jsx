@@ -1,8 +1,8 @@
 import { HashRouter, Route, Routes } from 'react-router-dom';
-import App from '../App/App';
+import { App } from '../App/App';
 import { Profile } from '../Profile/Profile';
 import { Checkout } from '../Checkout/Checkout';
-import React, { useEffect, useRef, Component } from 'react';
+import React, { Component } from 'react';
 import { LocalDb } from '../../util/LocalDb';
 import { AppContext } from '../../context';
 import { ApiCall } from '../../util/ApiCall';
@@ -17,8 +17,7 @@ class AppRouter extends Component {
         super(props);
 
         this.state = {
-            loading: false,
-            checkOutFlag: false
+            loading: false
         }
     }
 
@@ -42,7 +41,6 @@ class AppRouter extends Component {
             console.error("Error retrieving user data:", error);
         });
 
-
         /*
          *FETCH IMAGES 
          */
@@ -61,21 +59,19 @@ class AppRouter extends Component {
 
     }
 
-    setCheckOutFlag = () => {
-        this.setState({ checkOutFlag: !this.state.checkOutFlag })
-    }
-
     render() {
-        const { loading, checkOutFlag } = this.state
+        const { loading } = this.state
+        const { myUser } = this.props
 
         if (loading) {
 
             return (
                 <HashRouter>
                     <Routes>
-                        <Route path='/' element={<App setCheckOutFlag={this.setCheckOutFlag} />} />
-                        {/* <Route path='/checkout' element={checkOutFlag == false ? <App setCheckOutFlag={this.setCheckOutFlag} myUser={myUser} setMyUser={this.setMyUser} /> : <Checkout setCheckOutFlag={this.setCheckOutFlag} />} /> */}
-                        {/* <Route path='/profile' element={myUser.ready != null ? <Profile myUser={myUser} setMyUser={this.setMyUser} /> : <App />} /> */}
+                        <Route path='/' element={<App />} />
+                        {/* <Route path='/checkout' element={myUser.ready == false ? <App /> : <Checkout />} /> */}
+                        <Route path='/checkout' element={<Checkout />} />
+                        <Route path='/profile' element={myUser.ready != false ? <Profile /> : <App />} />
                         <Route path='*' element={<p>Not Found</p>} />
                     </Routes>
                 </HashRouter >
@@ -85,8 +81,8 @@ class AppRouter extends Component {
 }
 
 function AppRouterWrapper() {
-    const { setMyUser, setMyImages, myImages } = React.useContext(AppContext)
-    return <AppRouter setMyUser={setMyUser} setMyImages={setMyImages} myImages={myImages} />
+    const { setMyUser, setMyImages, myUser } = React.useContext(AppContext)
+    return <AppRouter setMyUser={setMyUser} setMyImages={setMyImages} myUser={myUser} />
 }
 
 export { AppRouterWrapper as AppRouter }

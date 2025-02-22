@@ -110,10 +110,10 @@ const ApiCall = () => {
         }
     }
 
-    async function ConfirmAccount(id, token) {
+    async function ConfirmAccount(token) {
 
         try {
-            const response = await fetch(API + "/confirmAccount/" + id + "/" + token, {
+            const response = await fetch(API + "/confirmAccount/" + token, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -125,10 +125,10 @@ const ApiCall = () => {
         }
     }
 
-    async function ForgotPwd(email, id) {
+    async function ForgotPwd(email) {
 
         try {
-            const response = await fetch(API + "/forgotPwd/" + email + "/" + id, {
+            const response = await fetch(API + "/forgotPwd/" + email, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

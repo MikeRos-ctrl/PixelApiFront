@@ -1,11 +1,15 @@
 import React from "react";
 import validator from 'validator';
 import { useRef } from 'react';
+import { AppContext } from '../../context';
 import { ApiCall } from "../../util/ApiCall";
 const { ValidateAccount } = ApiCall()
 
-function ModalLogin({ setModalIndex, setMyUser }) {
+function ModalLogin() {
 
+    //ELIMINATE STATE OF MY USER XD 
+
+    const { myModal, setMyModal, setMyUser, myUser } = React.useContext(AppContext)
     const inputRef = useRef(null);
     const [emailError, setEmailError] = React.useState(false)
 
@@ -15,31 +19,20 @@ function ModalLogin({ setModalIndex, setMyUser }) {
 
             ValidateAccount(email).then(result => {
 
+                /*
+                 * NEW USER
+                 */
                 if (result.response.code == "A") {
-
-                    setMyUser({
-                        id: null,
-                        accountType: null,
-                        email: email,
-                        accountKey: null,
-                        ready: false
-                    })
-                    setModalIndex(1)
+                    setMyUser({ ...myUser, email: email })
+                    setMyModal({ ...myModal, index: 1 })
                 }
 
                 /*
-                 * NORMAL USER LOGIN
+                 * NORMAL USER LOGIN FIX THIS PART XD
                  */
                 else if (result.response.code == "B") {
-
-                    setMyUser({
-                        id: result.response.id,
-                        accountType: null,
-                        email: email,
-                        accountKey: null,
-                        ready: null
-                    })
-                    setModalIndex(4)
+                    setMyUser({ ...myUser, email: email })
+                    setMyModal({ ...myModal, index: 4, flow: 'B' })
                 }
 
                 /*
@@ -47,14 +40,16 @@ function ModalLogin({ setModalIndex, setMyUser }) {
                 */
                 else if (result.response.code == "C") {
 
+                    let data = (result.response.additionalField).split(",")
+
                     setMyUser({
-                        id: result.response.additionalField,
-                        accountType: null,
+                        clientId: data[0],
                         email: email,
-                        ready: false
+                        acctKey: data[1],
+                        ready: false,
                     })
 
-                    setModalIndex(2)
+                    setMyModal({ ...myModal, index: 2, flow: 'C' })
                 }
 
             }).catch(error => {
@@ -72,8 +67,8 @@ function ModalLogin({ setModalIndex, setMyUser }) {
     return (
         <>
             <div className="modalContentInformationHeader">
-                <h4 className="titleNotMain dark-color">Use your Email</h4>
-                <h5 className="regularText dark-color">We'll revise if you have an account, if not we help you create one</h5>
+                <h4 className="titleNotMain dark-color">Welcome</h4>
+                <h5 className="regularText dark-color">Use your email to find your account, otherwise we'll help you create one</h5>
             </div>
 
             <div className="modalContentInformationBody">

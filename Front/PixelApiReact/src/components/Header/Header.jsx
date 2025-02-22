@@ -1,5 +1,5 @@
 import './index.css';
-import React, { useState, useEffect, Component } from 'react';
+import React from 'react';
 import Logo from '../../assets/icon4.png';
 import Money from '../../assets/Icon-6.png'
 import User from '../../assets/Icon-16.png'
@@ -9,16 +9,16 @@ import { Link } from 'react-scroll';
 import { AppContext } from '../../context';
 import { useNavigate } from 'react-router-dom';
 
-function Header({ children, changeModalstatus }) {
+function Header({ children }) {
 
-    const { myUser } = React.useContext(AppContext)
+    const { myUser, myModal, setMyModal } = React.useContext(AppContext)
 
     const navigate = useNavigate();
 
     const OpenModal = () => {
 
         if (myUser.ready == false) {
-            changeModalstatus()
+            setMyModal({ ...myModal, open: !myModal.open })
         } else {
             navigate('/profile')
         }

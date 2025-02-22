@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import Stripe from 'stripe';
+import { AppContext } from '../../context';
 import { ApiCall } from '../../util/ApiCall';
 const { StripeCredentials } = ApiCall()
 
@@ -52,8 +53,7 @@ class Checkout extends React.Component {
     }
 
     componentWillUnmount() {
-        const { setCheckOutFlag, location } = this.props;
-        location.state = null
+        const { setCheckOutFlag } = this.props;
         setCheckOutFlag()
     }
 
@@ -69,6 +69,7 @@ class Checkout extends React.Component {
 
         return (
             <>
+
                 <div className="checkout">
 
                     <div className="checkoutLeft">
@@ -122,13 +123,13 @@ class Checkout extends React.Component {
 
 function CheckoutWithRouter(props) {
 
+    const { myUser } = React.useContext(AppContext)
     const navigate = useNavigate();
-    const location = useLocation();
 
-    if (location.state) {
-        let price = location.state.plan == "Premium" ? "8,00 USD" : "10,00 USD"
-        return <Checkout {...props} navigate={navigate} price={price} plan={location.state.plan} email={location.state.email} location={location} />;
-    }
+    // if (location.state) {
+    let price = myUser.plan == "Premium" ? "8,00 USD" : "10,00 USD"
+    return <Checkout {...props} navigate={navigate} price={price} myUser={myUser} />;
+    //}
 }
 
 export { CheckoutWithRouter as Checkout };

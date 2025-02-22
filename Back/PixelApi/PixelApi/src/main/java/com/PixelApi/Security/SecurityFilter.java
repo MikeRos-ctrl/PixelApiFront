@@ -38,19 +38,19 @@ public class SecurityFilter {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable()).cors(Customizer.withDefaults())
 				.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.GET, "/frontController/nepe")
-						.permitAll().requestMatchers(HttpMethod.GET, "/frontController/forgotPwd/{email}/{id}")
-						.permitAll().requestMatchers(HttpMethod.POST, "/frontController/createAccount").permitAll()
+				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers(HttpMethod.GET, "/frontController/forgotPwd/{email}").permitAll()
+						.requestMatchers(HttpMethod.POST, "/frontController/createAccount").permitAll()
 						.requestMatchers(HttpMethod.POST, "/frontController/paypalOrder").permitAll()
 						.requestMatchers(HttpMethod.POST, "/frontController/stripeSubscription").permitAll()
-						.requestMatchers(HttpMethod.POST, "/frontController/confirmAccount/{id}/{token}").permitAll()
+						.requestMatchers(HttpMethod.POST, "/frontController/confirmAccount/{token}").permitAll()
 						.requestMatchers(HttpMethod.GET, "/frontController/getRandomImageWithCategories").permitAll()
 						.requestMatchers(HttpMethod.GET, "/frontController/validateAccount/{email}").permitAll()
 						.requestMatchers(HttpMethod.GET, "/frontController/login/{email}/{accountKey}").permitAll()
 						.requestMatchers(HttpMethod.GET, "/frontController/stripeCredentials").permitAll()
 						.requestMatchers(HttpMethod.GET, "/frontController/fillFrontHeader").permitAll()
-						.requestMatchers(HttpMethod.GET, "/frontController/listByCategory/{category}/{imageId}")
-						.permitAll().requestMatchers(HttpMethod.PUT, "/frontController/updateAccount").permitAll()
+						.requestMatchers(HttpMethod.GET, "/frontController/listByCategory/{category}/{imageId}").permitAll()
+						.requestMatchers(HttpMethod.PUT, "/frontController/updateAccount").permitAll()
 						.anyRequest().authenticated())
 				.httpBasic(withDefaults()).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();

@@ -75,7 +75,6 @@ function ProfileModifyInformation({ myUser, setMyUser }) {
                         setError(false);
                         setMyUser({
                             id: null,
-                            accountType: null,
                             email: null,
                             accountKey: null,
                             ready: false,

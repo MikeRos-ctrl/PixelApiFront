@@ -5,11 +5,16 @@ const AppContext = React.createContext()
 function AppProvider({ children }) {
 
     const [myUser, setMyUser] = React.useState({
-        id: null,
-        accountType: null,
+        clientId: null,
         email: null,
-        accountKey: null,
+        acctKey: null,
         ready: false,
+    })
+
+    const [myModal, setMyModal] = React.useState({
+        index: 0,
+        flow: 'A',
+        open: false
     })
 
     const [myImages, setMyImages] = React.useState([])
@@ -17,12 +22,10 @@ function AppProvider({ children }) {
 
     return (
         <AppContext.Provider value={{
-            myUser,
-            setMyUser,
-            myImages,
-            setMyImages,
-            refreshGallery, 
-            setRefreshGallery
+            myUser, setMyUser,
+            myImages, setMyImages,
+            refreshGallery, setRefreshGallery,
+            myModal, setMyModal
         }}>
             {children}
         </AppContext.Provider >

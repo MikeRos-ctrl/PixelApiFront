@@ -13,11 +13,11 @@ create table `PLAN_TYPE`(
 	PLAN_TYPE_ID int not null primary key auto_increment,
 	`NAME` varchar(255)
 );
-select * from `ACCT_TYPE`;
+select * from `PLAN_TYPE`;
 drop table `PLAN_TYPE`;
 
-insert into `ACCT_TYPE` (`name`) values ('PREMIUM');
-insert into `ACCT_TYPE` (`name`) values ('PREMIUM+');
+insert into `PLAN_TYPE` (`name`) values ('PREMIUM');
+insert into `PLAN_TYPE` (`name`) values ('PREMIUM+');
 -- -------------------------------------------------------------------------------------------------------------------------------------------
 
 create table `CLIENT` (
@@ -57,14 +57,14 @@ create table TOKEN(
     CREATION timestamp default now(),
 	EXPIRATION_DATE timestamp,
     REASON varchar (255) not null comment 'ACCT_CONFIRMATION|RECOVER_PWD|USE_APP',
-    ACTIVE bit,
+    USED bit default 0,
 	foreign key(`CLIENT`) references `CLIENT`(CLIENT_ID)
 );
 
 SELECT * FROM TOKEN;
 drop table TOKEN;
 
-select count(*) as total from tokenaccount where `clientId` = 1 and reason = 'ACCOUNT-CONFIRMATION';
+select count(*) as total from token where `client` = 1 and reason = 'ACCT_CONFIRMATION' and used = true;
 select count(*) as total from tokenaccount where `clientId` = 1 and reason = 'FORGOT-PWD' and confirmed = 0;
 -- ------------------------------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE CATEGORY(

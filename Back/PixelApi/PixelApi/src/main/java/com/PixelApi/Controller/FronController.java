@@ -152,14 +152,14 @@ public class FronController {
 		return new ResponseEntity<>(response, statusResponse);
 	}
 
-	@PostMapping("/confirmAccount/{id}/{token}")
-	public ResponseEntity<?> confirmAccount(@PathVariable Long id, @PathVariable String token) {
+	@PostMapping("/confirmAccount/{token}")
+	public ResponseEntity<?> confirmAccount(@PathVariable String token) {
 
 		Map<String, Object> response = new HashMap<>();
 		HttpStatus statusResponse = HttpStatus.OK;
 
 		try {
-			response.put("response", myClientService.ConfirmAccount(id, token));
+			response.put("response", myClientService.ConfirmAccount(token));
 			statusResponse = HttpStatus.OK;
 
 		} catch (Exception e) {
@@ -170,14 +170,14 @@ public class FronController {
 		return new ResponseEntity<>(response, statusResponse);
 	}
 
-	@GetMapping("/forgotPwd/{email}/{id}")
-	public ResponseEntity<?> forgotPwd(@PathVariable String email, @PathVariable Long id) {
+	@GetMapping("/forgotPwd/{email}")
+	public ResponseEntity<?> forgotPwd(@PathVariable String email) {
 
 		Map<String, String> response = new HashMap<>();
 		HttpStatus statusResponse = HttpStatus.OK;
 
 		try {
-			response = myClientService.ForgotPwd(email, id);
+			response = myClientService.ForgotPwd(email);
 			statusResponse = HttpStatus.OK;
 
 		} catch (Exception e) {

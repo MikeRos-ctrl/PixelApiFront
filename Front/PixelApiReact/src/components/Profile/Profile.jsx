@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { ProfileModifyInformation } from './ProfileModifyInformation';
 import { ProfileUpdatePlan } from './ProfileUpdatePlan';
 import { LocalDb } from '../../util/LocalDb';
+import { AppContext } from '../../context';
 
 class Profile extends Component {
 
@@ -20,6 +21,11 @@ class Profile extends Component {
     }
 
     componentDidMount() {
+
+        const { myUser } = this.props;
+
+        console.log(myUser)
+
         window.addEventListener('resize', () => {
             this.setState({
                 myWindowLength: (window.innerWidth <= 900) ? false : true,
@@ -47,7 +53,6 @@ class Profile extends Component {
 
             setMyUser({
                 id: null,
-                accountType: null,
                 email: null,
                 accountKey: null,
                 ready: false,
@@ -108,9 +113,10 @@ class Profile extends Component {
     }
 }
 
-function ProfileWithNavigate(props) {
+function ProfileWrapper(props) {
+    const { setMyUser, myUser } = React.useContext(AppContext)
     const navigate = useNavigate();
-    return <Profile {...props} navigate={navigate} />;
+    return <Profile {...props} myUser={myUser} setMyUser={setMyUser} navigate={navigate} />;
 }
 
-export { ProfileWithNavigate as Profile };
+export { ProfileWrapper as Profile };

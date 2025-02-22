@@ -2,12 +2,12 @@ import React from "react";
 import { useRef } from 'react';
 import { LocalDb } from '../../util/LocalDb';
 import { ApiCall } from "../../util/ApiCall";
+import { AppContext } from '../../context';
 const { ConfirmAccount, UpdateAccount } = ApiCall()
 
-/* Modal Flow
- * ModalLogin -> ModalCreateAccount -> ModalConfirmAccount -> ModalWelcomeAccount
- */
-function ModalConfirmAccount({ modalFlow, setMyUser, myUser, setModalIndex }) {
+function ModalConfirmAccount() {
+
+    const { myUser, setMyUser, setMyModal, myModal } = React.useContext(AppContext)
 
     const inputRef = useRef(null);
     const [error, setError] = React.useState(false)
@@ -26,34 +26,27 @@ function ModalConfirmAccount({ modalFlow, setMyUser, myUser, setModalIndex }) {
              * JavaScript objects are passed by reference, not by value.
             */
 
-            ConfirmAccount(myUser.id, inputRef.current.value).then(result => {
+            //METHOD TO CONFIRM TOKEN
+            ConfirmAccount(inputRef.current.value).then(result => {
 
-                if (modalFlow == 'B' && result.response.code == 'AA') {
+                if (result.response.code == 'AA') {
+
                     UpdateAccount(myUser).then(result => {
-                        
-                        myUser.ready = true;
-                        setMyUser(myUser)
 
-                        let data = { ...myUser };
+                        console.log(result)
+
+                        let data = { ...myUser, ready: true }
+                        setMyUser(data)
 
                         LocalDb.Insert(data).then(() => {
-                            setModalIndex(3)
+                            setMyModal({ ...myModal, index: 3 })
                         })
                     }).catch(error => {
                         console.error("I've got a mistake: ", error);
                     })
                 }
-                else if (result.response.code == 'AA') {
 
-                    myUser.ready = true;
-                    setMyUser(myUser);
-                    let data = { ...myUser };
-
-                    LocalDb.Insert(data).then(() => {
-                        setModalIndex(3)
-                    })
-
-                } else {
+                else {
                     setError(true)
                     setErrorText("Wrong token")
                     setTimeout(() => {
@@ -72,7 +65,9 @@ function ModalConfirmAccount({ modalFlow, setMyUser, myUser, setModalIndex }) {
             <div className="modalContentInformationHeader">
 
                 <h4 className="titleNotMain dark-color">
-                    <span className="clickable" onClick={() => setModalIndex(1)}>⬅️</span>
+                    <span className="clickable" onClick={() => {
+                        setMyModal({ ...myModal, index: 1 })
+                    }}>⬅️</span>
                     Confirm your account
                 </h4>
 

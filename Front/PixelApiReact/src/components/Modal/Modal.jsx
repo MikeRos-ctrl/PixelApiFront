@@ -2,8 +2,11 @@ import React from "react";
 import ReactDOM from 'react-dom'
 import './index.css';
 import xd from './skatingman.jpeg'
+import { AppContext } from '../../context';
 
-function Modal({ changeModalstatus, children }) {
+function Modal({ children }) {
+
+    const { myModal, setMyModal } = React.useContext(AppContext)
 
     return ReactDOM.createPortal(
 
@@ -11,7 +14,9 @@ function Modal({ changeModalstatus, children }) {
 
             <div className="modalContent">
 
-                <div className="close-icon" onClick={() => changeModalstatus()}>
+                <div className="close-icon" onClick={() => {
+                    setMyModal({ ...myModal, open: !myModal.open })
+                }}>
                     <h5 className="titleNotMain equis">X</h5>
                 </div>
 

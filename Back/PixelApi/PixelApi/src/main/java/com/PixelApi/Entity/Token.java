@@ -28,21 +28,19 @@ public class Token {
 	@Column(name = "REASON")
 	private String reason;
 
-	@Column(name = "ACTIVE")
-	private Boolean active;
+	@Column(name = "USED")
+	private Boolean used;
 
 	public Token() {
 
 	}
 
-	public Token(String tokenId, Long client,
-			Timestamp expirationDate, String reason, 
-			Boolean active) {
+	public Token(String tokenId, Long client, Timestamp expirationDate, String reason, Boolean used) {
 		this.tokenId = tokenId;
 		this.client = client;
 		this.expirationDate = expirationDate;
 		this.reason = reason;
-		this.active = active;
+		this.used = used;
 	}
 
 	public String getTokenId() {
@@ -85,11 +83,11 @@ public class Token {
 		this.reason = reason;
 	}
 
-	public Boolean getActive() {
-		return active;
+	public Boolean getUsed() {
+		return used;
 	}
 
-	public void setActive(Boolean active) {
-		this.active = active;
+	public void setUsed(Boolean used) {
+		this.used = used;
 	}
 }
