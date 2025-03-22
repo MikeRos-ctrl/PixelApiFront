@@ -14,7 +14,6 @@ class Profile extends Component {
         super(props);
 
         this.state = {
-            myWindowLength: (window.innerWidth <= 800) ? false : true,
             buttonId: 1,
             index: 1,
         }
@@ -22,101 +21,77 @@ class Profile extends Component {
 
     componentDidMount() {
 
-        const { myUser } = this.props;
+        // const { myUser } = this.props;
 
-        console.log(myUser)
+        // console.log(myUser)
 
-        window.addEventListener('resize', () => {
-            this.setState({
-                myWindowLength: (window.innerWidth <= 900) ? false : true,
-            });
-        });
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.handleResize);
     }
 
     updateButton = (newId) => {
 
         const { navigate, setMyUser } = this.props;
 
-        if (newId != 4) {
-            this.setState({
-                buttonId: newId,
-                index: newId
-            })
-        }
-        else {
+        //        if (newId != 4) {
+        this.setState({
+            buttonId: newId,
+            index: newId
+        })
+        //      }
+        //     else {
 
-            LocalDb.Delete()
+        // LocalDb.Delete()
 
-            setMyUser({
-                id: null,
-                email: null,
-                accountKey: null,
-                ready: false,
-            })
-            navigate('/')
-        }
+        // setMyUser({
+        //     id: null,
+        //     email: null,
+        //     accountKey: null,
+        //     ready: false,
+        // })
+        // navigate('/')
+        //   }
     }
 
     render() {
 
-        const { myWindowLength, buttonId, index } = this.state;
-        const { myUser, navigate, setMyUser } = this.props;
+        const { buttonId, index } = this.state;
+        const { myUser, navigate, setMyUser, setMyModal } = this.props;
 
         const ProfileComponents = {
-            1: <ProfileModifyInformation myUser={myUser} setMyUser={setMyUser} />,
-            2: <ProfileUpdatePlan myUser={myUser} />,
+            1: <ProfileUpdatePlan myUser={myUser} />,
+            2: <ProfileModifyInformation myUser={myUser} setMyUser={setMyUser} setMyModal={setMyModal} />,
         }
 
-        let validatedEmail = myUser.email.length > 11 ? myUser.email.slice(0, 11) : myUser.email.length;
+        return (
 
-        if (myWindowLength) {
-            return (
+            <div className="profileContainer" >
 
-                <div className="profileContainer" >
+                <div className="profileContainerHeader">
 
-                    <div className="profileLeft">
-
-                        <div className='profilePicInfo'>
-                            <img src={Logo} className="profilePic" alt="" />
-                            <h5 className="regularText nepe">{validatedEmail + ".."}</h5>
-                        </div>
-
-                        <div className='profileLeftMenu'>
-                            <h5 onClick={() => { this.updateButton(1) }} className={`clickable regularText menuOptions ${buttonId == 1 ? ("selected") : ("")}`}>Modify information</h5>
-                            <h5 onClick={() => { this.updateButton(2) }} className={`clickable regularText menuOptions ${buttonId == 2 ? ("selected") : ("")}`}>Update plan</h5>
-                            <h5 onClick={() => { this.updateButton(3) }} className={`clickable regularText menuOptions ${buttonId == 3 ? ("selected") : ("")}`}>Delete account</h5>
-                            <h5 onClick={() => { this.updateButton(4) }} className={`clickable regularText menuOptions ${buttonId == 4 ? ("selected") : ("")}`}>Log out</h5>
-                        </div>
+                    <div onClick={() => navigate('/')} className='clickable'>
+                        <img src={Logoxd} className="qwer" alt="" />
                     </div>
 
-                    <div className="profileRight">
-
-                        <div onClick={() => navigate('/')} className='profileRightMenu clickable'>
-                            <img src={Logoxd} className="qwer" alt="" />
-                        </div>
-
-                        <div className='profileRightContent'>
-                            {ProfileComponents[index]}
-                        </div>
+                    <div className='profileContainerHeaderOptions'>
+                        <input onClick={() => { this.updateButton(1) }} className={` titleNotMain ${buttonId == 1 ? (" button-5") : (" button-6")}  `} type="button" value="Plan" />
+                        <input onClick={() => { this.updateButton(2) }} className={` titleNotMain ${buttonId == 2 ? (" button-5") : (" button-6")}  `} type="button" value="Account" />
+                        <input onClick={() => { this.updateButton(3) }} className={` titleNotMain ${buttonId == 3 ? (" button-5") : (" button-6")}  `} type="button" value="Documentation" />
+                        <input onClick={() => { this.updateButton(4) }} className={` titleNotMain ${buttonId == 4 ? (" button-5") : (" button-6")}  `} type="button" value="Log out" />
                     </div>
                 </div>
-            )
-        } else {
-            return (
-                <h5>responsive xd</h5>
-            )
-        }
+
+                <div className='profileContent'>
+                    {ProfileComponents[index]}
+                </div>
+
+            </div>
+        )
     }
 }
 
 function ProfileWrapper(props) {
-    const { setMyUser, myUser } = React.useContext(AppContext)
+    const { setMyUser, myUser, setMyModal } = React.useContext(AppContext)
     const navigate = useNavigate();
-    return <Profile {...props} myUser={myUser} setMyUser={setMyUser} navigate={navigate} />;
+    return <Profile {...props} setMyModal={setMyModal} myUser={myUser} setMyUser={setMyUser} navigate={navigate} />;
 }
 
 export { ProfileWrapper as Profile };

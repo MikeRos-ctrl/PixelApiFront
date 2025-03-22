@@ -39,12 +39,10 @@
     background-color: #262829;
 }
 
-
 .pinkbtn {
     background-color: var(--strongPink);
     color: white;
 }
-
 
 .pricingOptions {
     width: 100%;
@@ -54,7 +52,6 @@
     margin-top: 3rem;
     flex-wrap: wrap;
 }
-
 
 .pricingCard {
     outline: 2px solid var(--orange);

@@ -6,7 +6,7 @@ const { UpdateAccount } = ApiCall()
 import { LocalDb } from '../../util/LocalDb';
 import { useNavigate } from 'react-router-dom';
 
-function ProfileModifyInformation({ myUser, setMyUser }) {
+function ProfileModifyInformation({ myUser, setMyUser, setMyModal }) {
 
     const navigate = useNavigate();
     const [newEmail, setNewEmail] = React.useState(myUser.email)
@@ -49,39 +49,31 @@ function ProfileModifyInformation({ myUser, setMyUser }) {
         }
         else {
 
-            let flag = myUser.email == newEmail ? true : false
             myUser.email = newEmail;
-            myUser.accountKey = newPassword;
+            myUser.acctKey = newPassword;
 
             UpdateAccount(myUser).then(result => {
 
                 LocalDb.Delete()
                 setError(true)
 
-                if (flag) {
+                setErrorText("You will be logged out!")
 
-                    setMyUser(myUser)
-
-                    let data = { myUser }
-                    LocalDb.Insert(data)
-                    setErrorText("Information was updated!")
-                    setTimeout(() => {
-                        setError(false);
-                    }, 3000);
-                } else {
-                    setErrorText("You will be logged out!")
-
-                    setTimeout(() => {
-                        setError(false);
-                        setMyUser({
-                            id: null,
-                            email: null,
-                            accountKey: null,
-                            ready: false,
-                        })
-                        navigate('/')
-                    }, 5000);
-                }
+                setTimeout(() => {
+                    setError(false);
+                    setMyUser({
+                        clientId: null,
+                        email: null,
+                        acctKey: null,
+                        ready: false,
+                    })
+                    setMyModal({
+                        index: 0,
+                        flow: 'A',
+                        open: false
+                    })
+                    navigate('/')
+                }, 5000);
             })
         }
     }
@@ -107,21 +99,32 @@ function ProfileModifyInformation({ myUser, setMyUser }) {
             <div className='infoContainer'>
 
                 <div className='pricingCardTitle titleNotMain'>
-                    <h3 className='dark-light'>Update your data</h3>
+                    <h3 className='dark-light'>My account</h3>
                 </div>
 
                 <div className="infoContainerForm">
 
-                    <input defaultValue={myUser.email} onChange={(e) => setNewEmail(e.target.value)} className="regularText modalbtn3" placeholder="your email" />
-
-                    <div className="pswInput">
-                        <input defaultValue={myUser.accountKey} onChange={(e) => setNewPassword(e.target.value)} className="regularText modalbtn3" placeholder="Password" type={inputStyle} />
-                        <FaEye onClick={() => { changeInput() }} className="pswEye icon" />
+                    <div className="form">
+                        <p className="titleNotMain grey-color">Email</p>
+                        <input defaultValue={myUser.email} className="regularText readOnlyInput" readOnly />
                     </div>
 
-                    <div className="pswInput">
-                        <input defaultValue={myUser.accountKey} onChange={(e) => setNewPassword2(e.target.value)} className="regularText modalbtn3" placeholder="Password" type={inputStyle2} />
-                        <FaEye onClick={() => { changeInput2() }} className="pswEye icon" />
+                    <div className="form">
+                        <p className="titleNotMain grey-color">Password</p>
+
+                        <div className="pswInput">
+                            <input defaultValue={myUser.acctKey} onChange={(e) => setNewPassword(e.target.value)} className="regularText modalbtn3" placeholder="Password" type={inputStyle} />
+                            <FaEye onClick={() => { changeInput() }} className="pswEye icon" />
+                        </div>
+                    </div>
+
+                    <div className="form">
+                        <p className="titleNotMain grey-color">Confirm password</p>
+
+                        <div className="pswInput">
+                            <input defaultValue={myUser.acctKey} onChange={(e) => setNewPassword2(e.target.value)} className="regularText modalbtn3" placeholder="Password" type={inputStyle2} />
+                            <FaEye onClick={() => { changeInput2() }} className="pswEye icon" />
+                        </div>
                     </div>
 
                     <input onClick={() => submit()} className="titleNotMain pricingbtn2" type="button" value="Update" />
@@ -130,7 +133,6 @@ function ProfileModifyInformation({ myUser, setMyUser }) {
                 {error && (
                     <input className={`regularText mt-1_5 ${errorText == "Information was updated!" || errorText == "You will be logged out!" ? 'modalbtnsuccess' : ' modalbtnerror'}`} type="button" value={errorText} />
                 )}
-
             </div>
         </>
     )

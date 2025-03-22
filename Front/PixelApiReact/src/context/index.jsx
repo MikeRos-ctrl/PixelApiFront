@@ -9,6 +9,7 @@ function AppProvider({ children }) {
         email: null,
         acctKey: null,
         ready: false,
+        plan: null
     })
 
     const [myModal, setMyModal] = React.useState({

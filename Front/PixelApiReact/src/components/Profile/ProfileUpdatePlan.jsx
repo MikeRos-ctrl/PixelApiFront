@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Component } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../../context';
 import { ApiCall } from '../../util/ApiCall';
-const { PaypalOrder } = ApiCall()
 
 class ProfileUpdatePlan extends Component {
 
@@ -9,26 +10,6 @@ class ProfileUpdatePlan extends Component {
     }
 
     componentDidMount() {
-        const { myUser } = this.props;
-
-        window.paypal.Buttons({
-            createSubscription: function (data, actions) {
-                return actions.subscription.create({
-                    'plan_id': 'P-5GX12132HF6599748M26AU6Y'
-                });
-            },
-            onApprove: function (data, actions) {
-
-                PaypalOrder({
-                    orderId: data.orderID,
-                    suscriptionId: data.subscriptionID,
-                    clientId: myUser.id,
-                    plan: "Premium"
-                }).then(result => {
-                    console.log("xd")
-                })
-            }
-        }).render('#paypal-button-container');
     }
 
     componentWillUnmount() {
@@ -36,56 +17,65 @@ class ProfileUpdatePlan extends Component {
     }
 
     render() {
+
+        const { navigate, myUser, setMyUser } = this.props;
+
         return (
             <>
-                <div className='infoContainer'>
-                    <div className='pricingCardTitle titleNotMain'>
-                        <h3 className='dark-light'>Premium</h3>
-                    </div>
+                <div className='showPlanContainer'>
 
-                    <h4 className='titleNotMain dark-light'>7.00$</h4>
+                    <h2 className='titleNotMain'>Choose a plan</h2>
 
-                    <div className='pricingCardCharacteristics'>
-                        <h5 className='titleNotMain dark-light'>✅ Unlimited request per month</h5>
-                        <h5 className='titleNotMain dark-light'>✅ Unlimited images</h5>
-                        <h5 className='titleNotMain dark-light'>✅ Unlimited categories</h5>
-                        <h5 className='titleNotMain dark-light'>✅ Access to documentation</h5>
-                        <h5 className='titleNotMain dark-light'>✅ Images information</h5>
-                        <h5 className='titleNotMain dark-light'>✅ Code snipets</h5>
-                        <h5 className='titleNotMain dark-light'>❌ Commercial licence</h5>
-                    </div>
+                    <div className='showPlanContainerOptions'>
+                        <div className='infoContainer'>
+                            <div className='pricingCardTitle titleNotMain'>
+                                <h3 className='dark-light'>Premium</h3>
+                            </div>
 
-                    <div className='pricingbtnCenter'>
+                            <h4 className='titleNotMain dark-light'>8.00$</h4>
 
-                        {/* <input onClick={() => validateAccount()} className="titleNotMain pricingbtn2"
-                            type="button" value="Get premium access" /> */}
+                            <div className='pricingCardCharacteristics'>
+                                <h5 className='titleNotMain dark-light'>✅ Unlimited request per month</h5>
+                                <h5 className='titleNotMain dark-light'>✅ Unlimited images</h5>
+                                <h5 className='titleNotMain dark-light'>✅ Unlimited categories</h5>
+                                <h5 className='titleNotMain dark-light'>✅ Access to documentation</h5>
+                                <h5 className='titleNotMain dark-light'>✅ Images information</h5>
+                                <h5 className='titleNotMain dark-light'>✅ Code snipets</h5>
+                                <h5 className='titleNotMain dark-light'>❌ Commercial licence</h5>
+                            </div>
 
-                        <div id="paypal-button-container"></div>
+                            <div className='pricingbtnCenter-2'>
+                                <input onClick={() => {
+                                    setMyUser({ ...myUser, plan: 'Premium' })
+                                    navigate('/checkout')
+                                }} className="titleNotMain pricingbtn2" type="button" value="Select" />
+                            </div>
+                        </div>
 
-                    </div>
-                </div>
+                        <div className='infoContainer'>
+                            <div className='pricingCardTitle titleNotMain'>
+                                <h3 className='dark-light'>Premium+</h3>
+                            </div>
 
-                <div className='infoContainer'>
-                    <div className='pricingCardTitle titleNotMain'>
-                        <h3 className='dark-light'>Premium+</h3>
-                    </div>
+                            <h4 className='titleNotMain dark-light'>10.00$</h4>
 
-                    <h4 className='titleNotMain dark-light'>9.00$</h4>
+                            <div className='pricingCardCharacteristics'>
+                                <h5 className='titleNotMain dark-light'>✅ Unlimited request per month</h5>
+                                <h5 className='titleNotMain dark-light'>✅ Unlimited images</h5>
+                                <h5 className='titleNotMain dark-light'>✅ Unlimited categories</h5>
+                                <h5 className='titleNotMain dark-light'>✅ Access to documentation</h5>
+                                <h5 className='titleNotMain dark-light'>✅ Images information</h5>
+                                <h5 className='titleNotMain dark-light'>✅ Code snipets</h5>
+                                <h5 className='titleNotMain dark-light'>✅ Commercial licence</h5>
+                            </div>
 
-                    <div className='pricingCardCharacteristics'>
-                        <h5 className='titleNotMain dark-light'>✅ Unlimited request per month</h5>
-                        <h5 className='titleNotMain dark-light'>✅ Unlimited images</h5>
-                        <h5 className='titleNotMain dark-light'>✅ Unlimited categories</h5>
-                        <h5 className='titleNotMain dark-light'>✅ Access to documentation</h5>
-                        <h5 className='titleNotMain dark-light'>✅ Images information</h5>
-                        <h5 className='titleNotMain dark-light'>✅ Code snipets</h5>
-                        <h5 className='titleNotMain dark-light'>✅ Commercial licence</h5>
-                    </div>
-
-                    <div className='pricingbtnCenter'>
-
-                        {/* <input onClick={() => validateAccount()} className="titleNotMain pricingbtn2"
-                            type="button" value="Get premium+ access" /> */}
+                            <div className='pricingbtnCenter-2'>
+                                <input onClick={() => {
+                                    setMyUser({ ...myUser, plan: 'PremiumPlus' })
+                                    navigate('/checkout')
+                                }} className="titleNotMain pricingbtn2" type="button" value="Select" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </>
@@ -93,4 +83,10 @@ class ProfileUpdatePlan extends Component {
     }
 }
 
-export { ProfileUpdatePlan };
+function ProfileUpdatePlanWrapper(props) {
+    const { myUser, setMyUser } = React.useContext(AppContext)
+    const navigate = useNavigate();
+    return < ProfileUpdatePlan {...props} myUser={myUser} navigate={navigate} setMyUser={setMyUser} />
+}
+
+export { ProfileUpdatePlanWrapper as ProfileUpdatePlan };

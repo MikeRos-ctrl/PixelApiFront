@@ -25,13 +25,17 @@ class Checkout extends React.Component {
     }
 
     async componentDidMount() {
-        const { plan, email } = this.props;
+        const { myUser } = this.props;
+        console.log(myUser.plan)
 
         try {
 
-            let stripeConfig = await StripeCredentials(plan);
+            /*
+            *   Get StripeCredentials in Backend
+             */
+            let stripeConfig = await StripeCredentials(myUser.plan);
             let stripe = new Stripe(stripeConfig.response.STRIPE_SECRET);
-            let createdUser = await stripe.customers.create({ email: email })
+            let createdUser = await stripe.customers.create({ email: myUser.email })
 
             stripe.subscriptions.create({
                 customer: createdUser.id,
@@ -54,7 +58,7 @@ class Checkout extends React.Component {
 
     componentWillUnmount() {
         const { setCheckOutFlag } = this.props;
-        setCheckOutFlag()
+        // setCheckOutFlag()
     }
 
     setReturnFlag = () => {
@@ -65,7 +69,7 @@ class Checkout extends React.Component {
 
     render() {
         const { stripePromise, clientSecret, returnFlag } = this.state;
-        const { navigate, plan, price, email } = this.props;
+        const { navigate, price, myUser } = this.props;
 
         return (
             <>
@@ -75,13 +79,13 @@ class Checkout extends React.Component {
                     <div className="checkoutLeft">
 
                         <div className="checkoutLeftSmartConatiner">
-                            <div className="relative clickable" onClick={() => returnFlag ? navigate('/') : null}>
+                            <div className="relative clickable" onClick={() => returnFlag ? navigate('/profile') : null}>
                                 <img src={arrow} className="qwer2 absolute" alt="" />
                                 <img src={Logo} className="qwer" alt="" />
                             </div>
 
                             <div className="checkoutLeftInformation">
-                                <h5 className="regularText">{plan} subscription</h5>
+                                <h5 className="regularText">{myUser.plan} subscription</h5>
                                 <div className="checkoutLeftInformation2">
                                     <h3 className="titleNotMain">{price}</h3>
                                     <h5 className="regularText">per month</h5>
@@ -110,7 +114,7 @@ class Checkout extends React.Component {
                         <div className='checkoutRightContainer'>
                             {stripePromise && clientSecret && (
                                 <Elements stripe={stripePromise} options={{ clientSecret }}>
-                                    <CheckoutForm navigate={navigate} setReturnFlag={this.setReturnFlag} plan={plan} email={email} />
+                                    <CheckoutForm navigate={navigate} setReturnFlag={this.setReturnFlag} plan={myUser.plan} email={myUser.email} />
                                 </Elements>
                             )}
                         </div>
@@ -122,14 +126,10 @@ class Checkout extends React.Component {
 }
 
 function CheckoutWithRouter(props) {
-
     const { myUser } = React.useContext(AppContext)
     const navigate = useNavigate();
-
-    // if (location.state) {
     let price = myUser.plan == "Premium" ? "8,00 USD" : "10,00 USD"
     return <Checkout {...props} navigate={navigate} price={price} myUser={myUser} />;
-    //}
 }
 
 export { CheckoutWithRouter as Checkout };

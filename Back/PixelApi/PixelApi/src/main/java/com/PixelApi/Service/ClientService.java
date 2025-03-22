@@ -1,7 +1,9 @@
 package com.PixelApi.Service;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -21,6 +23,7 @@ import com.PixelApi.Entity.Token;
 import com.PixelApi.Repository.ClientRepo;
 import com.PixelApi.Repository.StripeSubscriptionRepo;
 import com.PixelApi.Repository.TokenRepo;
+import com.PixelApi.Security.Jwt;
 import com.PixelApi.Util.SendMail;
 
 import jakarta.transaction.Transactional;
@@ -30,6 +33,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ClientService {
 
+	@Autowired
+	private final Jwt myJwt = new Jwt();
+	
 	@Autowired
 	SendMail sendMailClass;
 
@@ -63,7 +69,7 @@ public class ClientService {
 		try {
 			response.put("STRIPE_PUBLIC", stripePublic);
 			response.put("STRIPE_SECRET", stripeSecret);
-			String planCode = plan.equals("PREMIUM") ? stripePremium : stripePremiumPlus;
+			String planCode = plan.equals("Premium") ? stripePremium : stripePremiumPlus;
 			response.put("STRIPE_PLAN_CODE", planCode);
 
 		} catch (Exception e) {
@@ -79,16 +85,41 @@ public class ClientService {
 
 		log.info("Inside CreateStripeSubscription method");
 		Map<String, Object> response = new HashMap<>();
-
+		
 		try {
+			
+	        Client myclient = clientRepo.findByEmail(mySubscription.getEmail());
+			Timestamp now = new Timestamp(System.currentTimeMillis());
+	        LocalDateTime localDateTime = now.toLocalDateTime().plusMonths(1);
+	        Timestamp nextMonth = Timestamp.valueOf(localDateTime);
+	        String token = myJwt.create(myclient.getClientId().toString(), now, nextMonth);
+	        
 			StripeSubscription clientubscription = new StripeSubscription(
 					mySubscription.getStripeSubscriptionId(),
-					clientRepo.findByEmail(mySubscription.getEmail()).getClientId(), 
-					mySubscription.getPlanTypeId(), true, 1);
+					myclient.getClientId(), 
+				    mySubscription.getPlanTypeId().equals("Premium") ? 1  : 2,
+				    true, 
+					1,
+					now,
+					nextMonth,
+					token
+					);		
 
 			stripeRepo.save(clientubscription);
 			log.info("StripeSubscription has been saved");
+						
+			new Thread(() -> {
+				//CREATE TOKEN AND SEND EMAIL
+				log.info("Sending email to: " + mySubscription.getEmail());	
+				sendMailClass.sendMail(myclient.getEmail(), token, 'C');
+				log.info("Email has been sent");
 
+				
+				//NEED TO SAVE THE TOKEN SOMEWHERE
+				//Add a new field to STRIPE_SUBSCRIPTION BETTER
+				
+			}).start();
+			
 			response.put("StripeSubscription", mySubscription);
 		} catch (Exception e) {
 			log.error("Internal error in save method: " + e);
@@ -211,9 +242,7 @@ public class ClientService {
 		try {
 			
 			Long id = clientRepo.findByEmail(email).getClientId();
-			
 			Long xd = tokenRepo.tokenValidation(id, "RECOVER_PWD", false);
-			log.info("nepe" + xd.toString());
 			
 			if (tokenRepo.tokenValidation(id, "RECOVER_PWD", false) == 0) {
 
@@ -275,12 +304,6 @@ public class ClientService {
 
 		return response;
 	}
-
-	/*
-	 * public void delete(Integer id) { Userprofile updateClient =
-	 * clientRepo.findById(id).get(); updateClient.setDisabled(true);
-	 * clientRepo.save(updateClient); }
-	 */
 
 	public Client FindUserbyUsername(String user) {
 		Client myClient = clientRepo.findById(1L).get();

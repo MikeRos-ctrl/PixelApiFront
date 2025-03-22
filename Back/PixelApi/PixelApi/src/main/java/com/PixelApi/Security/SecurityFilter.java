@@ -52,7 +52,8 @@ public class SecurityFilter {
 						.requestMatchers(HttpMethod.GET, "/frontController/listByCategory/{category}/{imageId}").permitAll()
 						.requestMatchers(HttpMethod.PUT, "/frontController/updateAccount").permitAll()
 						.anyRequest().authenticated())
-				.httpBasic(withDefaults()).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+				.httpBasic(withDefaults())
+				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 }

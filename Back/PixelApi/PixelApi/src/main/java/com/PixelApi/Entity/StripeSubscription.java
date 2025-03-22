@@ -20,29 +20,37 @@ public class StripeSubscription {
 	private Long clientId;
 	
 	@Column(name = "PLAN_TYPE")
-	private String planTypeId;
+	private Integer planTypeId;
 	
 	@Column(name = "START_DAY")
 	private Timestamp startDay;
+	
+	@Column(name = "END_DAY")
+	private Timestamp endDay;
 	
 	@Column(name = "ACTIVE")
 	private Boolean active;
 	
 	@Column(name = "ACTIVE_MONTHS")
 	private Integer activeMonths;
+	
+	@Column(name = "TOKEN")
+	private String token;
 
 	public StripeSubscription() {
 		
 	}
 	
-	public StripeSubscription(String stripeSubscriptionId, Long clientId, String planTypeId,
-			Boolean active, Integer activeMonths) {
+	public StripeSubscription(String stripeSubscriptionId, Long clientId, Integer planTypeId,
+			 Boolean active, Integer activeMonths, Timestamp startDay, Timestamp endDay, String token) {
 		this.stripeSubscriptionId = stripeSubscriptionId;
 		this.clientId = clientId;
 		this.planTypeId = planTypeId;
-		this.startDay = startDay;
 		this.active = active;
 		this.activeMonths = activeMonths;
+		this.startDay = startDay;
+		this.endDay = endDay;
+		this.token = token;
 	}
 	
 	public String getStripeSubscriptionId() {
@@ -61,11 +69,11 @@ public class StripeSubscription {
 		this.clientId = clientId;
 	}
 
-	public String getPlanTypeId() {
+	public Integer getPlanTypeId() {
 		return planTypeId;
 	}
 
-	public void setPlanTypeId(String planTypeId) {
+	public void setPlanTypeId(Integer planTypeId) {
 		this.planTypeId = planTypeId;
 	}
 
@@ -92,4 +100,22 @@ public class StripeSubscription {
 	public void setActiveMonths(Integer activeMonths) {
 		this.activeMonths = activeMonths;
 	}
+
+	public Timestamp getEndDay() {
+		return endDay;
+	}
+
+	public void setEndDay(Timestamp endDay) {
+		this.endDay = endDay;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+	
+	
 }

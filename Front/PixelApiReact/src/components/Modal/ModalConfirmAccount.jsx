@@ -66,7 +66,7 @@ function ModalConfirmAccount() {
 
                 <h4 className="titleNotMain dark-color">
                     <span className="clickable" onClick={() => {
-                        setMyModal({ ...myModal, index: 1 })
+                        setMyModal({ ...myModal, index: (myModal.flow == 'C') ? 0 : 1})
                     }}>⬅️</span>
                     Confirm your account
                 </h4>

@@ -11,8 +11,8 @@ import com.PixelApi.Entity.Image;
 import org.springframework.data.jpa.repository.Query;
 
 @Repository
-public interface ImageRepo extends JpaRepository<Image, String>{
-	
+public interface ImageRepo extends JpaRepository<Image, String> {
+
 	@Query("SELECT NEW Image(imageId,name) FROM Image ORDER BY RAND(:seed) LIMIT 5")
 	List<Image> FillFront(@Param("seed") Long seed);
 }

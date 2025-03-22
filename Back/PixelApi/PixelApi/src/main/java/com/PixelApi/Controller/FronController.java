@@ -8,6 +8,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
 
 import com.PixelApi.Entity.Image;
 import com.PixelApi.Entity.ImageCategoryDTO;
@@ -59,6 +62,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RequestMapping("/frontController")
 public class FronController {
 
+	private AuthenticationManager authenticationManager = null;
+	
 	@Autowired
 	ImageService service;
 
@@ -199,6 +204,11 @@ public class FronController {
 			Client myClient = myClientService.Login(email, accountKey);
 
 			if (myClient != null) {
+				UsernamePasswordAuthenticationToken login = 
+						new UsernamePasswordAuthenticationToken(
+								myClient.getClientId(), accountKey);
+				
+				Authentication auth = this.authenticationManager.authenticate(login);
 				response.put("response", myClient);
 				statusResponse = HttpStatus.OK;
 			} else {

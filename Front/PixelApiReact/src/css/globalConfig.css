@@ -198,6 +198,22 @@ li {
     outline: 2px solid var(--mint);
 }
 
+.button-5 {
+    border: none;
+    padding: 1.5rem;
+    color: var(--mint);
+    background-color: #181A1B;
+    cursor: pointer;
+}
+
+.button-6 {
+    border: none;
+    padding: 1.5rem;
+    color: #181A1B;
+    background-color: var(--mint);
+    cursor: pointer;
+}
+
 .icon {
     width: 20px;
 }
@@ -347,6 +363,17 @@ li {
     font-size: 2rem;
     color: green;
     background-color: #00ff0034;
+}
+
+.readOnlyInput {
+    border: none;
+    padding: 0.7rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    width: 100%;
+    font-size: 2rem;
+    color: rgb(0, 0, 0);
+    background-color: var(--grey);
 }
 
 .italics {

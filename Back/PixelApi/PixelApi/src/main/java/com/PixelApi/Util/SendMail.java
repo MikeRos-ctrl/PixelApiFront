@@ -48,7 +48,7 @@ public class SendMail {
 						+ "            <td style=\"background-color: #f1f1f1; color: #666666; padding: 20px; text-align: center; font-size: 12px;\">\r\n"
 						+ "                <p>If you did not register for this service, please ignore this email.</p>\r\n"
 						+ "            </td>\r\n" + "        </tr>\r\n" + "    </table>\r\n" + "</body>\r\n" + "</html>";
-			}else {
+			}else if(type == 'B'){
 				helper.setSubject("Recover your password");
 				htmlMsg = "<html>\r\n" + "<head>\r\n" + "    <title>Recover your password</title>\r\n" + "</head>\r\n"
 						+ "<body style=\"font-family: Arial, sans-serif; background-color: #f6f6f6; margin: 0; padding: 0;\">\r\n"
@@ -59,6 +59,25 @@ public class SendMail {
 						+ "        <tr>\r\n"
 						+ "            <td style=\"padding: 30px; font-size: 16px; line-height: 1.6; color: #333333;\">\r\n"
 						+ "                <p>Insert the code below to change your password</p>\r\n"
+						+ "                <p style=\"display: inline-block; margin: 20px auto; padding: 15px 20px; background-color: #993366; color: #ffffff; text-align: center; text-decoration: none; border-radius: 5px; font-size: 18px; font-weight: bold;\">"+ code + "</p>\r\n"
+						+ "                <p>If you have any questions or need assistance, feel free to contact our support team</p>\r\n"
+						+ "                <p>Thanks!</p>\r\n" + "            </td>\r\n" + "        </tr>\r\n"
+						+ "        <tr>\r\n"
+						+ "            <td style=\"background-color: #f1f1f1; color: #666666; padding: 20px; text-align: center; font-size: 12px;\">\r\n"
+						+ "                <p>If you did not register for this service, please ignore this email.</p>\r\n"
+						+ "            </td>\r\n" + "        </tr>\r\n" + "    </table>\r\n" + "</body>\r\n" + "</html>";
+			}
+			else {
+				helper.setSubject("Get your token");
+				htmlMsg = "<html>\r\n" + "<head>\r\n" + "    <title>Get your application token</title>\r\n" + "</head>\r\n"
+						+ "<body style=\"font-family: Arial, sans-serif; background-color: #f6f6f6; margin: 0; padding: 0;\">\r\n"
+						+ "    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);\">\r\n"
+						+ "        <tr>\r\n"
+						+ "            <td style=\"background-color: #333399; color: #ffffff; padding: 20px; text-align: center; font-size: 24px;\">\r\n"
+						+ "                Get your token\r\n" + "            </td>\r\n" + "        </tr>\r\n"
+						+ "        <tr>\r\n"
+						+ "            <td style=\"padding: 30px; font-size: 16px; line-height: 1.6; color: #333333;\">\r\n"
+						+ "                <p>Use the token below to use your api</p>\r\n"
 						+ "                <p style=\"display: inline-block; margin: 20px auto; padding: 15px 20px; background-color: #993366; color: #ffffff; text-align: center; text-decoration: none; border-radius: 5px; font-size: 18px; font-weight: bold;\">"+ code + "</p>\r\n"
 						+ "                <p>If you have any questions or need assistance, feel free to contact our support team</p>\r\n"
 						+ "                <p>Thanks!</p>\r\n" + "            </td>\r\n" + "        </tr>\r\n"

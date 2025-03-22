@@ -114,7 +114,6 @@ function ModalCreate_UpdateAccount() {
                 {error && (
                     <input className="regularText modalbtnerror" type="button" value={errorText} />
                 )}
-
             </div>
         </>
     );

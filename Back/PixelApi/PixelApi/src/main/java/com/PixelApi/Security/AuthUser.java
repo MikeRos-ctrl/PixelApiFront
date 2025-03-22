@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.PixelApi.Entity.Client;
+import com.PixelApi.Repository.ClientRepo;
 import com.PixelApi.Service.ClientService;
 import org.springframework.security.core.userdetails.User;
 
@@ -21,15 +22,15 @@ import org.springframework.security.core.userdetails.User;
 public class AuthUser implements UserDetailsService{
 
 	@Autowired
-	ClientService service;
+	ClientRepo clientRepo;
 	
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 	
-		Client myUser = service.FindUserbyUsername(username);
+		Client myUser = clientRepo.findById(Long.parseLong(id)).get();
 		
 		return User.builder()
-				//.username(myUser.getUsername())
+				.username(myUser.getClientId().toString())
 				.password(myUser.getAcctKey())
 				.roles(myUser.getRole().toString())
 				.accountLocked(false)
