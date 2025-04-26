@@ -284,6 +284,8 @@ li {
 }
 
 .img-container-2 {
+    width: 226px;
+    height: 258px;
     padding: 1.3rem;
     display: flex;
     justify-content: center;

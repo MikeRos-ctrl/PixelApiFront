@@ -74,8 +74,7 @@ class Profile extends Component {
                     <div className='profileContainerHeaderOptions'>
                         <input onClick={() => { this.updateButton(1) }} className={` titleNotMain ${buttonId == 1 ? (" button-5") : (" button-6")}  `} type="button" value="Plan" />
                         <input onClick={() => { this.updateButton(2) }} className={` titleNotMain ${buttonId == 2 ? (" button-5") : (" button-6")}  `} type="button" value="Account" />
-                        <input onClick={() => { this.updateButton(3) }} className={` titleNotMain ${buttonId == 3 ? (" button-5") : (" button-6")}  `} type="button" value="Documentation" />
-                        <input onClick={() => { this.updateButton(4) }} className={` titleNotMain ${buttonId == 4 ? (" button-5") : (" button-6")}  `} type="button" value="Log out" />
+                        <input onClick={() => { this.updateButton(4) }} className={` titleNotMain ${buttonId == 3 ? (" button-5") : (" button-6")}  `} type="button" value="Log out" />
                     </div>
                 </div>
 

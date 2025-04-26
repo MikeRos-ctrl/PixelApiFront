@@ -29,9 +29,7 @@ class Demo extends Component {
         this.setState({ image: null, loaded: false })
 
         GetRandomImageWithCategories().then(result => {
-            fetchImages(result).then(res => {
-                this.setState({ image: res["fetchedGallery"][0], loaded: true })
-            })
+            this.setState({ image: result[0], loaded: true })
         })
     }
 

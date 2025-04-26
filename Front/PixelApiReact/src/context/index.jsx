@@ -18,15 +18,25 @@ function AppProvider({ children }) {
         open: false
     })
 
+    /*
+    * 0 = Normal page
+    * 1 = Documentation page
+    * 2 = About
+    */
+    const [page, setPage] = React.useState(0)
+
     const [myImages, setMyImages] = React.useState([])
     const [refreshGallery, setRefreshGallery] = React.useState(true)
+    const [scrollToPricing, setScrollToPricing] = React.useState(false);
 
     return (
         <AppContext.Provider value={{
             myUser, setMyUser,
             myImages, setMyImages,
             refreshGallery, setRefreshGallery,
-            myModal, setMyModal
+            myModal, setMyModal,
+            page, setPage,
+            scrollToPricing, setScrollToPricing
         }}>
             {children}
         </AppContext.Provider >

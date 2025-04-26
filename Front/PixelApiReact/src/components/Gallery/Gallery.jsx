@@ -38,10 +38,10 @@ class Gallery extends Component {
         setMyImages(myImages.slice(0, 1))
 
         listByCategory(category, myImages[0]["ImageId"]).then(res => {
-            fetchImages(res).then(res => {
-                setMyImages((myImages.slice(0, 1)).concat(res["fetchedGallery"]))
-                setRefreshGallery(true)
-            })
+
+            console.log(res)
+            setMyImages((myImages.slice(0, 1)).concat(res))
+            setRefreshGallery(true)
         })
             .catch(error => {
                 console.error("I've got a mistake: ", error);
@@ -49,7 +49,7 @@ class Gallery extends Component {
     }
 
     render() {
-        const { children, refreshGallery } = this.props;
+        const { refreshGallery, myImages } = this.props;
         const { buttonId } = this.state;
 
         return (
@@ -73,7 +73,41 @@ class Gallery extends Component {
                 </div>
 
                 <div className="img-container-gallery">
-                    {children}
+                    <div className={myImages[1] ? "img-container-2" : "img-container-medium-loading"}>
+                        {myImages[1] && (
+                            <>
+                                <img src={myImages[1]["Image"]} className="image2" alt="" />
+                                {myImages[1] && <p className="titleNotMain">{myImages[1]["Name"]}</p>}
+                            </>
+                        )}
+                    </div>
+
+                    <div className={myImages[2] ? "img-container-2" : "img-container-medium-loading"}>
+                        {myImages[2] && (
+                            <>
+                                <img src={myImages[2]["Image"]} className="image2" alt="" />
+                                {myImages[2] && <p className="titleNotMain">{myImages[2].Name}</p>}
+                            </>
+                        )}
+                    </div>
+
+                    <div className={myImages[3] ? "img-container-2" : "img-container-medium-loading"}>
+                        {myImages[3] && (
+                            <>
+                                <img src={myImages[3]["Image"]} className="image2" alt="" />
+                                {myImages[3] && <p className="titleNotMain">{myImages[3].Name}</p>}
+                            </>
+                        )}
+                    </div>
+
+                    <div className={myImages[4] ? "img-container-2" : "img-container-medium-loading"}>
+                        {myImages[4] && (
+                            <>
+                                <img src={myImages[4]["Image"]} className="image2" alt="" />
+                                {myImages[4] && <p className="titleNotMain">{myImages[4].Name}</p>}
+                            </>
+                        )}
+                    </div>
                 </div>
             </section>
         );

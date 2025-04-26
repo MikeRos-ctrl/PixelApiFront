@@ -54,42 +54,145 @@ public class ImageService {
 	}
 
 	public List<Object[]> getOrderedImages(String number) {
-		String sql = """
-				SELECT
-				    CM.IMAGE_ID,
-				    (SELECT `NAME` FROM IMAGE WHERE IMAGE_ID = CM.IMAGE_ID) AS IMAGE_NAME,
-				    (SELECT `DESCRIPTION` FROM IMAGE WHERE IMAGE_ID = CM.IMAGE_ID) AS IMAGE_DESCRIPTION,
-				    GROUP_CONCAT(C.`NAME`) AS CATEGORY_NAME
-				FROM CATEGORY_IMAGE CM
-				INNER JOIN CATEGORY C ON CM.CATEGORY_ID = C.CATEGORY_ID
-				GROUP BY CM.IMAGE_ID
-				LIMIT :number""";
+
+		String sql = "";
+
+		if (number.equals("0")) {
+			sql = """
+					SELECT
+					    CM.IMAGE_ID,
+					    (SELECT `NAME` FROM IMAGE WHERE IMAGE_ID = CM.IMAGE_ID) AS IMAGE_NAME,
+					    (SELECT `DESCRIPTION` FROM IMAGE WHERE IMAGE_ID = CM.IMAGE_ID) AS IMAGE_DESCRIPTION,
+					    GROUP_CONCAT(C.`NAME`) AS CATEGORY_NAME
+					FROM CATEGORY_IMAGE CM
+					INNER JOIN CATEGORY C ON CM.CATEGORY_ID = C.CATEGORY_ID
+					GROUP BY CM.IMAGE_ID""";
+		} else {
+			sql = """
+					SELECT
+					    CM.IMAGE_ID,
+					    (SELECT `NAME` FROM IMAGE WHERE IMAGE_ID = CM.IMAGE_ID) AS IMAGE_NAME,
+					    (SELECT `DESCRIPTION` FROM IMAGE WHERE IMAGE_ID = CM.IMAGE_ID) AS IMAGE_DESCRIPTION,
+					    GROUP_CONCAT(C.`NAME`) AS CATEGORY_NAME
+					FROM CATEGORY_IMAGE CM
+					INNER JOIN CATEGORY C ON CM.CATEGORY_ID = C.CATEGORY_ID
+					GROUP BY CM.IMAGE_ID
+					LIMIT :number""";
+		}
 
 		Query query = entityManager.createNativeQuery(sql);
-		query.setParameter("number", Integer.parseInt(number));
-
+		if (!number.equals("0"))
+			query.setParameter("number", Integer.parseInt(number));
 		List<Object[]> results = query.getResultList();
 
 		return results;
 	}
 
 	public List<Object[]> getRandomImages(String number) {
-		String sql = """
-				SELECT
-				    CM.IMAGE_ID,
-				    (SELECT `NAME` FROM IMAGE WHERE IMAGE_ID = CM.IMAGE_ID) AS IMAGE_NAME,
-				    (SELECT `DESCRIPTION` FROM IMAGE WHERE IMAGE_ID = CM.IMAGE_ID) AS IMAGE_DESCRIPTION,
-				    GROUP_CONCAT(C.`NAME`) AS CATEGORY_NAME
-				FROM CATEGORY_IMAGE CM
-				INNER JOIN CATEGORY C ON CM.CATEGORY_ID = C.CATEGORY_ID
-				GROUP BY CM.IMAGE_ID
-				ORDER BY RAND(:seed)
-				LIMIT :number""";
+		String sql = "";
+
+		if (number.equals("0")) {
+			sql = """
+					SELECT
+					    CM.IMAGE_ID,
+					    (SELECT `NAME` FROM IMAGE WHERE IMAGE_ID = CM.IMAGE_ID) AS IMAGE_NAME,
+					    (SELECT `DESCRIPTION` FROM IMAGE WHERE IMAGE_ID = CM.IMAGE_ID) AS IMAGE_DESCRIPTION,
+					    GROUP_CONCAT(C.`NAME`) AS CATEGORY_NAME
+					FROM CATEGORY_IMAGE CM
+					INNER JOIN CATEGORY C ON CM.CATEGORY_ID = C.CATEGORY_ID
+					GROUP BY CM.IMAGE_ID
+					ORDER BY RAND(:seed)""";
+		} else {
+			sql = """
+					SELECT
+					    CM.IMAGE_ID,
+					    (SELECT `NAME` FROM IMAGE WHERE IMAGE_ID = CM.IMAGE_ID) AS IMAGE_NAME,
+					    (SELECT `DESCRIPTION` FROM IMAGE WHERE IMAGE_ID = CM.IMAGE_ID) AS IMAGE_DESCRIPTION,
+					    GROUP_CONCAT(C.`NAME`) AS CATEGORY_NAME
+					FROM CATEGORY_IMAGE CM
+					INNER JOIN CATEGORY C ON CM.CATEGORY_ID = C.CATEGORY_ID
+					GROUP BY CM.IMAGE_ID
+					ORDER BY RAND(:seed)
+					LIMIT :number""";
+		}
 
 		Query query = entityManager.createNativeQuery(sql);
 		query.setParameter("seed", System.currentTimeMillis());
-		query.setParameter("number", Integer.parseInt(number));
+		if (!number.equals("0"))
+			query.setParameter("number", Integer.parseInt(number));
 
+		List<Object[]> results = query.getResultList();
+
+		return results;
+	}
+
+	public List<Object[]> validateListExists(List<String> data) {
+		String sql = "";
+		String sql2 = "";
+		int counter = 0;
+		
+		for(String currentValue : data) {
+
+			if(counter == 0) {
+				sql += "SELECT '"+ currentValue +"' AS IMAGE_ID ";		
+				counter++;
+			}
+			else {
+				sql += "UNION ALL ";	
+				sql += "SELECT '"+ currentValue +"'";	
+			}
+		}
+
+		sql2 = """
+				SELECT v.IMAGE_ID,
+				       CASE WHEN img.IMAGE_ID IS NOT NULL THEN 1 ELSE 0 END AS "EXISTS"
+				FROM (
+				"""
+				+
+				sql
+				+
+				"""
+				) AS v
+				LEFT JOIN image img ON v.IMAGE_ID = img.IMAGE_ID;
+				""";
+
+		Query query = entityManager.createNativeQuery(sql2);
+		List<Object[]> results = query.getResultList();
+
+		return results;
+	}
+	
+	public List<Object[]> validateCategoryListExists(List<String> data) {
+		String sql = "";
+		String sql2 = "";
+		int counter = 0;
+		
+		for(String currentValue : data) {
+
+			if(counter == 0) {
+				sql += "SELECT '"+ currentValue +"' AS NAME ";		
+				counter++;
+			}
+			else {
+				sql += "UNION ALL ";	
+				sql += "SELECT '"+ currentValue +"'";	
+			}
+		}
+
+		sql2 = """
+				SELECT v.NAME, 
+				   CASE WHEN c.NAME IS NOT NULL THEN TRUE ELSE FALSE END AS "EXISTS"
+				FROM (
+				"""
+				+
+				sql
+				+
+				"""
+				) AS v
+				LEFT JOIN CATEGORY c ON v.NAME = c.NAME;
+				""";
+
+		Query query = entityManager.createNativeQuery(sql2);
 		List<Object[]> results = query.getResultList();
 
 		return results;
@@ -186,7 +289,7 @@ public class ImageService {
 			query = entityManager.createNativeQuery(sql);
 			query.setParameter("data", data);
 			query.setParameter("size", data.size());
-	
+
 		} else {
 
 			sql = """
@@ -208,6 +311,20 @@ public class ImageService {
 			query.setParameter("number", Integer.parseInt(number));
 		}
 
+		List<Object[]> results = query.getResultList();
+		return results;
+	}
+
+	public List<Object[]> getCategories() {
+
+		String sql = "";
+		Query query;
+
+		sql = """
+					SELECT NAME FROM CATEGORY
+				""";
+
+		query = entityManager.createNativeQuery(sql);
 		List<Object[]> results = query.getResultList();
 		return results;
 	}

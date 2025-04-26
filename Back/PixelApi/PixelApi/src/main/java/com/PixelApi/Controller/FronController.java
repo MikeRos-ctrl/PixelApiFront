@@ -29,13 +29,20 @@ import com.PixelApi.Entity.CategoryImage;
 import com.PixelApi.Entity.Client;
 import com.PixelApi.Service.ClientService;
 import com.PixelApi.Service.ImageService;
+import com.google.auth.oauth2.ServiceAccountCredentials;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.storage.Storage.SignUrlOption;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -50,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -72,6 +80,16 @@ public class FronController {
 
 	@Value("${image.link}")
 	private String imageLink;
+	
+	private static final String BUCKET_NAME = "aestheticpixelart";
+	private static final String SERVICE_ACCOUNT_JSON = "src/main/resources/pixelapikey.json";
+	private Storage storage;
+
+	public FronController() throws Exception {
+		this.storage = StorageOptions.newBuilder()
+				.setCredentials(ServiceAccountCredentials.fromStream(new FileInputStream(SERVICE_ACCOUNT_JSON))).build()
+				.getService();
+	}
 
 	@GetMapping("/stripeCredentials")
 	public ResponseEntity<?> StripeCredentials(@RequestParam("plan") String plan) {
@@ -251,7 +269,7 @@ public class FronController {
 		try {
 			ImageCategoryDTO myImage = service.getRandomImageWithCategories();	
 			Map<String, Object> formatedDto = Map.of(
-					"Image", imageLink + myImage.getImageId(),
+					"Image", "src\\assets\\\\PixelArt\\" + myImage.getImageId(),
 					"Name", myImage.getName(),
 					"ImageId", myImage.getImageId(),
 					"Categories", myImage.getCategoryNames(),
@@ -281,8 +299,8 @@ public class FronController {
 
 			for (Image element : myList) {
 
-				Map<String, Object> response = new HashMap<>();
-				response.put("Image", imageLink + element.getImageId());
+				Map<String, Object> response = new HashMap<>();				
+				response.put("Image", "src\\assets\\\\PixelArt\\" + element.getImageId());
 				response.put("Name", element.getName());
 				response.put("ImageId", element.getImageId());
 				myResponse.add(response);
@@ -314,8 +332,9 @@ public class FronController {
 
 			for (CategoryImage element : myImages) {
 				Map<String, Object> response = new HashMap<>();
-				response.put("Image", imageLink + element.getImageId());
+				response.put("Image", "src\\assets\\\\PixelArt\\" + element.getImageId());
 				response.put("Name", service.findNameById(element.getImageId()));
+				response.put("ImageId", element.getImageId());
 				myList.add(response);
 			}
 

@@ -6,10 +6,9 @@ import React, { Component } from 'react';
 import { LocalDb } from '../../util/LocalDb';
 import { AppContext } from '../../context';
 import { ApiCall } from '../../util/ApiCall';
-import { FetchImgLogic } from '../../util/FetchImgLogic';
+import { Documentation } from '../Documentation/Documentation';
 
 const { FillFrontHeader } = ApiCall()
-const { fetchImages } = FetchImgLogic()
 
 class AppRouter extends Component {
 
@@ -46,12 +45,18 @@ class AppRouter extends Component {
          */
 
         FillFrontHeader().then(result => {
-            fetchImages(result).then(res => {
-                setMyImages(res["fetchedGallery"])
-            })
+
+            if (result != null) {
+                console.log(result)
+                setMyImages(result)
+            }
+            else{
+                let data = {
+                    
+                }
+            }
         }).catch(error => {
             console.error("I've got a mistake: ", error);
-            alert("I've got a mistake: ", error);
         });
     }
 
@@ -72,6 +77,7 @@ class AppRouter extends Component {
                         {/* <Route path='/checkout' element={myUser.ready == false ? <App /> : <Checkout />} /> */}
                         <Route path='/checkout' element={<Checkout />} />
                         <Route path='/profile' element={myUser.ready != false ? <Profile /> : <App />} />
+                        <Route path='/documentation' element={<Documentation />} />
                         <Route path='*' element={<p>Not Found</p>} />
                     </Routes>
                 </HashRouter >

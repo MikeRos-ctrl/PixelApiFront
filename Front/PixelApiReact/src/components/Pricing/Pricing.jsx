@@ -22,7 +22,7 @@ function Pricing() {
     return (
         <div className='pricingMain'>
 
-            <div name="pricingSection">
+            <div id="pricingSection">
                 <h2 className="titleMain pricingMainBtn">
                     Choose your
                     <span className="strongPinkColor">montly</span>

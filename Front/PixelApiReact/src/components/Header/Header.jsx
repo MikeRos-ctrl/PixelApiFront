@@ -1,17 +1,12 @@
 import './index.css';
 import React from 'react';
-import Logo from '../../assets/icon4.png';
-import Money from '../../assets/Icon-6.png'
-import User from '../../assets/Icon-16.png'
-import Doc from '../../assets/Icon-3.png'
-import About from '../../assets/Icon-21.png'
-import { Link } from 'react-scroll';
 import { AppContext } from '../../context';
 import { useNavigate } from 'react-router-dom';
 
-function Header({ children }) {
+function Header() {
 
-    const { myUser, myModal, setMyModal } = React.useContext(AppContext)
+    const { myImages, myUser, myModal, setMyModal } = React.useContext(AppContext)
+    const [ready, setReady] = React.useState(false)
 
     const navigate = useNavigate();
 
@@ -27,40 +22,6 @@ function Header({ children }) {
     return (
 
         <header>
-
-            <nav>
-                <div className="navLeft">
-                    <img src={Logo} className="qwer" alt="" />
-                </div>
-
-                <div className="navRight">
-
-                    <Link to="pricingSection" smooth={true} duration={500}>
-                        <div className="navRightCouple clickable">
-                            <img src={Money} className="qwer2" alt="" />
-                            <h5 className="titleNotMain">PRICING</h5>
-                        </div>
-                    </Link>
-
-                    <div className="navRightCouple clickable" onClick={() => {
-                        navigate('/documentation')
-                    }}>
-                        <img src={Doc} className="qwer2" alt="" />
-                        <h5 className="titleNotMain">DOCUMENTATION</h5>
-                    </div>
-
-                    <div className="navRightCouple clickable">
-                        <img src={About} className="qwer2" alt="" />
-                        <h5 className="titleNotMain">ABOUT</h5>
-                    </div>
-
-                    <div className="navRightCouple clickable" onClick={() => OpenModal()}>
-                        <img src={User} className="qwer2" alt="" />
-                        <h5 className="titleNotMain">ACCOUNT</h5>
-                    </div>
-                </div>
-            </nav>
-
             <main className="headerMain">
 
                 <div className="mainText">
@@ -93,10 +54,20 @@ function Header({ children }) {
                     </div>
                 </div>
 
-                {children}
+
+                <div className={`${ready ? ("legendaryCard animate__animated animate__fadeIn") : ("img-container-big-loading")}`}>
+                    {ready &&
+                        <h5 className="titleNotMain white-color">{myImages[0]["Name"]}</h5>
+                    }
+                    {!myImages.length == 0 &&
+                        <img onLoad={() => { setReady(true) }} src={myImages[0]["Image"]} className="image" alt="" />
+                    }
+                    {ready &&
+                        <p className="titleNotMain">ThePixelApi greets you ❤️</p>
+                    }
+                </div>
 
             </main>
-
         </header>
     );
 }

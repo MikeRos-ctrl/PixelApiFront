@@ -1,0 +1,28 @@
+.DocMain {
+    margin-top: 5rem;
+}
+
+.DocElementsContainer {
+    padding-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+}
+
+.DocElement {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.myMagicList {
+    font-size: 2rem;
+}
+
+.spacexd{
+    padding-top: 0.7rem;
+}
+
+.color-white{
+    color: white;
+}

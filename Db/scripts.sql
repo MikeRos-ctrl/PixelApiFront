@@ -83,6 +83,24 @@ INSERT INTO CATEGORY (NAME) VALUES('Cute');
 INSERT INTO CATEGORY (NAME) VALUES('Animal');
 INSERT INTO CATEGORY (NAME) VALUES('Character');
 INSERT INTO CATEGORY (NAME) VALUES('Landscape');
+
+SELECT name, CASE WHEN NAME IS NOT NULL THEN TRUE ELSE FALSE END AS "Exists"
+FROM CATEGORY
+WHERE NAME IN ('Building', 'Fantasy', 'Nature1');
+
+
+SELECT v.NAME, 
+       CASE WHEN c.NAME IS NOT NULL THEN TRUE ELSE FALSE END AS "EXISTS"
+FROM (
+    SELECT 'Building' AS NAME 
+    UNION ALL
+    SELECT 'Fantasy'
+    UNION ALL
+    SELECT 'Nature1'
+) AS v
+LEFT JOIN CATEGORY c ON v.NAME = c.NAME;
+
+
 -- ------------------------------------------------------------------------------------
 CREATE TABLE IMAGE(
 	IMAGE_ID VARCHAR(255) NOT NULL PRIMARY KEY,
@@ -96,6 +114,30 @@ SELECT * FROM image ORDER BY RAND(656456) LIMIT 4;
 SELECT * FROM image WHERE image_id IN ('image-001.jpeg', 'image-002.jpeg');
 truncate table `image`;
 drop table image;
+
+select exists (select 1 from image where IMAGE_ID = 'image-001.jpeg');
+
+
+
+SELECT v.IMAGE_ID, 
+       CASE WHEN img.IMAGE_ID IS NOT NULL THEN 1 ELSE 0 END AS "EXISTS"
+FROM (
+    SELECT 'image-001.jpeg' AS IMAGE_ID
+    UNION ALL
+    SELECT 'image-002.jpegx'
+    UNION ALL
+    SELECT 'image-003.jpeg'
+) AS v
+LEFT JOIN image img ON v.IMAGE_ID = img.IMAGE_ID;
+
+
+
+SELECT IMAGE_ID, CASE WHEN IMAGE_ID IS NOT NULL THEN TRUE ELSE FALSE END AS "xd"
+FROM image
+WHERE IMAGE_ID IN ('image-001.jpeg', 'image-002.jpeg', 'image-003.qjpeg');
+
+
+
 
 update image set `name`= 'Old Castle Vestiges' where image_id = 'image-85.jpeg';
 delete from image where image_id = 'image-21.jpeg';
@@ -265,7 +307,7 @@ INNER JOIN CATEGORY C
 on CM.CATEGORY_ID = C.CATEGORY_ID
 WHERE C.NAME in ('Fantasy', 'Building')
 GROUP BY IMAGE_ID 
-limit 2;
+limit 10;
 
 
 SELECT CM.IMAGE_ID, 
@@ -274,12 +316,12 @@ I.DESCRIPTION AS IMAGE_DESCRIPTION
 FROM CATEGORY_IMAGE CM
 INNER JOIN CATEGORY C ON CM.CATEGORY_ID = C.CATEGORY_ID
 INNER JOIN IMAGE I ON CM.IMAGE_ID = I.IMAGE_ID
-WHERE C.NAME IN ('Fantasy', 'Building')
+WHERE C.NAME IN ('Fantasy', 'Character')
 GROUP BY CM.IMAGE_ID
 HAVING COUNT(DISTINCT C.NAME) = 2
-LIMIT 1;
+LIMIT 5;
 
-
+SELECT NAME FROM category;
 
 
 

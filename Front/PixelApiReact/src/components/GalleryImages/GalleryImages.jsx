@@ -15,19 +15,6 @@ class GalleryImages extends Component {
 
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        const { myImages } = this.props;
-
-
-        // const { ready1, ready2, ready3, ready4, } = this.state;
-        // const { setRefreshGallery } = this.props;
-
-        // if (ready1 && ready2 && ready3 && ready4 &&
-        //     (!prevState.ready1 || !prevState.ready2 || !prevState.ready3 || !prevState.ready4)) {
-        //     setRefreshGallery(true)
-        // }
-    }
-
     render() {
         const { myImages } = this.props;
 

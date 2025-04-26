@@ -15,6 +15,9 @@ import { Demo } from '../Demo/Demo';
 import { Footer } from '../Footer/Footer';
 import { AppContext } from '../../context';
 import './index.css';
+import { Navbar } from '../Navbar/Navbar';
+import { NormalPage } from '../Pages/normalPage';
+import { DocumentationPage } from '../Pages/DocumentationPage';
 
 class App extends Component {
 
@@ -36,7 +39,7 @@ class App extends Component {
   }
 
   render() {
-    const { myModal } = this.props;
+    const { myModal, page } = this.props;
 
     const ModalComponents = {
       0: <ModalLogin />,
@@ -45,24 +48,19 @@ class App extends Component {
       3: <ModalWelcomeAccount />,
       4: <ModalWelcomeBack />
     };
+    // pricingSection
+    const PageComponents = {
+      0: < NormalPage />,
+      1: < DocumentationPage />
+    }
 
     return (
       <React.Fragment>
         <div className="myWidth">
 
-          <Header>
-            <HeaderImage />
-          </Header>
+          <Navbar />
 
-          <Gallery>
-            <GalleryImages />
-          </Gallery>
-
-          <Implementation />
-
-          <Demo />
-
-          <Pricing />
+          {PageComponents[page]}
 
           {myModal.open && (
             <Modal >
@@ -78,8 +76,8 @@ class App extends Component {
 }
 
 function AppWrapper() {
-  const { myModal, myUser } = React.useContext(AppContext)
-  return < App myModal={myModal} myUser={myUser} />
+  const { myModal, myUser, page } = React.useContext(AppContext)
+  return < App myModal={myModal} myUser={myUser} page={page} />
 }
 
 export { AppWrapper as App }
