@@ -14,27 +14,25 @@ class Implementation extends Component {
 
     render() {
         const codedString = `
-const API = 'http://localhost:8080/pixel/images';
+const API = 'http://changexd:8080/pixel/pixelapi';
+const TOKEN = 'your_token';
 
-const UsePixelApi = () => {
+async function ApiCallExample() {
 
-    async function ApiCall() {
-
-        try {
-            const response = await fetch(API + "/fillFrontWthRandomImages", {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
-            return response.json();
-        } catch (error) {
-            console.error('Fetch error:', error);
-        }
+    try {
+        const response = await fetch(API + "/exampleEndpoint", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + TOKEN 
+            }
+        })
+        return response.json();
+    } catch (error) {
+        console.error('Fetch error:', error);
     }
 }
-
-export { UsePixelApi }`;
+`;
 
         return (
             <div className="implementation-section">

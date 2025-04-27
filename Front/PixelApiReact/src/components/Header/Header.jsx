@@ -1,23 +1,11 @@
 import './index.css';
 import React from 'react';
 import { AppContext } from '../../context';
-import { useNavigate } from 'react-router-dom';
 
 function Header() {
 
-    const { myImages, myUser, myModal, setMyModal } = React.useContext(AppContext)
+    const { myImages } = React.useContext(AppContext)
     const [ready, setReady] = React.useState(false)
-
-    const navigate = useNavigate();
-
-    const OpenModal = () => {
-
-        if (myUser.ready == false) {
-            setMyModal({ ...myModal, open: !myModal.open })
-        } else {
-            navigate('/profile')
-        }
-    }
 
     return (
 

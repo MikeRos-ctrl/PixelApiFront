@@ -5,10 +5,23 @@ import Doc from '../../assets/Icon-3.png'
 import About from '../../assets/Icon-21.png'
 import { AppContext } from '../../context';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 function Navbar() {
 
-    const { setPage, setScrollToPricing } = React.useContext(AppContext)
+    const { setPage, setScrollToPricing, myUser, myModal, setMyModal } = React.useContext(AppContext)
+    const navigate = useNavigate();
+
+
+    const OpenModal = () => {
+
+        if (myUser.ready == false) {
+            setMyModal({ ...myModal, open: !myModal.open })
+        } else {
+            navigate('/profile')
+        }
+    }
 
     return (
         <nav>

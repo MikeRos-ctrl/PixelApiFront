@@ -1,10 +1,4 @@
 import React, { Component } from 'react';
-import { Header } from '../Header/Header';
-import { HeaderImage } from '../HeaderImage/HeaderImage';
-import { Gallery } from '../Gallery/Gallery';
-import { Pricing } from '../Pricing/Pricing';
-import { GalleryImages } from '../GalleryImages/GalleryImages';
-import { Implementation } from '../Implementation/Implementation';
 import { Modal } from '../Modal/Modal';
 import { ModalLogin } from '../Modal/ModalLogin';
 import { ModalCreate_UpdateAccount } from '../Modal/ModalCreate_UpdateAccount';

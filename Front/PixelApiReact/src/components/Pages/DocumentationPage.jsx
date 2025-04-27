@@ -136,6 +136,11 @@ function DocumentationPage() {
                 <div className='DocElementsContainer'>
 
                     <div className='DocElement'>
+                        <h5 className="titleNotMain">Considerations:</h5>
+                        <h5 className="regularText">Once you register a suscription you get your token and url of your api in your email.</h5>
+                    </div>
+
+                    <div className='DocElement'>
                         <h5 className="titleNotMain">1) Get ordered images</h5>
                         <h5 className="regularText">List all the images in order starting from 1 to any number</h5>
                         <h5 className="regularText mint-color">GET ~/pixelapi/getOrderedImages?number=#</h5>
@@ -156,7 +161,7 @@ function DocumentationPage() {
                                 <div className="regularText">200</div>
 
                                 <SyntaxHighlighter
-                                    language="javascript"
+                                    language="json"
                                     style={atomOneDark} customStyle={{
                                         fontSize: '15px',
                                         padding: '25px',
@@ -170,7 +175,7 @@ function DocumentationPage() {
                                 <div className="regularText">500</div>
 
                                 <SyntaxHighlighter
-                                    language="javascript"
+                                    language="json"
                                     style={atomOneDark} customStyle={{
                                         fontSize: '15px',
                                         padding: '25px',
@@ -203,7 +208,7 @@ function DocumentationPage() {
                                 <div className="regularText">200</div>
 
                                 <SyntaxHighlighter
-                                    language="javascript"
+                                    language="json"
                                     style={atomOneDark} customStyle={{
                                         fontSize: '15px',
                                         padding: '25px',
@@ -217,7 +222,7 @@ function DocumentationPage() {
                                 <div className="regularText">500</div>
 
                                 <SyntaxHighlighter
-                                    language="javascript"
+                                    language="json"
                                     style={atomOneDark} customStyle={{
                                         fontSize: '15px',
                                         padding: '25px',
@@ -241,7 +246,7 @@ function DocumentationPage() {
                                     <div className="regularText color-white">You can pass only one Id or multiples Id</div>
 
                                     <SyntaxHighlighter
-                                        language="javascript"
+                                        language="json"
                                         style={atomOneDark} customStyle={{
                                             fontSize: '15px',
                                             padding: '25px',
@@ -259,7 +264,7 @@ function DocumentationPage() {
                                 <div className="regularText">200</div>
 
                                 <SyntaxHighlighter
-                                    language="javascript"
+                                    language="json"
                                     style={atomOneDark} customStyle={{
                                         fontSize: '15px',
                                         padding: '25px',
@@ -273,7 +278,7 @@ function DocumentationPage() {
                                 <div className="regularText">500</div>
 
                                 <SyntaxHighlighter
-                                    language="javascript"
+                                    language="json"
                                     style={atomOneDark} customStyle={{
                                         fontSize: '15px',
                                         padding: '25px',
@@ -307,7 +312,7 @@ function DocumentationPage() {
                                     <div className="regularText color-white">You can pass only one category or more</div>
 
                                     <SyntaxHighlighter
-                                        language="javascript"
+                                        language="json"
                                         style={atomOneDark} customStyle={{
                                             fontSize: '15px',
                                             padding: '25px',
@@ -325,7 +330,7 @@ function DocumentationPage() {
                                 <div className="regularText">200</div>
 
                                 <SyntaxHighlighter
-                                    language="javascript"
+                                    language="json"
                                     style={atomOneDark} customStyle={{
                                         fontSize: '15px',
                                         padding: '25px',
@@ -339,7 +344,7 @@ function DocumentationPage() {
                                 <div className="regularText">500</div>
 
                                 <SyntaxHighlighter
-                                    language="javascript"
+                                    language="json"
                                     style={atomOneDark} customStyle={{
                                         fontSize: '15px',
                                         padding: '25px',
@@ -373,7 +378,7 @@ function DocumentationPage() {
                                     <div className="regularText color-white">You can pass only one category or more</div>
 
                                     <SyntaxHighlighter
-                                        language="javascript"
+                                        language="json"
                                         style={atomOneDark} customStyle={{
                                             fontSize: '15px',
                                             padding: '25px',
@@ -391,7 +396,7 @@ function DocumentationPage() {
                                 <div className="regularText">200</div>
 
                                 <SyntaxHighlighter
-                                    language="javascript"
+                                    language="json"
                                     style={atomOneDark} customStyle={{
                                         fontSize: '15px',
                                         padding: '25px',
@@ -405,7 +410,7 @@ function DocumentationPage() {
                                 <div className="regularText">500</div>
 
                                 <SyntaxHighlighter
-                                    language="javascript"
+                                    language="json"
                                     style={atomOneDark} customStyle={{
                                         fontSize: '15px',
                                         padding: '25px',
@@ -427,7 +432,7 @@ function DocumentationPage() {
                                 <div className="regularText">200</div>
 
                                 <SyntaxHighlighter
-                                    language="javascript"
+                                    language="json"
                                     style={atomOneDark} customStyle={{
                                         fontSize: '15px',
                                         padding: '25px',
@@ -441,7 +446,7 @@ function DocumentationPage() {
                                 <div className="regularText">500</div>
 
                                 <SyntaxHighlighter
-                                    language="javascript"
+                                    language="json"
                                     style={atomOneDark} customStyle={{
                                         fontSize: '15px',
                                         padding: '25px',
