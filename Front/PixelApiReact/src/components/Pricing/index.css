@@ -44,22 +44,6 @@
     color: white;
 }
 
-.pricingOptions {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    gap: 2rem;
-    margin-top: 3rem;
-    flex-wrap: wrap;
-}
-
-.pricingCard {
-    outline: 2px solid var(--orange);
-    border-radius: 1rem;
-    padding: 2rem;
-    flex-grow: 1;
-}
-
 .pricingCardTitle {
     display: flex;
     justify-content: center;
@@ -73,10 +57,29 @@
     align-items: flex-start;
     justify-content: center;
     gap: 1rem;
+    margin-bottom: 4rem
 }
 
-.pricingbtnCenter{
+.pricingbtnCenter {
+    margin-top: auto;
+}
+
+.pricingOptions {
+    width: 100%;
     display: flex;
-    justify-content: center;
-    padding-top: 4rem;
+    justify-content: space-around;
+    gap: 2rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+}
+
+.pricingCard {
+    display: flex;
+    flex-direction: column;
+    outline: 2px solid var(--orange);
+    border-radius: 1rem;
+    padding: 2rem;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 300px;
 }

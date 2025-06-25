@@ -5,21 +5,17 @@ import Doc from '../../assets/Icon-3.png'
 import About from '../../assets/Icon-21.png'
 import { AppContext } from '../../context';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-
 
 function Navbar() {
 
     const { setPage, setScrollToPricing, myUser, myModal, setMyModal } = React.useContext(AppContext)
-    const navigate = useNavigate();
-
 
     const OpenModal = () => {
 
         if (myUser.ready == false) {
             setMyModal({ ...myModal, open: !myModal.open })
         } else {
-            navigate('/profile')
+            setPage(2);
         }
     }
 
@@ -56,7 +52,7 @@ function Navbar() {
 
                 <div className="navRightCouple clickable" onClick={() => OpenModal()}>
                     <img src={User} className="qwer2" alt="" />
-                    <h5 className="titleNotMain">ACCOUNT</h5>
+                    <h5 className="titleNotMain">PROFILE</h5>
                 </div>
             </div>
         </nav>

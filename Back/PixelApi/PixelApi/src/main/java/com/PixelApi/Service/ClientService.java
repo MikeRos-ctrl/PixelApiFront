@@ -17,12 +17,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.PixelApi.Entity.Client;
+import com.PixelApi.Entity.ClientEmail;
+import com.PixelApi.Entity.FreeSubscription;
 import com.PixelApi.Entity.StripeSubscription;
 import com.PixelApi.Entity.StripeSubscriptionDto;
-import com.PixelApi.Entity.Token;
+import com.PixelApi.Repository.ClientEmailRepo;
 import com.PixelApi.Repository.ClientRepo;
+import com.PixelApi.Repository.FreeSubscriptionRepo;
 import com.PixelApi.Repository.StripeSubscriptionRepo;
-import com.PixelApi.Repository.TokenRepo;
 import com.PixelApi.Security.Jwt;
 import com.PixelApi.Util.SendMail;
 
@@ -40,7 +42,7 @@ public class ClientService {
 	SendMail sendMailClass;
 
 	@Autowired
-	TokenRepo tokenRepo;
+	ClientEmailRepo clientEmailRepo;
 
 	@Autowired
 	ClientRepo clientRepo;
@@ -48,6 +50,9 @@ public class ClientService {
 	@Autowired
 	StripeSubscriptionRepo stripeRepo;
 
+	@Autowired
+	FreeSubscriptionRepo freeRepo;
+	
 	@Value("${stripe.public}")
 	private String stripePublic;
 
@@ -69,7 +74,7 @@ public class ClientService {
 		try {
 			response.put("STRIPE_PUBLIC", stripePublic);
 			response.put("STRIPE_SECRET", stripeSecret);
-			String planCode = plan.equals("Premium") ? stripePremium : stripePremiumPlus;
+			String planCode = plan.equals("premium") ? stripePremium : stripePremiumPlus;
 			response.put("STRIPE_PLAN_CODE", planCode);
 
 		} catch (Exception e) {
@@ -81,52 +86,77 @@ public class ClientService {
 	}
 
 	@Transactional
-	public Map<String, Object> CreateStripeSubscription(StripeSubscriptionDto mySubscription) {
+	public FreeSubscription createFreeSubscription(String email) {
 
-		log.info("Inside CreateStripeSubscription method");
-		Map<String, Object> response = new HashMap<>();
+		log.info("Inside CreateFreeSubscription method");
+		FreeSubscription freeSubscription = null;
 		
 		try {
-			
-	        Client myclient = clientRepo.findByEmail(mySubscription.getEmail());
-			Timestamp now = new Timestamp(System.currentTimeMillis());
-	        LocalDateTime localDateTime = now.toLocalDateTime().plusMonths(1);
-	        Timestamp nextMonth = Timestamp.valueOf(localDateTime);
-	        String token = myJwt.create(myclient.getClientId().toString(), now, nextMonth);
+		
+	        Timestamp startDay = new Timestamp(System.currentTimeMillis());
+	        Timestamp endDay = Timestamp.valueOf(startDay.toLocalDateTime().plusYears(100));
 	        
-			StripeSubscription clientubscription = new StripeSubscription(
+	        Client myclient = clientRepo.findByEmail(email);
+	        String token = myJwt.create(myclient.getClientId().toString(), startDay, endDay, "Free");
+	        
+	        freeSubscription = new FreeSubscription(
+					token,
+					myclient.getClientId(),
+					startDay
+					);		
+	        
+	        freeRepo.save(freeSubscription);
+			log.info("StripeSubscription has been saved");
+						
+			
+		} catch (Exception e) {
+			log.error("Internal error in save method: " + e);
+		}
+		return freeSubscription;
+	}
+	
+	@Transactional
+	public StripeSubscription createStripeSubscription(StripeSubscriptionDto mySubscription) {
+
+		log.info("Inside CreateStripeSubscription method");
+		StripeSubscription stripeSubscription = null;
+		
+		try {
+		
+	        Timestamp startDay = new Timestamp(System.currentTimeMillis());
+	        Timestamp endDay = Timestamp.valueOf(startDay.toLocalDateTime().plusMonths(1));
+	        
+	        Client myclient = clientRepo.findByEmail(mySubscription.getEmail());
+	        String token = myJwt.create(myclient.getClientId().toString(), startDay, endDay, "Premium");
+	        
+	        stripeSubscription = new StripeSubscription(
 					mySubscription.getStripeSubscriptionId(),
-					myclient.getClientId(), 
-				    mySubscription.getPlanTypeId().equals("Premium") ? 1  : 2,
+					token,
+					myclient.getClientId(),
+					startDay,
+					endDay,
 				    true, 
-					1,
-					now,
-					nextMonth,
-					token
+					1				
 					);		
 
-			stripeRepo.save(clientubscription);
+			stripeRepo.save(stripeSubscription);
 			log.info("StripeSubscription has been saved");
 						
 			new Thread(() -> {
 				//CREATE TOKEN AND SEND EMAIL
-				log.info("Sending email to: " + mySubscription.getEmail());	
-				sendMailClass.sendMail(myclient.getEmail(), token, 'C');
-				log.info("Email has been sent");
-
 				
-				//NEED TO SAVE THE TOKEN SOMEWHERE
-				//Add a new field to STRIPE_SUBSCRIPTION BETTER
+				log.info("Sending email to: " + mySubscription.getEmail());	
+				sendMailClass.sendMail(myclient.getEmail(), token, "PREMIUM_ACCOUNT");
+				log.info("Email has been sent");
+				
+				//SEND INVOICE HOW?
 				
 			}).start();
 			
-			response.put("StripeSubscription", mySubscription);
 		} catch (Exception e) {
 			log.error("Internal error in save method: " + e);
-			response.put("code", "666");
-			response.put("internal error in confirmAccount", e.toString());
 		}
-		return response;
+		return stripeSubscription;
 	}
 
 	public Map<String, Object> Update(Client myClient) {
@@ -165,7 +195,7 @@ public class ClientService {
 
 			Client myClient = clientRepo.findByEmail(email);
 
-			if (tokenRepo.tokenValidation(myClient.getClientId(), "ACCT_CONFIRMATION", true) == 1) {
+			if (clientEmailRepo.tokenValidation(myClient.getClientId(), "ACCT_CONFIRMATION", true) == 1) {
 				log.info("Existing user trying to login, let's validate now the password ");
 				response.put("message", "Existing email, let's validate password");
 				response.put("code", "B");
@@ -205,12 +235,12 @@ public class ClientService {
 				sendMail = true;
 				log.info("Client saved");
 
-				tokenRepo.save(new Token(confirmationCode, myResponse.getClientId(), null, "ACCT_CONFIRMATION", false));
+				clientEmailRepo.save(new ClientEmail(confirmationCode, myResponse.getClientId(), null, "ACCT_CONFIRMATION", false));
 				log.info("Confirmation token saved");
 
 				new Thread(() -> {
 					log.info("Sending email to: " + email);
-					sendMailClass.sendMail(email, confirmationCode, 'A');
+					sendMailClass.sendMail(email, confirmationCode, "CONFIRMATION_ACCOUNT");
 					log.info("Email has been sent");
 				}).start();
 
@@ -242,13 +272,13 @@ public class ClientService {
 		try {
 			
 			Long id = clientRepo.findByEmail(email).getClientId();
-			Long xd = tokenRepo.tokenValidation(id, "RECOVER_PWD", false);
+			Long xd = clientEmailRepo.tokenValidation(id, "RECOVER_PWD", false);
 			
-			if (tokenRepo.tokenValidation(id, "RECOVER_PWD", false) == 0) {
+			if (clientEmailRepo.tokenValidation(id, "RECOVER_PWD", false) == 0) {
 
 				String confirmationCode = UUID.randomUUID().toString();
 
-				tokenRepo.save(new Token(confirmationCode, id, null, "RECOVER_PWD", false));
+				clientEmailRepo.save(new ClientEmail(confirmationCode, id, null, "RECOVER_PWD", false));
 
 				log.info("Client token saved");
 				response.put("value", id.toString());
@@ -256,7 +286,7 @@ public class ClientService {
 
 				new Thread(() -> {
 					log.info("Sending email to: " + email);
-					sendMailClass.sendMail(email, confirmationCode, 'B');
+					sendMailClass.sendMail(email, confirmationCode, "RECOVER_ACCOUNT");
 					log.info("Email has been sent");
 
 				}).start();
@@ -280,7 +310,7 @@ public class ClientService {
 		Map<String, String> response = new HashMap<>();
 
 		try {
-			Token myToken = tokenRepo.findById(token).orElse(null);
+			ClientEmail myToken = clientEmailRepo.findById(token).orElse(null);
 
 			if (myToken == null) {
 				log.info("Invalid Token");
@@ -289,7 +319,7 @@ public class ClientService {
 			} else {
 
 				myToken.setUsed(true);
-				tokenRepo.save(myToken);
+				clientEmailRepo.save(myToken);
 				log.info("Token has beed confirmed");
 				log.info("Token reason: " + myToken.getReason());
 				response.put("code", "AA");

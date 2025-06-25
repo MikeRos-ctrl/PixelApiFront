@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
+import './index.css';
 import { Modal } from '../Modal/Modal';
 import { ModalLogin } from '../Modal/ModalLogin';
 import { ModalCreate_UpdateAccount } from '../Modal/ModalCreate_UpdateAccount';
 import { ModalConfirmAccount } from '../Modal/ModalConfirmAccount';
 import { ModalWelcomeAccount } from '../Modal/ModalWelcomeAccount';
 import { ModalWelcomeBack } from '../Modal/ModalWelcomeBack';
-import { Demo } from '../Demo/Demo';
 import { Footer } from '../Footer/Footer';
 import { AppContext } from '../../context';
-import './index.css';
 import { Navbar } from '../Navbar/Navbar';
 import { NormalPage } from '../Pages/normalPage';
 import { DocumentationPage } from '../Pages/DocumentationPage';
+import { AccountPage } from '../AccountPage/AccountPage';
 
 class App extends Component {
 
@@ -45,7 +45,8 @@ class App extends Component {
     // pricingSection
     const PageComponents = {
       0: < NormalPage />,
-      1: < DocumentationPage />
+      1: < DocumentationPage />,
+      2: < AccountPage />
     }
 
     return (

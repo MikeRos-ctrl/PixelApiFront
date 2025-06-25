@@ -16,11 +16,11 @@ public class StripeSubscription {
 	@Column(name = "STRIPE_SUBSCRIPTION_ID") 
 	private String stripeSubscriptionId;
 	
+	@Column(name = "TOKEN")
+	private String token;
+	
 	@Column(name = "CLIENT_ID")
 	private Long clientId;
-	
-	@Column(name = "PLAN_TYPE")
-	private Integer planTypeId;
 	
 	@Column(name = "START_DAY")
 	private Timestamp startDay;
@@ -33,32 +33,37 @@ public class StripeSubscription {
 	
 	@Column(name = "ACTIVE_MONTHS")
 	private Integer activeMonths;
-	
-	@Column(name = "TOKEN")
-	private String token;
 
 	public StripeSubscription() {
 		
 	}
 	
-	public StripeSubscription(String stripeSubscriptionId, Long clientId, Integer planTypeId,
-			 Boolean active, Integer activeMonths, Timestamp startDay, Timestamp endDay, String token) {
+	public StripeSubscription(
+			String stripeSubscriptionId, String token, Long clientId, 
+			Timestamp startDay,Timestamp endDay, Boolean active, Integer activeMonths) {
 		this.stripeSubscriptionId = stripeSubscriptionId;
+		this.token = token;
 		this.clientId = clientId;
-		this.planTypeId = planTypeId;
-		this.active = active;
-		this.activeMonths = activeMonths;
 		this.startDay = startDay;
 		this.endDay = endDay;
-		this.token = token;
+		this.active = active;
+		this.activeMonths = activeMonths;
 	}
-	
+
 	public String getStripeSubscriptionId() {
 		return stripeSubscriptionId;
 	}
 
 	public void setStripeSubscriptionId(String stripeSubscriptionId) {
 		this.stripeSubscriptionId = stripeSubscriptionId;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public Long getClientId() {
@@ -69,20 +74,20 @@ public class StripeSubscription {
 		this.clientId = clientId;
 	}
 
-	public Integer getPlanTypeId() {
-		return planTypeId;
-	}
-
-	public void setPlanTypeId(Integer planTypeId) {
-		this.planTypeId = planTypeId;
-	}
-
 	public Timestamp getStartDay() {
 		return startDay;
 	}
 
 	public void setStartDay(Timestamp startDay) {
 		this.startDay = startDay;
+	}
+
+	public Timestamp getEndDay() {
+		return endDay;
+	}
+
+	public void setEndDay(Timestamp endDay) {
+		this.endDay = endDay;
 	}
 
 	public Boolean getActive() {
@@ -100,22 +105,4 @@ public class StripeSubscription {
 	public void setActiveMonths(Integer activeMonths) {
 		this.activeMonths = activeMonths;
 	}
-
-	public Timestamp getEndDay() {
-		return endDay;
-	}
-
-	public void setEndDay(Timestamp endDay) {
-		this.endDay = endDay;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-	
-	
 }

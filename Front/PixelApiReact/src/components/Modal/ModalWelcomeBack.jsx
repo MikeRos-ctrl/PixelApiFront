@@ -1,7 +1,7 @@
 import React from "react";
 import { LocalDb } from '../../util/LocalDb';
 import { ApiCall } from "../../util/ApiCall";
-const { Login, ForgotPwd } = ApiCall()
+const { Login } = ApiCall()
 import { FaEye } from "react-icons/fa";
 import { AppContext } from '../../context';
 

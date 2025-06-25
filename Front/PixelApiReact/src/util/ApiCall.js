@@ -49,6 +49,21 @@ const ApiCall = () => {
         }
     }
 
+    async function CreateFreeSubscription(email) {
+
+        try {
+            const response = await fetch(API + "/freeSubscription?email=" + email, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            return response.json();
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
+    }
+
     async function UpdateAccount(myClient) {
 
         try {
@@ -101,7 +116,7 @@ const ApiCall = () => {
             const response = await fetch(API + "/login/" + email + "/" + accountKey, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 }
             })
             return response.json();
@@ -197,7 +212,8 @@ const ApiCall = () => {
         ForgotPwd,
         CreateStripeSubscription,
         StripeCredentials,
-        GetRandomImageWithCategories
+        GetRandomImageWithCategories,
+        CreateFreeSubscription
     }
 }
 

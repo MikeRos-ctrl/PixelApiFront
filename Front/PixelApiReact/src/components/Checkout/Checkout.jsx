@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './index.css';
 import Logo from '../../assets/icon4.png';
 import arrow from '../../assets/Icon-11.png';
 import CheckoutForm from './CheckoutForm';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import Stripe from 'stripe';
@@ -26,7 +26,6 @@ class Checkout extends React.Component {
 
     async componentDidMount() {
         const { myUser } = this.props;
-        console.log(myUser.plan)
 
         try {
 
@@ -57,8 +56,7 @@ class Checkout extends React.Component {
     }
 
     componentWillUnmount() {
-        const { setCheckOutFlag } = this.props;
-        // setCheckOutFlag()
+
     }
 
     setReturnFlag = () => {
@@ -73,13 +71,12 @@ class Checkout extends React.Component {
 
         return (
             <>
-
                 <div className="checkout">
 
                     <div className="checkoutLeft">
 
                         <div className="checkoutLeftSmartConatiner">
-                            <div className="relative clickable" onClick={() => returnFlag ? navigate('/profile') : null}>
+                            <div className="relative clickable" onClick={() => returnFlag ? navigate('/') : null}>
                                 <img src={arrow} className="qwer2 absolute" alt="" />
                                 <img src={Logo} className="qwer" alt="" />
                             </div>
@@ -128,7 +125,7 @@ class Checkout extends React.Component {
 function CheckoutWithRouter(props) {
     const { myUser } = React.useContext(AppContext)
     const navigate = useNavigate();
-    let price = myUser.plan == "Premium" ? "8,00 USD" : "10,00 USD"
+    let price = myUser.tempPlan == "premium" ? "8,00 USD" : "10,00 USD"
     return <Checkout {...props} navigate={navigate} price={price} myUser={myUser} />;
 }
 

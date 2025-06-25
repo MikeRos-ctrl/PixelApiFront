@@ -68,10 +68,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Slf4j
 @RestController
 @RequestMapping("/frontController")
-public class FronController {
+public class FrontController {
 
-	private AuthenticationManager authenticationManager = null;
-	
 	@Autowired
 	ImageService service;
 
@@ -85,7 +83,7 @@ public class FronController {
 	private static final String SERVICE_ACCOUNT_JSON = "src/main/resources/pixelapikey.json";
 	private Storage storage;
 
-	public FronController() throws Exception {
+	public FrontController() throws Exception {
 		this.storage = StorageOptions.newBuilder()
 				.setCredentials(ServiceAccountCredentials.fromStream(new FileInputStream(SERVICE_ACCOUNT_JSON))).build()
 				.getService();
@@ -104,24 +102,45 @@ public class FronController {
 		} catch (Exception e) {
 			response.put("mensaje", "Error interno");
 			response.put("error", e.getMessage());
+			log.error("error in StripeCredentials: " + e.getMessage());
 			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<>(response, statusResponse);
 	}
 
 	@PostMapping("/stripeSubscription")
-	public ResponseEntity<?> CreateStripeSubscription(@RequestBody StripeSubscriptionDto data) {
+	public ResponseEntity<?> createStripeSubscription(@RequestBody StripeSubscriptionDto data) {
 
 		Map<String, Object> response = new HashMap<>();
 		HttpStatus statusResponse = HttpStatus.OK;
 
 		try {
-			response.put("response", myClientService.CreateStripeSubscription(data));
+			response.put("response", myClientService.createStripeSubscription(data));
 			statusResponse = HttpStatus.OK;
 
 		} catch (Exception e) {
 			response.put("mensaje", "Error interno");
 			response.put("error", e.getMessage());
+			log.error("error in stripeSubscription: " + e.getMessage());
+			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<>(response, statusResponse);
+	}
+	
+	@PostMapping("/freeSubscription")
+	public ResponseEntity<?> createFreeSubscription(@RequestParam("email") String email) {
+
+		Map<String, Object> response = new HashMap<>();
+		HttpStatus statusResponse = HttpStatus.OK;
+
+		try {
+			response.put("response", myClientService.createFreeSubscription(email));
+			statusResponse = HttpStatus.OK;
+
+		} catch (Exception e) {
+			response.put("mensaje", "Error interno");
+			response.put("error", e.getMessage());
+			log.error("error in stripeSubscription: " + e.getMessage());
 			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<>(response, statusResponse);
@@ -140,11 +159,12 @@ public class FronController {
 		} catch (Exception e) {
 			response.put("mensaje", "Error interno");
 			response.put("error", e.getMessage());
+			log.error("error in validateAccount: " + e.getMessage());
 			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<>(response, statusResponse);
 	}
-
+	
 	@PostMapping("/createAccount")
 	public ResponseEntity<?> createAccount(@Valid @RequestBody Client myClient, BindingResult result) {
 
@@ -170,6 +190,7 @@ public class FronController {
 		} catch (Exception e) {
 			response.put("mensaje", "Error interno");
 			response.put("error", e.getMessage());
+			log.error("error in createAccount: " + e.getMessage());
 			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<>(response, statusResponse);
@@ -182,12 +203,16 @@ public class FronController {
 		HttpStatus statusResponse = HttpStatus.OK;
 
 		try {
+			
+			statusResponse = (myClientService.ConfirmAccount(token).get("code").equals("BB")) 
+					? HttpStatus.BAD_REQUEST : HttpStatus.OK;
+			
 			response.put("response", myClientService.ConfirmAccount(token));
-			statusResponse = HttpStatus.OK;
 
 		} catch (Exception e) {
 			response.put("mensaje", "Error interno");
 			response.put("error", e.getMessage());
+			log.error("error in confirmAccount: " + e.getMessage());
 			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<>(response, statusResponse);
@@ -206,6 +231,7 @@ public class FronController {
 		} catch (Exception e) {
 			response.put("mensaje", "Error interno");
 			response.put("error", e.getMessage());
+			log.error("error in forgotPwd: " + e.getMessage());
 			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<>(response, statusResponse);
@@ -218,15 +244,11 @@ public class FronController {
 		HttpStatus statusResponse = HttpStatus.OK;
 
 		try {
-
+	
 			Client myClient = myClientService.Login(email, accountKey);
 
 			if (myClient != null) {
-				UsernamePasswordAuthenticationToken login = 
-						new UsernamePasswordAuthenticationToken(
-								myClient.getClientId(), accountKey);
-				
-				Authentication auth = this.authenticationManager.authenticate(login);
+
 				response.put("response", myClient);
 				statusResponse = HttpStatus.OK;
 			} else {
@@ -237,6 +259,7 @@ public class FronController {
 		} catch (Exception e) {
 			response.put("mensaje", "Error interno");
 			response.put("error", e.getMessage());
+			log.error("error in login: " + e.getMessage());
 			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<>(response, statusResponse);
@@ -255,6 +278,7 @@ public class FronController {
 		} catch (Exception e) {
 			response.put("mensaje", "Error interno");
 			response.put("error", e.getMessage());
+			log.error("error in updateAccount: " + e.getMessage());
 			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<>(response, statusResponse);
@@ -283,6 +307,7 @@ public class FronController {
 			response.put("mensaje", "Error interno");
 			response.put("error", e.getMessage());
 			myResponse.add(response);
+			log.error("error in GetRandomImageWithCategories: " + e.getMessage());
 			statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<>(myResponse, statusResponse);
@@ -313,6 +338,7 @@ public class FronController {
 			response.put("mensaje", "Error interno");
 			response.put("error", e.getMessage());
 			myResponse.add(response);
+			log.error("error in fillFrontHeader: " + e.getMessage());
 			return new ResponseEntity<>(myResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -344,6 +370,7 @@ public class FronController {
 			Map<String, Object> response = new HashMap<>();
 			response.put("mensaje", "Error interno");
 			response.put("error", e.getMessage());
+			log.error("error in listByCategory: " + e.getMessage());
 			myList.add(response);
 			return new ResponseEntity<>(myList, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

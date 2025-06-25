@@ -9,15 +9,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "TOKEN")
-public class Token {
+@Table(name = "CLIENT_EMAIL")
+public class ClientEmail {
 
 	@Id
 	@Column(name = "TOKEN_ID")
 	private String tokenId;
 
-	@Column(name = "CLIENT")
-	private Long client;
+	@Column(name = "CLIENT_ID")
+	private Long clientId;
 
 	@Column(name = "CREATION")
 	private Timestamp creation;
@@ -31,13 +31,13 @@ public class Token {
 	@Column(name = "USED")
 	private Boolean used;
 
-	public Token() {
+	public ClientEmail() {
 
 	}
 
-	public Token(String tokenId, Long client, Timestamp expirationDate, String reason, Boolean used) {
+	public ClientEmail(String tokenId, Long client, Timestamp expirationDate, String reason, Boolean used) {
 		this.tokenId = tokenId;
-		this.client = client;
+		this.clientId = client;
 		this.expirationDate = expirationDate;
 		this.reason = reason;
 		this.used = used;
@@ -52,11 +52,11 @@ public class Token {
 	}
 
 	public Long getClient() {
-		return client;
+		return clientId;
 	}
 
 	public void setClient(Long client) {
-		this.client = client;
+		this.clientId = client;
 	}
 
 	public Timestamp getCreation() {

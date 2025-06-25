@@ -38,6 +38,11 @@ public class AuthUser implements UserDetailsService{
 				.build();
 	}
 	
+	/*
+	 *Spring Security compares the provided password (from the Authorization header) 
+	 *with the password in the User object, 
+	 *typically using a PasswordEncoder like BCryptPasswordEncoder.  
+	 */
 	@Bean
 	public PasswordEncoder myEncoder() {
 		return new BCryptPasswordEncoder();

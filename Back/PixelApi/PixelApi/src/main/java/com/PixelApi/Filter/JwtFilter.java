@@ -63,7 +63,10 @@ public class JwtFilter extends OncePerRequestFilter {
 		 *  Cargar el usuario usando mi loadUserByUsername en AuthUser
 		 */
 		String username = this.jwt.getUsername(jwt);
-		User user =  (User) this.userDetailsService.loadUserByUsername(username);
+	
+		request.setAttribute("subscriptionType", this.jwt.getSubscriptionType(jwt));
+	
+		User user = (User) this.userDetailsService.loadUserByUsername(username);
 
 		
 		/*

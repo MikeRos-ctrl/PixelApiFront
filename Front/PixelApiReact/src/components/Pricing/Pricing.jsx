@@ -1,5 +1,4 @@
 import './index.css';
-import { Element } from 'react-scroll';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { AppContext } from '../../context';
@@ -7,7 +6,7 @@ import { AppContext } from '../../context';
 function Pricing() {
 
     const navigate = useNavigate();
-    const { myUser, setMyUser, setMyModal, myModal } = React.useContext(AppContext)
+    const { myUser, setMyUser, setMyModal, myModal, setPage } = React.useContext(AppContext)
 
     const OpenModal = (plan) => {
 
@@ -15,7 +14,7 @@ function Pricing() {
             setMyUser({ ...myUser, plan: plan })
             setMyModal({ ...myModal, open: !myModal.open })
         } else {
-            navigate('/profile')
+            setPage(2)
         }
     }
 
@@ -35,48 +34,42 @@ function Pricing() {
             <div className='pricingOptions'>
 
                 <div className='pricingCard'>
-                    <div className='pricingCardTitle titleNotMain'>
-                        <h3>Premium</h3>
-                    </div>
 
-                    <h4 className='titleNotMain'>8.00$</h4>
+                    <h3 className='pricingCardTitle titleNotMain'>Free</h3>
+                    <h4 className='titleNotMain'>0.00$</h4>
 
                     <div className='pricingCardCharacteristics'>
-                        <h5 className='titleNotMain'>✅ Unlimited request per month</h5>
-                        <h5 className='titleNotMain'>✅ Unlimited images</h5>
-                        <h5 className='titleNotMain'>✅ Unlimited categories</h5>
-                        <h5 className='titleNotMain'>✅ Access to documentation</h5>
+                        <h5 className='titleNotMain'>✅ 40 request per day</h5>
+                        <h5 className='titleNotMain'>✅ Limited images</h5>
+                        <h5 className='titleNotMain'>✅ Limited categories</h5>
                         <h5 className='titleNotMain'>✅ Images information</h5>
-                        <h5 className='titleNotMain'>✅ Code snipets</h5>
-                        <h5 className='titleNotMain'>❌ Commercial licence</h5>
                     </div>
 
                     <div className='pricingbtnCenter'>
                         <input onClick={() => OpenModal("Premium")} className="titleNotMain pricingbtn2"
-                            type="button" value="Get premium access" />
+                            type="button" value="Get free access" />
                     </div>
                 </div>
 
                 <div className='pricingCard'>
                     <div className='pricingCardTitle titleNotMain'>
-                        <h3>Premium+</h3>
+                        <h3>Premium</h3>
                     </div>
 
-                    <h4 className='titleNotMain'>10.00$</h4>
+                    <h4 className='titleNotMain'>7.00$</h4>
 
                     <div className='pricingCardCharacteristics'>
-                        <h5 className='titleNotMain'>✅ Unlimited request per month</h5>
+                        <h5 className='titleNotMain'>✅ Unlimited request</h5>
                         <h5 className='titleNotMain'>✅ Unlimited images</h5>
                         <h5 className='titleNotMain'>✅ Unlimited categories</h5>
-                        <h5 className='titleNotMain'>✅ Access to documentation</h5>
                         <h5 className='titleNotMain'>✅ Images information</h5>
-                        <h5 className='titleNotMain'>✅ Code snipets</h5>
                         <h5 className='titleNotMain'>✅ Commercial licence</h5>
+                        <h5 className='titleNotMain'>✅ Support</h5>
                     </div>
 
                     <div className='pricingbtnCenter'>
                         <input onClick={() => OpenModal("Premium+")} className="titleNotMain pricingbtn2"
-                            type="button" value="Get premium+ access" />
+                            type="button" value="Get premium access" />
                     </div>
                 </div>
 

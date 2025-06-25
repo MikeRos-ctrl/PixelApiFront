@@ -1,7 +1,9 @@
 import { useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js"
-import React, { useEffect, useRef, Component } from 'react';
+import React, { useEffect } from 'react';
 import { ApiCall } from "../../util/ApiCall";
 import Swal from 'sweetalert2'
+import { AppContext } from '../../context';
+import { parseISO, format } from 'date-fns';
 
 function CheckoutForm({ navigate, setReturnFlag, plan, email }) {
     const stripe = useStripe()
@@ -10,6 +12,7 @@ function CheckoutForm({ navigate, setReturnFlag, plan, email }) {
     const [errorText, setErrorText] = React.useState(false)
     const [isProcessing, setIsProcessing] = React.useState(false);
     const { CreateStripeSubscription } = ApiCall()
+    const { myUser, setMyUser } = React.useContext(AppContext)
 
     useEffect(() => {
         setReturnFlag()
@@ -51,27 +54,31 @@ function CheckoutForm({ navigate, setReturnFlag, plan, email }) {
             console.log(paymentIntent)
             console.log(paymentIntent.id)
 
+
             CreateStripeSubscription({
                 stripeSubscriptionId: paymentIntent.id,
                 email: email,
-                planTypeId: plan
+                planTypeId: myUser.tempPlan
             }).then(res => {
 
-                console.log(res)
+                let startDate = parseISO(res.response.startDay)
+                let endDate = parseISO(res.response.endDay)
 
-                // Swal.fire({
-                //     icon: 'success',
-                //     title: 'Payment was confirmed',
-                //     showConfirmButton: true,
-                // }).then(res => {
-                //     /*
-                //     *Stripe sends an Invoice in prod
-                //     *Save subscription
-                //     */
+                setMyUser({
+                    ...myUser,
+                    plan: myUser.tempPlan,
+                    startDate: format(startDate, "yyyy-MM-dd"),
+                    endDate: format(endDate, "yyyy-MM-dd"),
+                    activeMonts: res.response.activeMonths
+                })
 
-                //     navigate('/')
-                //     console.log(paymentIntent)
-                // })
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Payment was confirmed',
+                    showConfirmButton: true,
+                }).then(res => {
+                    navigate('/')
+                })
             })
         }
 

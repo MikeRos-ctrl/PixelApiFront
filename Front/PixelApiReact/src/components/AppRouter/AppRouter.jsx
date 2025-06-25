@@ -1,12 +1,10 @@
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { App } from '../App/App';
-import { Profile } from '../Profile/Profile';
 import { Checkout } from '../Checkout/Checkout';
 import React, { Component } from 'react';
 import { LocalDb } from '../../util/LocalDb';
 import { AppContext } from '../../context';
 import { ApiCall } from '../../util/ApiCall';
-import { Documentation } from '../Documentation/Documentation';
 
 const { FillFrontHeader } = ApiCall()
 
@@ -76,8 +74,6 @@ class AppRouter extends Component {
                         <Route path='/' element={<App />} />
                         {/* <Route path='/checkout' element={myUser.ready == false ? <App /> : <Checkout />} /> */}
                         <Route path='/checkout' element={<Checkout />} />
-                        <Route path='/profile' element={myUser.ready != false ? <Profile /> : <App />} />
-                        <Route path='/documentation' element={<Documentation />} />
                         <Route path='*' element={<p>Not Found</p>} />
                     </Routes>
                 </HashRouter >

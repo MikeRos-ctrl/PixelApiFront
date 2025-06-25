@@ -14,15 +14,22 @@ public class Jwt {
 	private static String SECRET_KEY = "LindaNoceloEsElAmorDeMiVida<3";
 	private static Algorithm ALGORITHM = Algorithm.HMAC256(SECRET_KEY);
 	
-	public String create(String username, Timestamp creation, Timestamp expiration) {
+	public String create(String username, Timestamp creation, Timestamp expiration, String subscriptionType) {
 		return JWT.create()
 				.withSubject(username)
 				.withIssuer("Created By ThePixelApiTeam")
+				.withClaim("subscriptionType", subscriptionType)
 				.withIssuedAt(creation)
 	            .withExpiresAt(expiration)
-				//.withExpiresAt(new Date(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(60))) // minutes
-				//.withExpiresAt(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(15))) // days
 				.sign(Algorithm.HMAC256(SECRET_KEY));
+	}
+	
+	public String getSubscriptionType(String jwt) {
+	    return JWT.require(ALGORITHM)
+	            .build()
+	            .verify(jwt)
+	            .getClaim("subscriptionType")
+	            .asString();
 	}
 	
 	public boolean isValid(String jwt) {

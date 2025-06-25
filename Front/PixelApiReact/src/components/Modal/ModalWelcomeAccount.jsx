@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../../context';
 
 class ModalWelcomeAccount extends Component {
@@ -18,8 +17,7 @@ class ModalWelcomeAccount extends Component {
     }
 
     render() {
-
-        const { navigate } = this.props
+        const { setPage, myModal, setMyModal } = this.props
 
         return (
             <>
@@ -34,7 +32,10 @@ class ModalWelcomeAccount extends Component {
                 </div>
 
                 <div className="modalContentInformationBody">
-                    <input onClick={() => { navigate('/profile') }} className="regularText modalbtn" type="button" value="Continue" />
+                    <input onClick={() => {
+                        setPage(2)
+                        setMyModal({ ...myModal, open: !myModal.open })
+                    }} className="regularText modalbtn" type="button" value="Continue" />
                 </div>
             </>
         );
@@ -42,10 +43,8 @@ class ModalWelcomeAccount extends Component {
 }
 
 function ModalWelcomeAccountWrapper() {
-    const { myModal, setMyModal } = React.useContext(AppContext)
-    const navigate = useNavigate();
-
-    return <ModalWelcomeAccount navigate={navigate} myModal={myModal} setMyModal={setMyModal} />
+    const { myModal, setMyModal, setPage } = React.useContext(AppContext)
+    return <ModalWelcomeAccount myModal={myModal} setMyModal={setMyModal} setPage={setPage} />
 }
 
 export { ModalWelcomeAccountWrapper as ModalWelcomeAccount };

@@ -9,7 +9,20 @@ function AppProvider({ children }) {
         email: null,
         acctKey: null,
         ready: false,
-        plan: null
+        tempPlan: null,
+        freePlan: {
+            active: false,
+            token: null,
+            startDate: null
+        },
+
+        premiumPlan: {
+            active: false,
+            startDate: null,
+            endDate: null,
+            activeMonts: null,
+            token: null
+        }
     })
 
     const [myModal, setMyModal] = React.useState({

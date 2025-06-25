@@ -23,6 +23,9 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.storage.Storage.SignUrlOption;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.net.URL;
 
 @RestController
@@ -35,6 +38,8 @@ public class Api {
 	@Autowired
 	ImageService service;
 
+	@Autowired HttpServletRequest request;
+	
 	private static final String BUCKET_NAME = "aestheticpixelart";
 	private static final String SERVICE_ACCOUNT_JSON = "src/main/resources/pixelapikey.json";
 	private Storage storage;
@@ -75,7 +80,7 @@ public class Api {
 			Map<String, Object> response = new HashMap<>();
 
 			response.put("Message", "Inner Error");
-			response.put("Error", "Invalid input data in number field");
+			response.put("Error", "Muerte y Destruccion xd");
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -288,6 +293,9 @@ public class Api {
 		List<Map<String, Object>> myResponse = new ArrayList<>();
 
 		try {
+			
+			String subscriptionType = (String) request.getAttribute("subscriptionType");
+			
 			List<Object[]> myList = service.getCategories();
 			Map<String, Object> response = new HashMap<>();
 			response.put("Categories", myList);

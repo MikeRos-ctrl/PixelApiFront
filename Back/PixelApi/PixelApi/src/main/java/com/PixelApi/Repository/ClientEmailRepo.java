@@ -5,18 +5,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.PixelApi.Entity.Token;
+import com.PixelApi.Entity.ClientEmail;
 
 @Repository
-public interface TokenRepo extends JpaRepository<Token, String> {
+public interface ClientEmailRepo extends JpaRepository<ClientEmail, String> {
 
 	//Long countByClientId(Long client);
 
 	//Token findByClientId(String id);
 
-	@Query("SELECT COUNT(t) FROM Token t WHERE t.client=:client AND t.reason=:reason AND t.used=:used")
+	@Query("SELECT COUNT(t) FROM ClientEmail t WHERE t.clientId=:clientId AND t.reason=:reason AND t.used=:used")
 	Long tokenValidation(
-			@Param("client") Long client, 
+			@Param("clientId") Long clientId, 
 			@Param("reason") String reason,
 			@Param("used") Boolean activa);
 

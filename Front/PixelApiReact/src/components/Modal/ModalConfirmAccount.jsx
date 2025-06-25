@@ -8,7 +8,6 @@ const { ConfirmAccount, UpdateAccount } = ApiCall()
 function ModalConfirmAccount() {
 
     const { myUser, setMyUser, setMyModal, myModal } = React.useContext(AppContext)
-
     const inputRef = useRef(null);
     const [error, setError] = React.useState(false)
     const [errorText, setErrorText] = React.useState(false)
@@ -30,7 +29,7 @@ function ModalConfirmAccount() {
             ConfirmAccount(inputRef.current.value).then(result => {
 
                 if (result.response.code == 'AA') {
-
+                    
                     UpdateAccount(myUser).then(result => {
 
                         console.log(result)
@@ -66,7 +65,7 @@ function ModalConfirmAccount() {
 
                 <h4 className="titleNotMain dark-color">
                     <span className="clickable" onClick={() => {
-                        setMyModal({ ...myModal, index: (myModal.flow == 'C') ? 0 : 1})
+                        setMyModal({ ...myModal, index: (myModal.flow == 'C') ? 0 : 1 })
                     }}>⬅️</span>
                     Confirm your account
                 </h4>

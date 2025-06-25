@@ -9,16 +9,6 @@ drop table `role`;
 insert into `ROLE` (`NAME`) values ('ADMIN');
 insert into `ROLE` (`NAME`) values ('CUSTOMER');
 -- -------------------------------------------------------------------------------------------------------------------------------------------
-create table `PLAN_TYPE`(
-	PLAN_TYPE_ID int not null primary key auto_increment,
-	`NAME` varchar(255)
-);
-select * from `PLAN_TYPE`;
-drop table `PLAN_TYPE`;
-
-insert into `PLAN_TYPE` (`name`) values ('PREMIUM');
-insert into `PLAN_TYPE` (`name`) values ('PREMIUM+');
--- -------------------------------------------------------------------------------------------------------------------------------------------
 
 create table `CLIENT` (
 	CLIENT_ID int not null primary key auto_increment,
@@ -34,38 +24,39 @@ truncate `client`;
 drop table `client`;
 
 -- -------------------------------------------------------------------------------------------------------------------------------------------
-
 create table STRIPE_SUBSCRIPTION(
 	STRIPE_SUBSCRIPTION_ID varchar (255) primary key,
-    `CLIENT_ID` int not null,
-    `PLAN_TYPE`int not null comment 'PREMIUM|PREMIUM+',
 	START_DAY timestamp,
 	END_DAY timestamp,
     `ACTIVE` bit,    
-    ACTIVE_MONTHS int,
-    TOKEN varchar (255),
-    foreign key(`CLIENT_ID`) references `CLIENT`(CLIENT_ID),
-	foreign key(`PLAN_TYPE`) references `PLAN_TYPE`(PLAN_TYPE_ID)
+    ACTIVE_MONTHS int
 );
-
 
 select * from STRIPE_SUBSCRIPTION;
 drop table STRIPE_SUBSCRIPTION;
-truncate paypalorder;
--- ------------------------------------------------------------------------------------------------------------------------------------------------
 
-create table TOKEN(
-	TOKEN_ID varchar (255) primary key,
-	CLIENT int not null not null,
-    CREATION timestamp default now(),
-	EXPIRATION_DATE timestamp,
-    REASON varchar (255) not null comment 'ACCT_CONFIRMATION|RECOVER_PWD|USE_APP',
-    USED bit default 0,
-	foreign key(`CLIENT`) references `CLIENT`(CLIENT_ID)
+create table FREE_SUBSCRIPTION(
+	TOKEN varchar(255) primary key,
+	`CLIENT_ID` int not null,
+	START_DATE timestamp,
+    foreign key(`CLIENT_ID`) references `CLIENT`(CLIENT_ID)
 );
 
-SELECT * FROM TOKEN;
-drop table TOKEN;
+drop table SUBSCRIPTION;
+-- ------------------------------------------------------------------------------------------------------------------------------------------------
+
+create table CLIENT_EMAIL(
+	TOKEN_ID varchar (255) primary key,
+	CLIENT_ID int not null not null,
+    CREATION timestamp default now(),
+	EXPIRATION_DATE timestamp,
+    REASON varchar (255) not null comment 'ACCT_CONFIRMATION|RECOVER_PWD',
+    USED bit default 0,
+	foreign key(`CLIENT_ID`) references `CLIENT`(CLIENT_ID)
+);
+
+SELECT * FROM CLIENT_EMAIL;
+drop table CLIENT_EMAIL;
 
 select count(*) as total from token where `client` = 1 and reason = 'ACCT_CONFIRMATION' and used = true;
 select count(*) as total from tokenaccount where `clientId` = 1 and reason = 'FORGOT-PWD' and confirmed = 0;
