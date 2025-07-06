@@ -38,9 +38,17 @@ function ModalWelcomeBack() {
 
             Login(myUser.email, acctKey).then(result => {
 
+                console.log(result)
+
                 if (result.response != "Not found") {
 
-                    let data = { ...myUser, clientId: result.response.clientId, acctKey: acctKey, ready: true }
+                    let data;
+
+                    if (result.token != null)
+                        data = { ...myUser, clientId: result.myClient.clientId, acctKey: acctKey, ready: true, token: result.token.token, startDate: result.token.startDay }
+                    else
+                        data = { ...myUser, clientId: result.myClient.clientId, acctKey: acctKey, ready: true, token: null, startDate: null }
+
                     setMyUser(data)
 
                     LocalDb.Insert(data).then(() => {

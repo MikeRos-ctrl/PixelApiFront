@@ -120,7 +120,22 @@ function UserAccount() {
                 </div>
 
                 <input onClick={() => submit()} className="titleNotMain pricingbtn2 mt-2" type="button" value="Update" />
-                <input className="titleNotMain pricingbtn2" type="button" value="Delete Account" />
+                <input onClick={() => {
+                    LocalDb.Delete()
+                    setError(false);
+                    setMyUser({
+                        clientId: null,
+                        email: null,
+                        acctKey: null,
+                        ready: false,
+                    })
+                    setMyModal({
+                        index: 0,
+                        flow: 'A',
+                        open: false
+                    })
+                    setPage(0)
+                }} className="titleNotMain pricingbtn2" type="button" value="Log out" />
 
                 {error && (
                     <input className={`regularText ${errorText == "Information was updated!" || errorText == "You will be logged out!" ? 'modalbtnsuccess' : ' modalbtnerror'}`} type="button" value={errorText} />

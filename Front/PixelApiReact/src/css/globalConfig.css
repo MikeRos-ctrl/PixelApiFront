@@ -175,7 +175,7 @@ li {
     color: var(--orange);
     background-color: #181A1B;
     border-radius: 1rem;
-    cursor: pointer;
+    /* cursor: pointer; */
     outline: 2px solid var(--orange);
 }
 

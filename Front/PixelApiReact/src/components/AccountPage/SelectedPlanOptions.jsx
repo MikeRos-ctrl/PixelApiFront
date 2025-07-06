@@ -8,39 +8,37 @@ function SelectedPlanOptions() {
     const { setMyUser, myUser } = React.useContext(AppContext)
     const [iconColor, setIconColor] = React.useState("white-color");
 
-
-
     const copyToken = () => {
-        navigator.clipboard.writeText(myUser.freePlan.token)
+        navigator.clipboard.writeText(myUser.token)
         setIconColor("mint-color")
         setTimeout(() => {
             setIconColor("white-color")
-        }, 2000)
+        }, 1500)
     }
 
     return (
         <>
             <div className="selectedPlanOptions">
 
-                {myUser.freePlan.active &&
-                    <div className="selectedPlanOptionFree">
-                        <h5 className="titleNotMain">Type: <span className="titleNotMain grey-color">Free</span></h5>
-                        <h5 className="titleNotMain">Start Date: <span className="titleNotMain grey-color">{
-                            format(parseISO(myUser.freePlan.startDate), 'yyyy-MM-dd HH:mm:ss')
-                        }</span></h5>
-                        <h5 className="titleNotMain">Duration: <span className="titleNotMain grey-color">Forever</span></h5>
+
+                <div className="selectedPlanOptionFree">
+                    <h5 className="titleNotMain">Type: <span className="titleNotMain grey-color">Free</span></h5>
+                    <h5 className="titleNotMain">Start Date: <span className="titleNotMain grey-color">{
+                        format(parseISO(myUser.startDate), 'yyyy-MM-dd')
+                    }</span></h5>
+                    <h5 className="titleNotMain">Duration: <span className="titleNotMain grey-color">Forever</span></h5>
 
 
-                        <div className='selectePlanOptionsCopyToken'>
-                            <h5 className="titleNotMain">Token:</h5>
+                    <div className='selectePlanOptionsCopyToken'>
+                        <h5 className="titleNotMain">Token:</h5>
 
-                            <span className='selectePlanOptionsCopyTokenIcon'>
-                                <input defaultValue={myUser.freePlan.token} className="regularText readOnlyinputAcctPage" placeholder="Password" readOnly />
-                                <FaRegCopy onClick={() => { copyToken() }} className={`icon ${iconColor}`} />
-                            </span>
-                        </div>
+                        <span className='selectePlanOptionsCopyTokenIcon'>
+                            <input defaultValue={myUser.token} className="regularText readOnlyinputAcctPage" placeholder="Password" readOnly />
+                            <FaRegCopy onClick={() => { copyToken() }} className={`icon ${iconColor}`} />
+                        </span>
                     </div>
-                }
+                </div>
+
 
                 {/* <div>
                     <div>

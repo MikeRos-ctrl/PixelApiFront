@@ -26,8 +26,8 @@ function AccountPage() {
 
                     <div className='AccountPageOptions'>
                         <h5 className={`titleNotMain clickable ${SelectedOption == 0 ? "cuteOutline" : ""}`} onClick={() => setSelectedOption(USER_ACCOUNT)}>Account</h5>
-                        <h5 className={`titleNotMain clickable ${SelectedOption == 2 ? "cuteOutline" : ""}`} onClick={() => {
-                            myUser.plan != null ? setSelectedOption(SELECTED_PLAN_OPC) : setSelectedOption(SELECT_PLAN)
+                        <h5 className={`titleNotMain clickable ${SelectedOption == 1 || SelectedOption == 2 ? "cuteOutline" : ""}`} onClick={() => {
+                            myUser.token != null ? setSelectedOption(SELECTED_PLAN_OPC) : setSelectedOption(SELECT_PLAN)
                         }
                         }>Plan</h5>
                     </div>

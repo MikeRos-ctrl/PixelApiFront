@@ -24,24 +24,14 @@ truncate `client`;
 drop table `client`;
 
 -- -------------------------------------------------------------------------------------------------------------------------------------------
-create table STRIPE_SUBSCRIPTION(
-	STRIPE_SUBSCRIPTION_ID varchar (255) primary key,
-	START_DAY timestamp,
-	END_DAY timestamp,
-    `ACTIVE` bit,    
-    ACTIVE_MONTHS int
-);
-
-select * from STRIPE_SUBSCRIPTION;
-drop table STRIPE_SUBSCRIPTION;
-
 create table FREE_SUBSCRIPTION(
 	TOKEN varchar(255) primary key,
 	`CLIENT_ID` int not null,
 	START_DATE timestamp,
     foreign key(`CLIENT_ID`) references `CLIENT`(CLIENT_ID)
 );
-
+select * from free_subscription;
+truncate free_subscription;
 drop table SUBSCRIPTION;
 -- ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -56,6 +46,7 @@ create table CLIENT_EMAIL(
 );
 
 SELECT * FROM CLIENT_EMAIL;
+truncate client_email;
 drop table CLIENT_EMAIL;
 
 select count(*) as total from token where `client` = 1 and reason = 'ACCT_CONFIRMATION' and used = true;

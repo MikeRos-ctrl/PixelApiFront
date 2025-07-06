@@ -30,6 +30,7 @@ function ModalConfirmAccount() {
 
                 if (result.response.code == 'AA') {
                     
+                    //EL ID ES NULL TRUENA
                     UpdateAccount(myUser).then(result => {
 
                         console.log(result)

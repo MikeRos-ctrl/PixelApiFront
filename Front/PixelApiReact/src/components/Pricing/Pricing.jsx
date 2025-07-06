@@ -23,9 +23,8 @@ function Pricing() {
 
             <div id="pricingSection">
                 <h2 className="titleMain pricingMainBtn">
-                    Choose your
-                    <span className="strongPinkColor">montly</span>
-                    plan
+                    Choose your plan
+                    {/* <span className="strongPinkColor">montly</span> */}
                 </h2>
             </div>
 
@@ -33,7 +32,7 @@ function Pricing() {
 
             <div className='pricingOptions'>
 
-                <div className='pricingCard'>
+                {/* <div className='pricingCard'>
 
                     <h3 className='pricingCardTitle titleNotMain'>Free</h3>
                     <h4 className='titleNotMain'>0.00$</h4>
@@ -49,27 +48,27 @@ function Pricing() {
                         <input onClick={() => OpenModal("Premium")} className="titleNotMain pricingbtn2"
                             type="button" value="Get free access" />
                     </div>
-                </div>
+                </div> */}
 
                 <div className='pricingCard'>
                     <div className='pricingCardTitle titleNotMain'>
-                        <h3>Premium</h3>
+                        <h3>Free</h3>
                     </div>
 
-                    <h4 className='titleNotMain'>7.00$</h4>
+                    <h4 className='titleNotMain'>Free</h4>
 
                     <div className='pricingCardCharacteristics'>
                         <h5 className='titleNotMain'>✅ Unlimited request</h5>
                         <h5 className='titleNotMain'>✅ Unlimited images</h5>
                         <h5 className='titleNotMain'>✅ Unlimited categories</h5>
                         <h5 className='titleNotMain'>✅ Images information</h5>
-                        <h5 className='titleNotMain'>✅ Commercial licence</h5>
-                        <h5 className='titleNotMain'>✅ Support</h5>
+                        {/* <h5 className='titleNotMain'>✅ Commercial licence</h5>
+                        <h5 className='titleNotMain'>✅ Support</h5> */}
                     </div>
 
                     <div className='pricingbtnCenter'>
                         <input onClick={() => OpenModal("Premium+")} className="titleNotMain pricingbtn2"
-                            type="button" value="Get premium access" />
+                            type="button" value="Get free access" />
                     </div>
                 </div>
 

@@ -221,7 +221,7 @@ public class FrontController {
 	@GetMapping("/forgotPwd/{email}")
 	public ResponseEntity<?> forgotPwd(@PathVariable String email) {
 
-		Map<String, String> response = new HashMap<>();
+		Map<String, Object> response = new HashMap<>();
 		HttpStatus statusResponse = HttpStatus.OK;
 
 		try {
@@ -245,14 +245,11 @@ public class FrontController {
 
 		try {
 	
-			Client myClient = myClientService.Login(email, accountKey);
+			 response = myClientService.Login(email, accountKey);
 
-			if (myClient != null) {
-
-				response.put("response", myClient);
+			if (response != null) {
 				statusResponse = HttpStatus.OK;
 			} else {
-				response.put("response", "Not found");
 				statusResponse = HttpStatus.NOT_FOUND;
 			}
 

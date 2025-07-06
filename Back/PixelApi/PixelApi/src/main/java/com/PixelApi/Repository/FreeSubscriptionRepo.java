@@ -9,4 +9,6 @@ import com.PixelApi.Entity.StripeSubscription;
 @Repository
 public interface FreeSubscriptionRepo extends JpaRepository<FreeSubscription, String>{
 
+	FreeSubscription findByClientId(Long id);
+
 }

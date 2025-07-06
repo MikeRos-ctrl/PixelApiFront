@@ -45,10 +45,10 @@ function Navbar() {
                     <h5 className="titleNotMain">DOCUMENTATION</h5>
                 </div>
 
-                <div className="navRightCouple clickable">
+                {/* <div className="navRightCouple clickable">
                     <img src={About} className="qwer2" alt="" />
                     <h5 className="titleNotMain">ABOUT</h5>
-                </div>
+                </div> */}
 
                 <div className="navRightCouple clickable" onClick={() => OpenModal()}>
                     <img src={User} className="qwer2" alt="" />

@@ -59,7 +59,12 @@ function ModalCreate_UpdateAccount() {
                 * ForgotPwd only sends an email
                  */
                 ForgotPwd(myUser.email).then(result => {
-                    setMyUser({ ...myUser, acctKey: inputValue1, clientId: result.value })
+                    console.log(result)
+
+                    if (result.token == null)
+                        setMyUser({ ...myUser, acctKey: inputValue1, clientId: result.id })
+                    else
+                        setMyUser({ ...myUser, acctKey: inputValue1, clientId: result.id, token: result.token.token, startDate: result.token.startDay })
                     setMyModal({ ...myModal, index: 2 })
                 }).catch(error => {
                     console.error("I've got a mistake: ", error);

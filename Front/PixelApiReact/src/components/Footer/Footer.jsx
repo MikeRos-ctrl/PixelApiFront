@@ -26,10 +26,10 @@ class Footer extends Component {
                 <div className='footerContainer'>
                     <div className='twiced'>
                         <div className='footerAbove'>
-                            <div>
+                            {/* <div>
                                 <h4 className='titleNotMain'>Company</h4>
                                 <h5 className='regularText'>About us</h5>
-                            </div>
+                            </div> */}
 
                             <div>
                                 <div>
@@ -40,7 +40,7 @@ class Footer extends Component {
                                 <br></br>
                                 <div>
                                     <h4 className='titleNotMain'>Technical support</h4>
-                                    <h5 className='regularText'>pixelteam@thepixelapi.com</h5>
+                                    <h5 className='regularText'>princemike@outlook.es</h5>
                                 </div>
                             </div>
                         </div>

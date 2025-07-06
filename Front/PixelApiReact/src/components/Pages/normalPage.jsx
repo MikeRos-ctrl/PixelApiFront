@@ -5,6 +5,7 @@ import { Demo } from '../Demo/Demo';
 import { Pricing } from '../Pricing/Pricing';
 import { AppContext } from '../../context';
 import { useContext, useEffect } from 'react';
+import { About } from '../About/About';
 
 function NormalPage() {
 
@@ -27,6 +28,7 @@ function NormalPage() {
             <Implementation />
             <Demo />
             <Pricing />
+            <About />
         </>
     )
 }

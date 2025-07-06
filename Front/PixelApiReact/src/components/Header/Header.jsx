@@ -26,7 +26,7 @@ function Header() {
                     <div className="information">
 
                         <h5 className="titleNotMain grey-color">
-                            Api to fetch awesome heart made Pixel Art.
+                            Api to fetch awesome AI made Pixel Art.
                         </h5>
 
                         <h5 className="titleNotMain grey-color">
@@ -36,8 +36,8 @@ function Header() {
                         <br />
 
                         <div className="informationButtons">
-                            <input className="button-1 titleNotMain" type="button" value="GET YOUR API KEY" />
-                            <input className="button-2 titleNotMain" type="button" value="READ OUR DOC" />
+                            {/* <input className="button-1 titleNotMain" type="button" value="ENJOY YOUR API FOR FREE!" /> */}
+                            <input className="button-2 titleNotMain" type="button" value="ENJOY YOUR API FOR FREE!" />
                         </div>
                     </div>
                 </div>
