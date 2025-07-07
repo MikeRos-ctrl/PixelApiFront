@@ -33,7 +33,7 @@ function SelectedPlanOptions() {
                         <h5 className="titleNotMain">Token:</h5>
 
                         <span className='selectePlanOptionsCopyTokenIcon'>
-                            <input defaultValue={myUser.token} className="regularText readOnlyinputAcctPage" placeholder="Password" readOnly />
+                            <input defaultValue={myUser.token} className="lindita regularText readOnlyinputAcctPage" placeholder="Password" readOnly />
                             <FaRegCopy onClick={() => { copyToken() }} className={`icon ${iconColor}`} />
                         </span>
                     </div>
