@@ -3,7 +3,6 @@ import me from '../../assets/me.jpg'
 import './index.css';
 import donate from '../../assets/buymeacoffee.png'
 
-
 function About() {
 
     return (
@@ -22,10 +21,10 @@ function About() {
 
                     <h5 className='regularText'>
                         PixelApi started as a weekend project, it is a free API REST to fetch AI images based on a Pixel Art Model.
-                        The front is React and the Api is Java Spring. So if you like this and want to donate to this project you can support this project here:
+                        The front is in React and the Api is Java Spring. The backend API is hosted freely, so it may take seconds or minutes to get ready. So if you like this and want to support this project you can do it here:
                     </h5>
 
-                    <a href="coff.ee/princemike" target="_blank" rel="noopener noreferrer">
+                    <a href="https://buymeacoffee.com/princemike" target="_blank" rel="noopener noreferrer">
                         <img
                             src={donate}
                             alt="Buy me a coffee"

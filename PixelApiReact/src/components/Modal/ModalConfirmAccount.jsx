@@ -33,7 +33,7 @@ function ModalConfirmAccount() {
                     //EL ID ES NULL TRUENA
                     UpdateAccount(myUser).then(result => {
 
-                        console.log(result)
+                        // console.log(result)
 
                         let data = { ...myUser, ready: true }
                         setMyUser(data)

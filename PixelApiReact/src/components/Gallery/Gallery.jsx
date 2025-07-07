@@ -39,7 +39,7 @@ class Gallery extends Component {
 
         listByCategory(category, myImages[0]["ImageId"]).then(res => {
 
-            console.log(res)
+            // console.log(res)
             setMyImages((myImages.slice(0, 1)).concat(res))
             setRefreshGallery(true)
         })

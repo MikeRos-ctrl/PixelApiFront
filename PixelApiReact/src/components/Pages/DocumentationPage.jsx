@@ -137,7 +137,7 @@ function DocumentationPage() {
 
                     <div className='DocElement'>
                         <h5 className="titleNotMain">Considerations:</h5>
-                        <h5 className="regularText">Once you register a suscription you get your token and url of your api in your email.</h5>
+                        <h5 className="regularText">Once you register a suscription you get a token, this is the url: https://pixelapiback.onrender.com/pixel/pixelapi</h5>
                     </div>
 
                     <div className='DocElement'>

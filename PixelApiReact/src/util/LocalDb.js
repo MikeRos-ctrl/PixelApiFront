@@ -22,7 +22,7 @@ export class LocalDb {
         let response = dbRequest.add(user)
 
         response.onsuccess = function (event) {
-            console.log('New user has been inserted');
+            // console.log('New user has been inserted');
         };
 
         response.onerror = function (event) {
@@ -69,7 +69,7 @@ export class LocalDb {
         let response = dbRequest.get(id)
 
         response.onsuccess = function (event) {
-            console.log(event.target.result);
+            // console.log(event.target.result);
         };
 
         response.onerror = function (event) {
@@ -85,7 +85,7 @@ export class LocalDb {
         let response = dbRequest.clear()
 
         response.onsuccess = function (event) {
-            console.log("Object has been deleted!");
+            // console.log("Object has been deleted!");
         };
 
         response.onerror = function (event) {
@@ -101,7 +101,7 @@ export class LocalDb {
         let response = dbRequest.put(data)
 
         response.onsuccess = function (event) {
-            console.log("Object has been updated!");
+            // console.log("Object has been updated!");
         };
 
         response.onerror = function (event) {
@@ -122,17 +122,17 @@ export class LocalDb {
                     autoIncrement: LocalDb.AutoIncrement
                 });
 
-                console.log('Database setup complete');
+                // console.log('Database setup complete');
             }
 
             dbRequest.onsuccess = function (event) {
                 resolve(event.target.result)
-                console.log('Database opened successfully');
+                // console.log('Database opened successfully');
             };
 
             dbRequest.onerror = function (event) {
                 reject(event.target.errorCode);
-                console.error('Database error:', event.target.errorCode);
+                // console.error('Database error:', event.target.errorCode);
             };
         })
     }

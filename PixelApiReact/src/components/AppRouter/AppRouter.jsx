@@ -28,7 +28,7 @@ class AppRouter extends Component {
         LocalDb.FindUser().then(response => {
 
             if (response != "" && response[0].ready == true) {
-                console.log("User has been loaded from DB")
+                // console.log("User has been loaded from DB")
                 setMyUser(response[0])
             }
 
@@ -45,12 +45,12 @@ class AppRouter extends Component {
         FillFrontHeader().then(result => {
 
             if (result != null) {
-                console.log(result)
+                // console.log(result)
                 setMyImages(result)
             }
-            else{
+            else {
                 let data = {
-                    
+
                 }
             }
         }).catch(error => {

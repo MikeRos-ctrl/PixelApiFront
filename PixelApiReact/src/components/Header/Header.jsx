@@ -7,6 +7,8 @@ function Header() {
     const { myImages } = React.useContext(AppContext)
     const [ready, setReady] = React.useState(false)
 
+    // console.log(myImages)
+
     return (
 
         <header>

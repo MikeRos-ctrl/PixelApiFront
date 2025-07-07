@@ -29,7 +29,7 @@ class App extends Component {
 
   componentDidUpdate() {
     const { myUser } = this.props;
-    console.log(myUser)
+    // console.log(myUser)
   }
 
   render() {

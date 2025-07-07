@@ -51,8 +51,8 @@ function CheckoutForm({ navigate, setReturnFlag, plan, email }) {
             }
         } else if (paymentIntent && paymentIntent.status === "succeeded") {
 
-            console.log(paymentIntent)
-            console.log(paymentIntent.id)
+            // console.log(paymentIntent)
+            // console.log(paymentIntent.id)
 
 
             CreateStripeSubscription({

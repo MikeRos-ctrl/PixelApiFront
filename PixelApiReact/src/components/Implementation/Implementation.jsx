@@ -14,7 +14,7 @@ class Implementation extends Component {
 
     render() {
         const codedString = `
-const API = 'http://changexd:8080/pixel/pixelapi';
+const API = 'https://pixelapiback.onrender.com/pixel/pixelapi';
 const TOKEN = 'your_token';
 
 async function ApiCallExample() {
